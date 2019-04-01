@@ -1,0 +1,70 @@
+language: c
+
+compiler: gcc
+
+sudo: require
+
+service:
+  - docker
+
+git:
+  depth: false
+
+## NOTIFICATIONS
+notifications:
+  email:
+    recipients:
+    - florent.poinsard@epitech.eu
+    - cecile.cadoul@epitech.eu
+    - julien.ollivier@epitech.eu
+    on_success: never
+    on_failure: always
+  slack: epitech-tls-22:4QoGtulORMzh9mU0ugBYrTT8
+
+## Default script for each stage
+script:
+  - chmod +x ./ci/script/*.sh
+
+## Jobs declaration
+jobs:
+    include :
+        - stage: build
+          name: "Build"
+          install:
+            - docker pull epitechcontent/epitest-docker
+          script:
+            - docker run -v $PWD:/app epitechcontent/epitest-docker bash -c "cd app && ./ci/script/build.sh"
+
+        - stage: tests
+          name: "Unit Tests"
+          install:
+            - docker pull epitechcontent/epitest-docker
+          script:
+            - docker run -v $PWD:/app epitechcontent/epitest-docker bash -c "cd app && ./ci/script/unit_test.sh"
+        -
+          name: "Functional Tests"
+          before_script:
+            - docker pull epitechcontent/epitest-docker
+          script:
+            - docker run -v $PWD:/app epitechcontent/epitest-docker bash -c "cd app && ./ci/script/functional_test.sh"
+
+        - stage: deploy
+          name: "Deployement Epitech Server"
+          if: branch IN (master, travis) AND type != cron AND type != pull_request
+          script:
+            - ./ci/script/deploy_epitech.sh
+        -
+          name: "Deployement Documentation"
+          if: branch IN (master) AND type != cron AND type != pull_request
+          before_script:
+            - docker pull epitechcontent/epitest-docker
+          script:
+            - docker run -v $PWD:/app epitechcontent/epitest-docker bash -c "cd app && ./ci/script/deploy_documentation.sh"
+          deploy:
+            provider: pages
+            skip_cleanup: true
+            github_token: $GITHUB_TOKEN
+            keep_history: true
+            verbose: true
+            on:
+              branch: master

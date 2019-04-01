@@ -47,7 +47,7 @@ jobs:
             - chmod +x ./ci/script/*.sh
             - docker run -v $PWD:/app epitechcontent/epitest-docker bash -c "cd app && ./ci/script/functional_test.sh"
 
-        - stage: deploy
+        - stage: deploy-production
           name: "Deployement Epitech Server"
           if: branch IN (master, travis) AND type != cron AND type != pull_request
           script:
@@ -83,7 +83,8 @@ jobs:
             skip_cleanup: true
             on:
               tags: false
-        -
+
+        - stage: deploy-pre-prod
           name: "Deployement GitHub Release pre-release"
           if: branch IN (dev) AND type != cron AND type != pull_request
           script:
@@ -97,4 +98,5 @@ jobs:
             skip_cleanup: true
             prerelease: true
             on:
+              branch: dev
               tags: false

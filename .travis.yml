@@ -71,14 +71,13 @@ jobs:
               branch: master
         -
           name: "Deployement GitHub Release"
-          if: branch IN (master) AND type != cron AND type != pull_request
+          if: branch IN (master) AND type != cron AND type != pull_request AND tag
           script:
             - chmod +x ./ci/script/*.sh
             - ./ci/script/deploy_release.sh
           deploy:
             provider: releases
-            user: $GITHUB_USER
-            password: $GITHUB_PASS
+            api_key: $GITHUB_TOKEN
             draft: false
             file: $ARCHIVE_NAME_RELEASE
             skip_cleanup: true

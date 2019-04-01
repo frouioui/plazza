@@ -69,34 +69,10 @@ jobs:
             verbose: true
             on:
               branch: master
-        -
-          name: "Deployement GitHub Release official release"
-          if: branch IN (master) AND type != cron AND type != pull_request
-          script:
-            - chmod +x ./ci/script/*.sh
-            - ./ci/script/deploy_release.sh
-          deploy:
-            provider: releases
-            api_key: $GITHUB_TOKEN
-            draft: false
-            file: $ARCHIVE_NAME_RELEASE
-            skip_cleanup: true
-            on:
-              tags: false
 
         - stage: deploy-pre-prod
-          name: "Deployement GitHub Release pre-release"
+          name: "Deployement Epitech Server pre-prod"
           if: branch IN (dev) AND type != cron AND type != pull_request
           script:
             - chmod +x ./ci/script/*.sh
-            - ./ci/script/deploy_pre_release.sh
-          deploy:
-            provider: releases
-            api_key: $GITHUB_TOKEN
-            draft: false
-            file: $ARCHIVE_NAME_RELEASE
-            skip_cleanup: true
-            prerelease: true
-            on:
-              branch: dev
-              tags: false
+            - ./ci/script/deploy_epitech_pre_prod.sh

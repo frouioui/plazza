@@ -47,7 +47,7 @@ jobs:
             - chmod +x ./ci/script/*.sh
             - docker run -v $PWD:/app epitechcontent/epitest-docker bash -c "cd app && ./ci/script/functional_test.sh"
 
-        - stage: deploy
+        - stage: deploy-production
           name: "Deployement Epitech Server"
           if: branch IN (master, travis) AND type != cron AND type != pull_request
           script:
@@ -70,18 +70,33 @@ jobs:
             on:
               branch: master
         -
-          name: "Deployement GitHub Release"
+          name: "Deployement GitHub Release official release"
           if: branch IN (master) AND type != cron AND type != pull_request
           script:
             - chmod +x ./ci/script/*.sh
             - ./ci/script/deploy_release.sh
           deploy:
             provider: releases
-            user: $GITHUB_USER
-            password: $GITHUB_PASS
+            api_key: $GITHUB_TOKEN
             draft: false
             file: $ARCHIVE_NAME_RELEASE
             skip_cleanup: true
             on:
-              branch: master
-              tags: true
+              tags: false
+
+        - stage: deploy-pre-prod
+          name: "Deployement GitHub Release pre-release"
+          if: branch IN (dev) AND type != cron AND type != pull_request
+          script:
+            - chmod +x ./ci/script/*.sh
+            - ./ci/script/deploy_pre_release.sh
+          deploy:
+            provider: releases
+            api_key: $GITHUB_TOKEN
+            draft: false
+            file: $ARCHIVE_NAME_RELEASE
+            skip_cleanup: true
+            prerelease: true
+            on:
+              branch: dev
+              tags: false

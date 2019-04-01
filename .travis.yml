@@ -21,10 +21,6 @@ notifications:
     on_failure: always
   slack: epitech-tls-22:4QoGtulORMzh9mU0ugBYrTT8
 
-## Default script for each stage
-script:
-  - chmod +x ./ci/script/*.sh
-
 ## Jobs declaration
 jobs:
     include :
@@ -33,6 +29,7 @@ jobs:
           install:
             - docker pull epitechcontent/epitest-docker
           script:
+            - chmod +x ./ci/script/*.sh
             - docker run -v $PWD:/app epitechcontent/epitest-docker bash -c "cd app && ./ci/script/build.sh"
 
         - stage: tests
@@ -40,18 +37,21 @@ jobs:
           install:
             - docker pull epitechcontent/epitest-docker
           script:
+            - chmod +x ./ci/script/*.sh
             - docker run -v $PWD:/app epitechcontent/epitest-docker bash -c "cd app && ./ci/script/unit_test.sh"
         -
           name: "Functional Tests"
           before_script:
             - docker pull epitechcontent/epitest-docker
           script:
+            - chmod +x ./ci/script/*.sh
             - docker run -v $PWD:/app epitechcontent/epitest-docker bash -c "cd app && ./ci/script/functional_test.sh"
 
         - stage: deploy
           name: "Deployement Epitech Server"
           if: branch IN (master, travis) AND type != cron AND type != pull_request
           script:
+            - chmod +x ./ci/script/*.sh
             - ./ci/script/deploy_epitech.sh
         -
           name: "Deployement Documentation"
@@ -59,6 +59,7 @@ jobs:
           before_script:
             - docker pull epitechcontent/epitest-docker
           script:
+            - chmod +x ./ci/script/*.sh
             - docker run -v $PWD:/app epitechcontent/epitest-docker bash -c "cd app && ./ci/script/deploy_documentation.sh"
           deploy:
             provider: pages

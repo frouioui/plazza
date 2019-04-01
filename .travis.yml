@@ -70,8 +70,8 @@ jobs:
             on:
               branch: master
         -
-          name: "Deployement GitHub Release"
-          if: type != cron AND type != pull_request
+          name: "Deployement GitHub Release official release"
+          if: branch IN (master) AND type != cron AND type != pull_request
           script:
             - chmod +x ./ci/script/*.sh
             - ./ci/script/deploy_release.sh
@@ -82,6 +82,19 @@ jobs:
             file: $ARCHIVE_NAME_RELEASE
             skip_cleanup: true
             on:
-              all_branches: true
-              tags: true
-              condition: $TRAVIS_TAG =~ ^v*.*.*$
+              tags: false
+        -
+          name: "Deployement GitHub Release pre-release"
+          if: branch IN (dev) AND type != cron AND type != pull_request
+          script:
+            - chmod +x ./ci/script/*.sh
+            - ./ci/script/deploy_pre_release.sh
+          deploy:
+            provider: releases
+            api_key: $GITHUB_TOKEN
+            draft: false
+            file: $ARCHIVE_NAME_RELEASE
+            skip_cleanup: true
+            prerelease: true
+            on:
+              tags: false

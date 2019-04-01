@@ -69,3 +69,19 @@ jobs:
             verbose: true
             on:
               branch: master
+        -
+          name: "Deployement GitHub Release"
+          if: branch IN (master) AND type != cron AND type != pull_request
+          script:
+            - chmod +x ./ci/script/*.sh
+            - ./ci/script/deploy_release.sh
+          deploy:
+            provider: releases
+            user: $GITHUB_USER
+            password: $GITHUB_PASS
+            draft: false
+            file: $ARCHIVE_NAME_RELEASE
+            skip_cleanup: true
+            on:
+              branch: master
+              tags: true

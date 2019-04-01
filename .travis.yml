@@ -1,6 +1,6 @@
 language: cpp
 
-compiler: g
+compiler: g++
 
 sudo: require
 
@@ -28,7 +28,7 @@ notifications:
     rooms:
       - epitech-tls-22:4QoGtulORMzh9mU0ugBYrTT8
     template:
-      - "Build %{repository_slug}@%{branch} by %(author} %{result} in %{duration}"
+      - "Build %{repository_slug}@%{branch} by %{author} %{result} in %{duration}"
 
 # Job declaration
 jobs:

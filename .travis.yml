@@ -71,7 +71,7 @@ jobs:
               branch: master
         -
           name: "Deployement GitHub Release"
-          if: type != cron AND type != pull_request AND $TRAVIS_TAG =~ ^v*.*.*$
+          if: type != cron AND type != pull_request
           script:
             - chmod +x ./ci/script/*.sh
             - ./ci/script/deploy_release.sh
@@ -84,3 +84,4 @@ jobs:
             on:
               all_branches: true
               tags: true
+              condition: $TRAVIS_TAG =~ ^v*.*.*$

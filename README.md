@@ -1,4 +1,4 @@
-# plazza
+# The Plazza
 
 [![Build Status](https://travis-ci.com/frouioui/plazza.svg?token=XhmJBhJBxshbY6hsWepE&branch=master)](https://travis-ci.com/frouioui/plazza)
 

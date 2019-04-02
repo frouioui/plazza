@@ -1,6 +1,6 @@
-language: c
+language: cpp
 
-compiler: gcc
+compiler: g++
 
 sudo: require
 
@@ -10,7 +10,12 @@ service:
 git:
   depth: false
 
-## NOTIFICATIONS
+env:
+  global:
+    # Job parallelization for Makefile
+    - MAKEFLAGS="-j 2"
+
+# Notifications
 notifications:
   email:
     recipients:
@@ -19,12 +24,18 @@ notifications:
     - julien.ollivier@epitech.eu
     on_success: never
     on_failure: always
-  slack: epitech-tls-22:4QoGtulORMzh9mU0ugBYrTT8
+  slack:
+    rooms:
+      - epitech-tls-22:4QoGtulORMzh9mU0ugBYrTT8
+    template:
+      - "Build %{repository_slug}@%{branch} by %{author} %{result} in %{duration}"
 
-## Jobs declaration
+# Job declaration
 jobs:
     include :
+        # Build check phase
         - stage: build
+          # Run simple build
           name: "Build"
           install:
             - docker pull epitechcontent/epitest-docker
@@ -32,7 +43,9 @@ jobs:
             - chmod +x ./ci/script/*.sh
             - docker run -v $PWD:/app epitechcontent/epitest-docker bash -c "cd app && ./ci/script/build.sh"
 
+        # All the testing phase
         - stage: tests
+          # Run unit tests
           name: "Unit Tests"
           install:
             - docker pull epitechcontent/epitest-docker
@@ -40,6 +53,7 @@ jobs:
             - chmod +x ./ci/script/*.sh
             - docker run -v $PWD:/app epitechcontent/epitest-docker bash -c "cd app && ./ci/script/unit_test.sh"
         -
+          # Run functional tests
           name: "Functional Tests"
           before_script:
             - docker pull epitechcontent/epitest-docker
@@ -47,13 +61,17 @@ jobs:
             - chmod +x ./ci/script/*.sh
             - docker run -v $PWD:/app epitechcontent/epitest-docker bash -c "cd app && ./ci/script/functional_test.sh"
 
+        # Production deployement
         - stage: deploy-production
+          # Deploy to epitech production branch
           name: "Deployement Epitech Server"
           if: branch IN (master, travis) AND type != cron AND type != pull_request
           script:
             - chmod +x ./ci/script/*.sh
             - ./ci/script/deploy_epitech.sh
         -
+        
+          # Deploy the documentation through github pages
           name: "Deployement Documentation"
           if: branch IN (master) AND type != cron AND type != pull_request
           before_script:
@@ -69,34 +87,12 @@ jobs:
             verbose: true
             on:
               branch: master
-        -
-          name: "Deployement GitHub Release official release"
-          if: branch IN (master) AND type != cron AND type != pull_request
-          script:
-            - chmod +x ./ci/script/*.sh
-            - ./ci/script/deploy_release.sh
-          deploy:
-            provider: releases
-            api_key: $GITHUB_TOKEN
-            draft: false
-            file: $ARCHIVE_NAME_RELEASE
-            skip_cleanup: true
-            on:
-              tags: false
 
+        # Pre production deployement
         - stage: deploy-pre-prod
-          name: "Deployement GitHub Release pre-release"
+          # Deploy on epitech pre production branch
+          name: "Deployement Epitech Server pre-prod"
           if: branch IN (dev) AND type != cron AND type != pull_request
           script:
             - chmod +x ./ci/script/*.sh
-            - ./ci/script/deploy_pre_release.sh
-          deploy:
-            provider: releases
-            api_key: $GITHUB_TOKEN
-            draft: false
-            file: $ARCHIVE_NAME_RELEASE
-            skip_cleanup: true
-            prerelease: true
-            on:
-              branch: dev
-              tags: false
+            - ./ci/script/deploy_epitech_pre_prod.sh

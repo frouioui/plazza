@@ -21,7 +21,7 @@ plazza.ldflags		=
 
 DOCS_DIR			= docs/
 
-DOXYFILE			=
+DOXYFILE			= # TODO
 
 # TESTS
 
@@ -59,7 +59,6 @@ LDFLAGS				=
 
 define COMPILE_template =
 
-
 POBJS					=	$(addprefix $(dir $(BUILD_DIR)$(1)/), $$($(1).srcs:.cpp=.o))	\
 							$(addprefix $(dir $(BUILD_DIR)$(1)/), $$($(1).main:.cpp=.o))
 
@@ -94,7 +93,6 @@ debug:	$(eval $(call COMPILE_template,debug)) $(POBJS)
 	$(CXX) -o $(debug.name) $^ $(LDFLAGS) $(CXXFLAGS) $(debug.cxxflags) $(debug.ldflags)
 
 # DOCS
-
 docs:
 	doxygen $(DOXYFILE)
 

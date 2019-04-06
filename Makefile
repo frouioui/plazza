@@ -19,9 +19,9 @@ plazza.ldflags		=
 
 # DOCS
 
-DOCS_DIR			= docs/
+DOCS_DIR			=	docs/
 
-DOXYFILE			= # TODO
+DOXYFILE			=	Plazza
 
 # TESTS
 
@@ -87,7 +87,7 @@ clean:
 	rm -rf $(BUILD_DIR)
 
 fclean:	clean
-	rm -rf $(plazza.name) $(debug.name) $(unit_tests.name)
+	rm -rf $(plazza.name) $(debug.name) $(unit_tests.name) $(DOCS_DIR)
 
 re: fclean all
 
@@ -98,6 +98,8 @@ debug:	$(eval $(call COMPILE_template,debug)) $(POBJS)
 # DOCS
 docs:
 	doxygen $(DOXYFILE)
+
+.PHONY: docs
 
 cleanDocs:
 	rm -rf $(DOCS_DIR)

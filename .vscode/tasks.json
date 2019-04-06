@@ -16,6 +16,25 @@
             ]
         },
         {
+            "label": "Build Doc",
+            "type": "shell",
+            "command": "make docs",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": {
+                    "owner": "cpp",
+                    "fileLocation": "absolute",
+                    "pattern": {
+                        "regexp": "^(.*):(\\d+):\\swarning:(.*)",
+                        "file": 1,
+                        "location": 2,
+                        "message": 3
+                    }
+            }
+        },
+        {
             "label": "Run Criterion Tests",
             "type": "shell",
             "command": "make tests_run",

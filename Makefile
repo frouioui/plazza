@@ -13,7 +13,7 @@ plazza.srcs			=	src/Plazza.cpp
 
 plazza.main 		=	src/main.cpp
 
-plazza.cxxflags		=
+plazza.cxxflags		=	-Werror
 
 plazza.ldflags		=
 
@@ -75,10 +75,13 @@ all: $(plazza.name)
 $(plazza.name):	$(eval $(call COMPILE_template,plazza)) $(POBJS)
 	$(CXX) -o $(plazza.name) $^ $(LDFLAGS) $(CXXFLAGS) $(plazza.cxxflags) $(plazza.ldflags)
 
-tests_compile:	$(eval $(call COMPILE_template,unit_tests)) $(POBJS)
+$(unit_tests.name):	$(eval $(call COMPILE_template,unit_tests)) $(POBJS)
 	$(CXX) -o $(unit_tests.name) $^ $(LDFLAGS) $(CXXFLAGS) $(unit_tests.cxxflags) $(unit_tests.ldflags)
 
-tests_run: unit_tests
+tests_compile: $(unit_tests.name)
+
+tests_run: $(unit_tests.name)
+	./$(unit_tests.name) -j1 --verbose --full-stats
 
 clean:
 	rm -rf $(BUILD_DIR)

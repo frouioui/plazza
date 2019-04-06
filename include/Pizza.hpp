@@ -39,7 +39,7 @@
 
 
         /**
-         * \struct Pizza
+         * \struct Pizza::Pizza
          * \brief Pizza Data (type and size)
          */
 		struct Pizza {

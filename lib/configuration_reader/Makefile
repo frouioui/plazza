@@ -1,7 +1,7 @@
 ##
 ## Plazza
 ##
-## Makefile of the string_parser static library
+## Makefile of the configuration_reader static library
 ##
 
 # Compilation

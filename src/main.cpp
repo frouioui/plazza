@@ -5,9 +5,8 @@
 ** main
 */
 
-#include "Plazza.hpp"
-
-int main(void)
+int main(int argc, char *argv[])
 {
-    Plazza program;
+    (void)argc;
+    (void)argv;
 }

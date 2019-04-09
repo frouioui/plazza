@@ -22,11 +22,11 @@ TEST_DIRECTORY		=	./tests
 INCLUDE_DIRECTORY	=	./include
 
 # Source files
-SRC				=	$(SRC_DIRECTORY)/ConfigReader.cpp				\
-					$(SRC_DIRECTORY)/ConfigReaderError.cpp			\
+SRC				=	$(SRC_DIRECTORY)/Logger.cpp					\
+					$(SRC_DIRECTORY)/LoggerError.cpp			\
 
 # Test files
-TEST_SRC		=	$(TEST_DIRECTORY)/ConfigReaderTests.cpp			\
+TEST_SRC		=	$(TEST_DIRECTORY)/LoggerTests.cpp			\
 
 # Rules
 all: $(LIBRARY_NAME)

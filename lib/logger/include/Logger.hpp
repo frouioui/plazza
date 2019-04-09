@@ -11,20 +11,22 @@
 #include <fstream>
 #include <string>
 
-namespace Logger
+namespace Log
 {
 
     class Logger
     {
     public:
+        Logger();
         Logger(const std::string &path);
         ~Logger();
 
-        void important(const std::string &msg) const noexcept;
-        void info(const std::string &msg) const noexcept;
+        void important(const std::string &msg) noexcept;
+        void info(const std::string &msg) noexcept;
 
     private:
-        std::ifstream _file;
+        bool _stdout;
+        std::ofstream _outfile;
         std::string _path;
     };
 

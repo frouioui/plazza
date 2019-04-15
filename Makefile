@@ -11,6 +11,7 @@ plazza.name			=	plazza
 
 plazza.srcs			=	src/reception/Error.cpp			\
 						src/reception/Reception.cpp		\
+						src/reception/Shell.cpp			\
 
 plazza.main 		=	src/main.cpp
 

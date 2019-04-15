@@ -8,7 +8,7 @@
 #if !defined(_RECEPTION_HPP)
 #define _RECEPTION_HPP
 
-#include "reception/Error.hpp"
+#include "reception/Shell.hpp"
 
 namespace ReceptionArea
 {
@@ -20,11 +20,13 @@ namespace ReceptionArea
         ~Reception();
 
         void setValues(const int argc, const char *argv[]) throw();
+        void launch() throw();
 
     private:
         float           _multiplier;
         unsigned int    _nbCook;
         long            _replaceTime;
+        Shell::Shell    _shell;
     };
 
 } // ReceptionArea

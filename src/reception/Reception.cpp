@@ -48,3 +48,18 @@ void Reception::setValues(const int argc, const char *argv[]) throw()
     _nbCook = std::atoi(cookstr.c_str());
     _replaceTime = std::atol(timestr.c_str());
 }
+
+void Reception::launch() throw()
+{
+    ReceptionArea::Shell::InputType inputType;
+
+    while (_shell.isDone() == false) {
+        inputType = _shell.readLine();
+        if (inputType == ReceptionArea::Shell::OTHER) {
+            Pizza::Pizza parsePizza = _shell.parsePizza();
+            (void)parsePizza;
+        } else if (inputType == ReceptionArea::Shell::HELPER) {
+            // TODO: Display helper in the shell
+        }
+    }
+}

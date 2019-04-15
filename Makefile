@@ -14,6 +14,9 @@ plazza.srcs			=	src/reception/Error.cpp			\
 
 plazza.main 		=	src/main.cpp
 
+plazza.objs		=	$(addprefix $(dir $(BUILD_DIR)$(plazza.name)/), $(plazza.srcs:.cpp=.o))	\
+					$(addprefix $(dir $(BUILD_DIR)$(plazza.name)/), $(plazza.main:.cpp=.o))
+
 plazza.cxxflags		=	-Werror
 
 plazza.ldflags		=
@@ -32,6 +35,9 @@ unit_tests.srcs		=	$(plazza.srcs)	\
 
 unit_tests.main 	=	tests/criterion_main.cpp
 
+unit_tests.objs		=	$(addprefix $(dir $(BUILD_DIR)$(unit_tests.name)/), $(unit_tests.srcs:.cpp=.o))	\
+						$(addprefix $(dir $(BUILD_DIR)$(unit_tests.name)/), $(unit_tests.main:.cpp=.o))
+
 unit_tests.cxxflags	=	-fprofile-arcs -ftest-coverage
 
 unit_tests.ldflags	=	-lcriterion -lgcov
@@ -41,6 +47,9 @@ unit_tests.ldflags	=	-lcriterion -lgcov
 debug.name			=	debug_$(plazza.name)
 
 debug.srcs			=	$(plazza.srcs)
+
+debug.objs			=	$(addprefix $(dir $(BUILD_DIR)$(debug.name)/), $(debug.srcs:.cpp=.o))	\
+						$(addprefix $(dir $(BUILD_DIR)$(debug.name)/), $(debug.main:.cpp=.o))
 
 debug.main 			=	$(plazza.main)
 
@@ -58,26 +67,28 @@ CXXFLAGS			=	-Wall -Wextra -std=c++14 $(HEADERS)
 
 LDFLAGS				=
 
-define COMPILE_template =
 
-POBJS					=	$(addprefix $(dir $(BUILD_DIR)$(1)/), $$($(1).srcs:.cpp=.o))	\
-							$(addprefix $(dir $(BUILD_DIR)$(1)/), $$($(1).main:.cpp=.o))
+$(BUILD_DIR)$(plazza.name)/%.o: %.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) $(plazza.cxxflags) $< -c -o $@
 
-$(BUILD_DIR)$(1)/%.o: %.cpp
-	@mkdir -p $$(dir $$@)
-	$(CXX) $(CXXFLAGS) $$($(1).cxxflags) $$< -c -o $$@
+$(BUILD_DIR)$(debug.name)/%.o: %.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) $(debug.cxxflags) $< -c -o $@
 
-endef
+$(BUILD_DIR)$(unit_tests.name)/%.o: %.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) $(unit_tests.cxxflags) $< -c -o $@
 
 #	MANDATORY
 
 all: $(plazza.name)
 
-$(plazza.name):	$(eval $(call COMPILE_template,plazza)) $(POBJS)
-	$(CXX) -o $(plazza.name) $^ $(LDFLAGS) $(CXXFLAGS) $(plazza.cxxflags) $(plazza.ldflags)
+$(plazza.name):	$(plazza.objs)
+	$(CXX) -o $@ $^ $(LDFLAGS) $(CXXFLAGS) $(plazza.cxxflags) $(plazza.ldflags)
 
-$(unit_tests.name):	$(eval $(call COMPILE_template,unit_tests)) $(POBJS)
-	$(CXX) -o $(unit_tests.name) $^ $(LDFLAGS) $(CXXFLAGS) $(unit_tests.cxxflags) $(unit_tests.ldflags)
+$(unit_tests.name): $(unit_tests.objs)
+	$(CXX) -o $@ $^ $(LDFLAGS) $(CXXFLAGS) $(unit_tests.cxxflags) $(unit_tests.ldflags)
 
 tests_compile: $(unit_tests.name)
 
@@ -93,8 +104,10 @@ fclean:	clean
 re: fclean all
 
 # Develloper tools
-debug:	$(eval $(call COMPILE_template,debug)) $(POBJS)
-	$(CXX) -o $(debug.name) $^ $(LDFLAGS) $(CXXFLAGS) $(debug.cxxflags) $(debug.ldflags)
+$(debug.name): $(debug.objs)
+	$(CXX) -o $@ $^ $(LDFLAGS) $(CXXFLAGS) $(debug.cxxflags) $(debug.ldflags)
+
+debug: $(debug.name)
 
 # DOCS
 docs:

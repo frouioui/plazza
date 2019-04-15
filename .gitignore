@@ -37,3 +37,10 @@ build
 .vscode/ipch
 
 docs/
+
+debug_plazza
+plazza
+unit_tests_plazza
+*.gcno
+*.gcda
+lib/**/*_test*

@@ -43,14 +43,20 @@ Shell::InputType Shell::Shell::readLine() noexcept
     return OTHER;
 }
 
-Pizza::Pizza Shell::Shell::parsePizza() const
+Pizza::Pizza Shell::Shell::parsePizza()
 {
     std::regex reg("([a-zA-Z]+\\ [SMLX]+\\ x[1-9][0-9]*;?)");
+    std::smatch m;
 
-    if (std::regex_match(_lastLine, reg)) {
-        std::cout << "match" << std::endl;
-    } else {
-        std::cout << "doesnt match" << std::endl;
+    while (std::regex_search(_lastLine, m, reg)) {
+        for (auto x:m) {
+            /*
+            * DEBUG:
+            *
+            * x = the element (ex: "regina M x1")
+            */
+        }
+        _lastLine = m.suffix().str();
     }
     return Pizza::Pizza{};
 }

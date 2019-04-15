@@ -32,7 +32,7 @@ namespace ReceptionArea
             bool isDone() const noexcept;
             void writeUser(const std::string &msg) const noexcept;
             InputType readLine() noexcept;
-            Pizza::Pizza parsePizza() const;
+            Pizza::Pizza parsePizza();
 
         private:
             std::string _lastLine;

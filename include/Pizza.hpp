@@ -37,7 +37,6 @@
 			XXL = 16,/* Extra extra large size */
 		};
 
-
         /**
          * \struct Pizza::Pizza
          * \brief Pizza Data (type and size)

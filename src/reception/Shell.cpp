@@ -33,7 +33,7 @@ void Shell::Shell::writeUser(const std::string &msg) const noexcept
 
 Shell::InputType Shell::Shell::readLine() noexcept
 {
-    std::cin >> _lastLine;
+    getline(std::cin, _lastLine);
     if (_lastLine.length() == 0 || _lastLine.compare("quit") == 0) {
         _done = true;
         return QUIT;
@@ -45,5 +45,12 @@ Shell::InputType Shell::Shell::readLine() noexcept
 
 Pizza::Pizza Shell::Shell::parsePizza() const
 {
+    std::regex reg("([a-zA-Z]+\\ [SMLX]+\\ x[1-9][0-9]*;?)");
+
+    if (std::regex_match(_lastLine, reg)) {
+        std::cout << "match" << std::endl;
+    } else {
+        std::cout << "doesnt match" << std::endl;
+    }
     return Pizza::Pizza{};
 }

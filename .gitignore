@@ -7,6 +7,9 @@
 *.o
 *.obj
 
+# Build folder
+build
+
 # Precompiled Headers
 *.gch
 *.pch
@@ -32,3 +35,5 @@
 *.app
 
 .vscode/ipch
+
+docs/

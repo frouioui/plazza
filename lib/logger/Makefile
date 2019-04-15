@@ -38,6 +38,9 @@ $(LIBRARY_NAME): $(OBJS)
 tests_compile:
 	$(CXX) $(SRC) $(TEST_SRC) -o $(TEST_NAME) $(CRITERION) -I$(INCLUDE_DIRECTORY)
 
+tests_run:
+	./$(TEST_NAME) -j1 --full-stats
+
 clean:
 	rm -f $(OBJS) $(TEST_OBJS)
 	rm -f *.gcda

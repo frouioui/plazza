@@ -15,12 +15,12 @@ int main(const int argc, const char *argv[])
 
     try {
         resp.setValues(argc, argv);
-    } catch (ReceptionArea::Error::InvalidArgument e) {
+    } catch (ReceptionArea::Error::InvalidArgument &e) {
         // DEBUG: if one or more argument are invalid
         std::cout << e.what() << std::endl;
         std::cout << "Try using the -h option." << std::endl;
         return (84);
-    } catch (ReceptionArea::Error::Helper e) {
+    } catch (ReceptionArea::Error::Helper &e) {
         // DEBUG: if the '-h'/'--help' option was found
         // helper();
         std::cout << e.what() << std::endl;

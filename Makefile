@@ -14,9 +14,17 @@ plazza.srcs			=	src/reception/Error.cpp			\
 
 plazza.main 		=	src/main.cpp
 
+plazza.objs		=	$(addprefix $(dir $(BUILD_DIR)$(plazza.name)/), $(plazza.srcs:.cpp=.o))	\
+					$(addprefix $(dir $(BUILD_DIR)$(plazza.name)/), $(plazza.main:.cpp=.o))
+
 plazza.cxxflags		=	-Werror
 
 plazza.ldflags		=
+
+# LIBS
+
+LIBS				=	lib/logger/liblogger.a							\
+						lib/configuration_reader/libconfig_reader.a		\
 
 # DOCS
 
@@ -32,6 +40,9 @@ unit_tests.srcs		=	$(plazza.srcs)	\
 
 unit_tests.main 	=	tests/criterion_main.cpp
 
+unit_tests.objs		=	$(addprefix $(dir $(BUILD_DIR)$(unit_tests.name)/), $(unit_tests.srcs:.cpp=.o))	\
+						$(addprefix $(dir $(BUILD_DIR)$(unit_tests.name)/), $(unit_tests.main:.cpp=.o))
+
 unit_tests.cxxflags	=	-fprofile-arcs -ftest-coverage
 
 unit_tests.ldflags	=	-lcriterion -lgcov
@@ -41,6 +52,9 @@ unit_tests.ldflags	=	-lcriterion -lgcov
 debug.name			=	debug_$(plazza.name)
 
 debug.srcs			=	$(plazza.srcs)
+
+debug.objs			=	$(addprefix $(dir $(BUILD_DIR)$(debug.name)/), $(debug.srcs:.cpp=.o))	\
+						$(addprefix $(dir $(BUILD_DIR)$(debug.name)/), $(debug.main:.cpp=.o))
 
 debug.main 			=	$(plazza.main)
 
@@ -58,43 +72,68 @@ CXXFLAGS			=	-Wall -Wextra -std=c++14 $(HEADERS)
 
 LDFLAGS				=
 
-define COMPILE_template =
-
-POBJS					=	$(addprefix $(dir $(BUILD_DIR)$(1)/), $$($(1).srcs:.cpp=.o))	\
-							$(addprefix $(dir $(BUILD_DIR)$(1)/), $$($(1).main:.cpp=.o))
-
-$(BUILD_DIR)$(1)/%.o: %.cpp
-	@mkdir -p $$(dir $$@)
-	$(CXX) $(CXXFLAGS) $$($(1).cxxflags) $$< -c -o $$@
-
-endef
+all: $(plazza.name)
 
 #	MANDATORY
 
-all: $(plazza.name)
+define LIB_RULES =
+$(1):
+	make -C $$(dir $$@)
 
-$(plazza.name):	$(eval $(call COMPILE_template,plazza)) $(POBJS)
-	$(CXX) -o $(plazza.name) $^ $(LDFLAGS) $(CXXFLAGS) $(plazza.cxxflags) $(plazza.ldflags)
+$(1)_fclean:
+	make fclean -C $$(dir $$@)
+LIB_FCLEAN += $(1)_fclean
 
-$(unit_tests.name):	$(eval $(call COMPILE_template,unit_tests)) $(POBJS)
-	$(CXX) -o $(unit_tests.name) $^ $(LDFLAGS) $(CXXFLAGS) $(unit_tests.cxxflags) $(unit_tests.ldflags)
+$(1)_tests_compile:
+	make tests_compile -C $$(dir $$@)
+LIB_TEST_COMPILE += $(1)_tests_compile
 
-tests_compile: $(unit_tests.name)
+$(1)_tests_run:
+	make tests_run -C $$(dir $$@)
+LIB_TESTS_RUN += $(1)_tests_run
 
-tests_run: $(unit_tests.name)
+endef
+
+$(foreach lib,$(LIBS),$(eval $(call LIB_RULES,$(lib))))
+
+$(plazza.name): $(LIBS)	$(plazza.objs)
+	$(CXX) -o $@ $^ $(LDFLAGS) $(CXXFLAGS) $(plazza.cxxflags) $(plazza.ldflags)
+
+$(unit_tests.name): $(LIBS) $(unit_tests.objs)
+	$(CXX) -o $@ $^ $(LDFLAGS) $(CXXFLAGS) $(unit_tests.cxxflags) $(unit_tests.ldflags)
+
+tests_compile: $(LIB_TEST_COMPILE) $(unit_tests.name)
+
+tests_run: tests_compile $(LIB_TESTS_RUN)
 	./$(unit_tests.name) -j1 --verbose --full-stats
 
 clean:
 	rm -rf $(BUILD_DIR)
 
-fclean:	clean
+fclean:	clean $(LIB_FCLEAN)
 	rm -rf $(plazza.name) $(debug.name) $(unit_tests.name) $(DOCS_DIR)
 
 re: fclean all
 
+# Create .o
+
+$(BUILD_DIR)$(plazza.name)/%.o: %.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) $(plazza.cxxflags) $< -c -o $@
+
+$(BUILD_DIR)$(debug.name)/%.o: %.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) $(debug.cxxflags) $< -c -o $@
+
+$(BUILD_DIR)$(unit_tests.name)/%.o: %.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) $(unit_tests.cxxflags) $< -c -o $@
+
 # Develloper tools
-debug:	$(eval $(call COMPILE_template,debug)) $(POBJS)
-	$(CXX) -o $(debug.name) $^ $(LDFLAGS) $(CXXFLAGS) $(debug.cxxflags) $(debug.ldflags)
+$(debug.name): $(LIBS) $(debug.objs)
+	$(CXX) -o $@ $^ $(LDFLAGS) $(CXXFLAGS) $(debug.cxxflags) $(debug.ldflags)
+
+debug: $(debug.name)
 
 # DOCS
 docs:

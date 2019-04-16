@@ -1,15 +1,15 @@
 ##
 ## Plazza
 ##
-## Makefile of the logger static library
+## Makefile of the configuration_reader static library
 ##
 
 # Compilation
 CXX			=	g++
 CXXFLAGS	=	-W -Werror -Wextra -Wall -I$(INCLUDE_DIRECTORY) -std=c++14
 
-LIBRARY_NAME	=	liblogger.a
-TEST_NAME		=	logger_test
+LIBRARY_NAME	=	libconfig_reader.a
+TEST_NAME		=	config_reader_test
 
 OBJS		=	$(SRC:.cpp=.o)
 TEST_OBJS	=	$(TEST_SRC:.cpp=.o)
@@ -22,11 +22,11 @@ TEST_DIRECTORY		=	./tests
 INCLUDE_DIRECTORY	=	./include
 
 # Source files
-SRC				=	$(SRC_DIRECTORY)/Logger.cpp					\
-					$(SRC_DIRECTORY)/LoggerError.cpp			\
+SRC				=	$(SRC_DIRECTORY)/ConfigReader.cpp				\
+					$(SRC_DIRECTORY)/ConfigReaderError.cpp			\
 
 # Test files
-TEST_SRC		=	$(TEST_DIRECTORY)/LoggerTests.cpp			\
+TEST_SRC		=	$(TEST_DIRECTORY)/ConfigReaderTests.cpp			\
 
 # Rules
 all: $(LIBRARY_NAME)

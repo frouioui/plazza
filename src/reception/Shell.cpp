@@ -49,13 +49,13 @@ Pizza::Pizza Shell::Shell::parsePizza()
     std::smatch m;
 
     while (std::regex_search(_lastLine, m, reg)) {
-        for (auto x:m) {
+       // for (auto x:m) {
             /*
             * DEBUG:
             *
             * x = the element (ex: "regina M x1")
             */
-        }
+       // }
         _lastLine = m.suffix().str();
     }
     return Pizza::Pizza{};

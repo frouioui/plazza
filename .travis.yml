@@ -9,6 +9,7 @@ service:
 
 git:
   depth: false
+  quiet: true
 
 env:
   global:
@@ -41,7 +42,7 @@ jobs:
             - docker pull epitechcontent/epitest-docker
           script:
             - chmod +x ./ci/script/*.sh
-            - docker run -v $PWD:/app epitechcontent/epitest-docker bash -c "cd app && ./ci/script/build.sh"
+            - docker run --env MAKEFLAGS="-j 2" -v $PWD:/app epitechcontent/epitest-docker bash -c "cd app && ./ci/script/build.sh"
 
         # All the testing phase
         - stage: tests
@@ -51,15 +52,15 @@ jobs:
             - docker pull epitechcontent/epitest-docker
           script:
             - chmod +x ./ci/script/*.sh
-            - docker run -v $PWD:/app epitechcontent/epitest-docker bash -c "cd app && ./ci/script/unit_test.sh"
-        -
-          # Run functional tests
-          name: "Functional Tests"
-          before_script:
-            - docker pull epitechcontent/epitest-docker
-          script:
-            - chmod +x ./ci/script/*.sh
-            - docker run -v $PWD:/app epitechcontent/epitest-docker bash -c "cd app && ./ci/script/functional_test.sh"
+            - docker run --env MAKEFLAGS="-j 2" -v $PWD:/app epitechcontent/epitest-docker bash -c "cd app && ./ci/script/unit_test.sh"
+        # -
+        #   # Run functional tests
+        #   name: "Functional Tests"
+        #   before_script:
+        #     - docker pull epitechcontent/epitest-docker
+        #   script:
+        #     - chmod +x ./ci/script/*.sh
+        #     - docker run -v $PWD:/app epitechcontent/epitest-docker bash -c "cd app && ./ci/script/functional_test.sh"
 
         # Production deployement
         - stage: deploy-production
@@ -67,10 +68,13 @@ jobs:
           name: "Deployement Epitech Server"
           if: branch IN (master, travis) AND type != cron AND type != pull_request
           script:
-            - chmod +x ./ci/script/*.sh
-            - ./ci/script/deploy_epitech.sh
+            - chmod +x ./ci/script/deploy_epitech.sh
+          deploy:
+            provider: script
+            script: bash ci/script/deploy_epitech.sh
+            on:
+              branch: master
         -
-        
           # Deploy the documentation through github pages
           name: "Deployement Documentation"
           if: branch IN (master) AND type != cron AND type != pull_request
@@ -78,7 +82,7 @@ jobs:
             - docker pull epitechcontent/epitest-docker
           script:
             - chmod +x ./ci/script/*.sh
-            - docker run -v $PWD:/app epitechcontent/epitest-docker bash -c "cd app && ./ci/script/deploy_documentation.sh"
+            - docker run --env MAKEFLAGS="-j 2" -v $PWD:/app epitechcontent/epitest-docker bash -c "cd app && ./ci/script/deploy_documentation.sh"
           deploy:
             provider: pages
             skip_cleanup: true
@@ -94,5 +98,9 @@ jobs:
           name: "Deployement Epitech Server pre-prod"
           if: branch IN (dev) AND type != cron AND type != pull_request
           script:
-            - chmod +x ./ci/script/*.sh
-            - ./ci/script/deploy_epitech_pre_prod.sh
+            - chmod +x ./ci/script/deploy_epitech_pre_prod.sh
+          deploy:
+            provider: script
+            script: bash ci/script/deploy_epitech_pre_prod.sh
+            on:
+              branch: dev

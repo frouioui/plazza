@@ -28,7 +28,7 @@ int main(const int argc, const char *argv[])
     }
 
     // DEBUG: start the simulation here
-    // resp.launch();
+    resp.launch();
 
     return (0);
 }

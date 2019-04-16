@@ -7,6 +7,9 @@
 *.o
 *.obj
 
+# Build folder
+build
+
 # Precompiled Headers
 *.gch
 *.pch
@@ -31,3 +34,13 @@
 *.out
 *.app
 
+.vscode/ipch
+
+docs/
+
+debug_plazza
+plazza
+unit_tests_plazza
+*.gcno
+*.gcda
+lib/**/*_test*

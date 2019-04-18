@@ -9,6 +9,7 @@
     #define COOK_HPP_
 
 #include <list>
+#include <thread>
 #include "Kitchen/Stock.hpp"
 #include "Kitchen/SafeThread.hpp"
 
@@ -18,25 +19,30 @@ namespace Kitchen {
  * \class Cook
  * \brief is the One Who Cook the Pizza
  */
-    class Cook {
+    class Cook  : std::thread {
         public:
             /**
              * \brief Constructor of a Cook Who Need what he can do
              */
-            explicit Cook(SafeThread<Stock> &stock, SafeThread<std::list<Pizza::Pizza &>> &toDo, SafeThread<std::list<Pizza::Pizza &>> &finished);
+            explicit Cook(
+                SafeThread<std::list<Pizza::Command *>> &toDo,
+                SafeThread<std::list<Pizza::Command *>> &finished);
 
             /**
              * \brief DeConstructor
              */
             ~Cook();
 
-            Pizza::Pizza cookPizza();
+            Pizza::Command cookPizza(void);
+
+            void Stop(void);
 
         protected:
         private:
-            SafeThread<Stock> &_stock;
-            SafeThread<std::list<Pizza::Pizza *>> &_toDo;
-            SafeThread<std::list<Pizza::Pizza *>> &_finished;
+            bool _stop;
+            Pizza::Command *_current;
+            SafeThread<std::list<Pizza::Command *>> &_toDo;
+            SafeThread<std::list<Pizza::Command *>> &_finished;
     };
 
 };

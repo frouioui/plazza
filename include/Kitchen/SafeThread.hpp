@@ -14,16 +14,34 @@
      * \class SafeThread
      */
     template<class T>
-    class SafeThread : public std::mutex {
+    class SafeThread {
         public:
-            SafeThread();
-            ~SafeThread();
+            SafeThread() : _ImLock(false) {};
+            ~SafeThread() = default;
 
-            T &operator->(void)
+            void lock() noexcept
             {
-                if (!this->try_lock())
-                    throw Error("Can't Lock");
-                return _Safe;
+                _mutex.lock();
+                _ImLock = true;
+            };
+
+            void unlock() noexcept
+            {
+                _mutex.unlock();
+                _ImLock = false;
+            };
+
+            bool try_lock() noexcept
+            {
+                bool res = _mutex.try_lock();
+                if (res)
+                    _ImLock = true;
+                return res;
+            };
+
+            T *operator->(void)
+            {
+                return &_Safe;
             }
 
             class Error : public std::exception {
@@ -37,8 +55,9 @@
             };
 
         protected:
-            std::mutex list_lock;
             T _Safe;
+            bool _ImLock;
+            std::mutex _mutex;
         private:
     };
 

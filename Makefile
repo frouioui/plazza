@@ -9,12 +9,11 @@
 
 plazza.name			=	plazza
 
-plazza.srcs			=	src/Plazza.cpp					\
-						src/Kitchen/Kitchen.cpp			\
+plazza.srcs			=	src/Kitchen/Kitchen.cpp			\
 						src/reception/Error.cpp			\
 						src/reception/Reception.cpp		\
 						src/reception/Shell.cpp			\
-
+						src/Kitchen/Cook.cpp			\
 
 plazza.main 		=	src/main.cpp
 

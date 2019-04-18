@@ -9,7 +9,7 @@
     #define KITCHEN_HPP_
 
 #include <list>
-#include "Pizza.hpp"
+#include "Command.hpp"
 #include "Stock.hpp"
 #include "SafeThread.hpp"
 
@@ -33,7 +33,7 @@ namespace Kitchen {
              */
             Kitchen(const int nbCooks/*, TODO IPC IDENTIFIER*/);
 
-            ~Kitchen() = default;
+            ~Kitchen();
             /**
              * \brief Display the kitchen status
              *
@@ -53,13 +53,13 @@ namespace Kitchen {
             /**
              * \brief send ready order to the reception
              */
-            Pizza::Pizza sendReadyOrder(/*Must be determined*/);
+            Pizza::Command sendReadyOrder(/*Must be determined*/);
             /**
              * \brief Add order to a list of pizza to cook
              *
              * \param pizza Pizza to cook
              */
-            void addOrder(Pizza::Pizza pizza) noexcept;
+            void addOrder(Pizza::Command pizza) noexcept;
 
             /**
              * \brief Assign a pizza to a free cooks
@@ -70,8 +70,8 @@ namespace Kitchen {
             void assignPizza();
 
         private:
-            SafeThread<std::list<Pizza::Pizza &>> _toDo;
-            SafeThread<std::list<Pizza::Pizza &>> _finished;
+            SafeThread<std::list<Pizza::Command *>> _toDo;
+            SafeThread<std::list<Pizza::Command *>> _finished;
 
             SafeThread<Stock> _stock;
 

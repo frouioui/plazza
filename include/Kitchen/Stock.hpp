@@ -9,8 +9,10 @@
     #define STOCK_HPP_
 
     #include <array>
-    #include <chrono>
-    #include "Pizza.hpp"
+    #include <mutex>
+    #include "Command.hpp"
+    #include "CookBook.hpp"
+    #include "Singletons.hpp"
 
     namespace Kitchen {
 
@@ -33,20 +35,19 @@
          */
         class Stock {
             public:
-
                 /**
                  * \brief Constructor
                  */
-                Stock();
+                Stock() {};
 
                 /**
                  * \brief Deconstructor
                  */
-                ~Stock();
+                ~Stock() = default;
 
-                bool check_Stock_Ingrediant_Pizza(Pizza::Pizza &pizza);
+                bool checkStockForRecipe(CookBook::Recipe &pizza) {/* TODO */(void)pizza;return true;};
 
-                bool update(void);
+                bool update(void) /* TODO or maybe make it private and update on a call to the instance*/;
 
             protected:
             private:

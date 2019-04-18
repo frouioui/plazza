@@ -9,7 +9,7 @@
 #define _SHELL_HPP
 
 #include <string>
-#include "Pizza.hpp"
+#include "Command.hpp"
 
 namespace ReceptionArea
 {
@@ -32,7 +32,7 @@ namespace ReceptionArea
             bool isDone() const noexcept;
             void writeUser(const std::string &msg) const noexcept;
             InputType readLine() noexcept;
-            Pizza::Pizza parsePizza();
+            Pizza::Command parsePizza();
 
         private:
             std::string _lastLine;

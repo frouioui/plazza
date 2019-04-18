@@ -45,18 +45,6 @@ Shell::InputType Shell::Shell::readLine() noexcept
 
 Pizza::Pizza Shell::Shell::parsePizza()
 {
-    std::regex reg("([a-zA-Z]+\\ [SMLX]+\\ x[1-9][0-9]*;?)");
-    std::smatch m;
 
-    while (std::regex_search(_lastLine, m, reg)) {
-       // for (auto x:m) {
-            /*
-            * DEBUG:
-            *
-            * x = the element (ex: "regina M x1")
-            */
-       // }
-        _lastLine = m.suffix().str();
-    }
     return Pizza::Pizza{};
 }

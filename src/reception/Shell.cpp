@@ -9,7 +9,7 @@
 #include <regex>
 #include "reception/Shell.hpp"
 #include "reception/Error.hpp"
-#include "Pizza.hpp"
+#include "Command.hpp"
 
 using namespace ReceptionArea;
 
@@ -43,7 +43,7 @@ Shell::InputType Shell::Shell::readLine() noexcept
     return OTHER;
 }
 
-Pizza::Pizza Shell::Shell::parsePizza()
+Pizza::Command Shell::Shell::parsePizza()
 {
     std::regex reg("([a-zA-Z]+\\ [SMLX]+\\ x[1-9][0-9]*;?)");
     std::smatch m;
@@ -58,5 +58,5 @@ Pizza::Pizza Shell::Shell::parsePizza()
        // }
         _lastLine = m.suffix().str();
     }
-    return Pizza::Pizza{};
+    return Pizza::Command{};
 }

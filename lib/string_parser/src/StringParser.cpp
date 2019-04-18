@@ -70,7 +70,10 @@ void StringParser::removeSpaceAndTabs() noexcept
 
     _str = trim(_str);
     for (unsigned int i = 0; i < _str.size(); i++) {
-        if ((_str[i] == ' ' || _str[i] == '\t') && (_str[i + 1] == ' ' || _str[i + 1] == '\t')) {
+        if (_str[i] == '\t') {
+            _str[i] = ' ';
+        }
+        if (_str[i] == ' ' && (_str[i + 1] == ' ' || _str[i + 1] == '\t')) {
             i++;
             while (_str[i] == ' ' || _str[i] == '\t') {
                 for (j = i; j + 1 < _str.size(); j++) {

@@ -69,7 +69,7 @@ debug.ldflags		=
 
 BUILD_DIR			=	build/
 
-HEADERS				=	-I ./include
+HEADERS				=	-I ./include -I ./lib/string_parser/include
 
 CXXFLAGS			=	-Wall -Wextra -std=c++14 $(HEADERS)
 

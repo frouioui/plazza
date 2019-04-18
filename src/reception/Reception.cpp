@@ -7,6 +7,7 @@
 
 #include "reception/Reception.hpp"
 #include "reception/Error.hpp"
+#include "StringParser.hpp"
 
 using namespace ReceptionArea;
 

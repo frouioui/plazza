@@ -10,6 +10,7 @@
 #include "reception/Shell.hpp"
 #include "reception/Error.hpp"
 #include "Pizza.hpp"
+#include "StringParser.hpp"
 
 using namespace ReceptionArea;
 
@@ -45,6 +46,36 @@ Shell::InputType Shell::Shell::readLine() noexcept
 
 Pizza::Pizza Shell::Shell::parsePizza()
 {
+    StringParse::StringParser strp(_lastLine);
+    std::vector<std::string> pizzaStrs;
 
+    strp.removeSpaceAndTabs();
+    pizzaStrs = strp.splitStr(';');
+    // Go through all the entered pizzas
+    for (unsigned int i = 0; i < pizzaStrs.size(); i++) {
+        StringParse::StringParser pizzaParser(pizzaStrs[i]);
+        std::vector<std::string> pizzaInfo;
+        std::string pizzaName;
+        std::string pizzaSize;
+        int pizzaMultiplier;
+
+        pizzaParser.removeSpaceAndTabs();
+        pizzaInfo = pizzaParser.splitStr(' ');
+        if (pizzaInfo.size() != 3) {
+            // TODO: Error
+        } else {
+            pizzaName = pizzaInfo[0];
+            pizzaSize = pizzaInfo[1];
+            pizzaMultiplier = std::atoi(pizzaInfo[2].c_str());
+            (void)pizzaName;
+            (void)pizzaSize;
+            (void)pizzaMultiplier;
+            /*
+            * TODO:
+            * do a trivial error handling on each component
+            * put them in the pizza class
+            */
+        }
+    }
     return Pizza::Pizza{};
 }

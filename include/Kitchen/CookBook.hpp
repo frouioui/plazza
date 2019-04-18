@@ -11,6 +11,7 @@
 #include <vector>
 #include "Ingrediant.hpp"
 #include "Command.hpp"
+#include "Singletons.hpp"
 
 namespace Kitchen {
 

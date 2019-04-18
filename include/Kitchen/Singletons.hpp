@@ -10,22 +10,21 @@
 
 template<typename T>
 class Singleton {
-public:
-    static T& get();
+    public:
+        static T &get();
 
-    Singleton(const Singleton&) = delete;
-    Singleton& operator= (const Singleton) = delete;
+        Singleton(const Singleton&) = delete;
+        Singleton &operator=(const Singleton) = delete;
 
-protected:
-    struct token {};
-    Singleton() {}
+    private:
+        Singleton() {}
 };
 
 #include <memory>
 template<typename T>
 T& Singleton<T>::get()
 {
-    static const std::unique_ptr<T> instance{new T{token{}}};
+    static const std::unique_ptr<T> instance{new T};
     return *instance;
 }
 #endif /* !SINGLETONS_HPP_ */

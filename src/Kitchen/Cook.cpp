@@ -26,17 +26,17 @@ _finished(finished)
 Pizza::Command Kitchen::Cook::cookPizza(void)
 {
     _toDo.lock();
-    for (auto command = _toDo->begin();
-        command != _toDo->end(); command++) {
-        // auto recipe = Singletons<Kitchen::CookBook>::get()->getRecipe(**command);
-        // if (Singletons<Kitchen::Stock>::get()->checkStockForRecipe(recipe)) {
-        //     _current = *command;
-        //     _toDo->erase(command);
-        //     break;
-        // // }
+    auto command = _toDo->begin();
+    for (; command != _toDo->end(); command++) {
+        auto recipe = Singleton<Kitchen::CookBook>::get().getRecipe(**command);
+        if (Singleton<Kitchen::Stock>::get().checkStockForRecipe(recipe)) {
+            _current = *command;
+            _toDo->erase(command);
+            break;
+        }
     }
     _toDo.unlock();
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+    std::this_thread::sleep_for(std::chrono::seconds(Singleton<Kitchen::CookBook>::get().getCookingTime(**command)));
     return Pizza::Command{};
 }
 

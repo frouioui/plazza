@@ -83,6 +83,8 @@ all: $(plazza.name)
 define LIB_RULES =
 $(1):
 	make -C $$(dir $$@)
+HEADERS += -I $$(dir $(1))include
+LDFLAGS += -L $$(dir $(1)) -l $$(subst lib,,$$(notdir $$(basename $(1))))
 
 $(1)_fclean:
 	make fclean -C $$(dir $$@)

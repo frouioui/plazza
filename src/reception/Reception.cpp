@@ -56,7 +56,7 @@ void Reception::launch() throw()
     while (_shell.isDone() == false) {
         inputType = _shell.readLine();
         if (inputType == ReceptionArea::Shell::OTHER) {
-            Pizza::Pizza parsePizza = _shell.parsePizza();
+            Pizza::Command parsePizza = _shell.parsePizza();
             (void)parsePizza;
         } else if (inputType == ReceptionArea::Shell::HELPER) {
             // TODO: Display helper in the shell

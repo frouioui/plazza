@@ -11,6 +11,7 @@
 #include "reception/Error.hpp"
 #include "Pizza.hpp"
 #include "StringParser.hpp"
+#include "Command.hpp"
 
 using namespace ReceptionArea;
 
@@ -44,7 +45,7 @@ Shell::InputType Shell::Shell::readLine() noexcept
     return OTHER;
 }
 
-Pizza::Pizza Shell::Shell::parsePizza()
+Pizza::Command Shell::Shell::parsePizza()
 {
     StringParse::StringParser strp(_lastLine);
     std::vector<std::string> pizzaStrs;
@@ -77,5 +78,5 @@ Pizza::Pizza Shell::Shell::parsePizza()
             */
         }
     }
-    return Pizza::Pizza{};
+    return Pizza::Command{};
 }

@@ -9,7 +9,6 @@
 #include <regex>
 #include "reception/Shell.hpp"
 #include "reception/Error.hpp"
-#include "Pizza.hpp"
 #include "StringParser.hpp"
 #include "Command.hpp"
 
@@ -45,38 +44,43 @@ Shell::InputType Shell::Shell::readLine() noexcept
     return OTHER;
 }
 
-Pizza::Command Shell::Shell::parsePizza()
+std::vector<Pizza::Command> Shell::Shell::parsePizza() throw()
 {
+    std::vector<Pizza::Command> pizzas;
     StringParse::StringParser strp(_lastLine);
     std::vector<std::string> pizzaStrs;
 
     strp.removeSpaceAndTabs();
     pizzaStrs = strp.splitStr(';');
-    // Go through all the entered pizzas
-    for (unsigned int i = 0; i < pizzaStrs.size(); i++) {
+    for (unsigned int i = 0; i < pizzaStrs.size() && pizzaStrs[i][0] != 0; i++) {
         StringParse::StringParser pizzaParser(pizzaStrs[i]);
         std::vector<std::string> pizzaInfo;
-        std::string pizzaName;
-        std::string pizzaSize;
-        int pizzaMultiplier;
-
+        Pizza::Size sizePizza;
         pizzaParser.removeSpaceAndTabs();
         pizzaInfo = pizzaParser.splitStr(' ');
         if (pizzaInfo.size() != 3) {
-            // TODO: Error
+            throw Error::InvalidCommand("Each command must have: [NAME] [SIZE] [MULTIPLIER].", "parsePizza");
         } else {
-            pizzaName = pizzaInfo[0];
-            pizzaSize = pizzaInfo[1];
-            pizzaMultiplier = std::atoi(pizzaInfo[2].c_str());
-            (void)pizzaName;
-            (void)pizzaSize;
-            (void)pizzaMultiplier;
-            /*
-            * TODO:
-            * do a trivial error handling on each component
-            * put them in the pizza class
-            */
+            if ((pizzaInfo[0].compare("regina") == 0 || pizzaInfo[0].compare("fantasia") == 0
+            || pizzaInfo[0].compare("margarita") == 0 || pizzaInfo[0].compare("americana") == 0) &&
+            (pizzaInfo[1].compare("S") == 0 || pizzaInfo[1].compare("M") == 0 || pizzaInfo[1].compare("L") == 0
+            || pizzaInfo[1].compare("XL") == 0 || pizzaInfo[1].compare("XXL") == 0) &&
+            (pizzaInfo[2].size() > 1 && pizzaInfo[2][0] == 'x' && pizzaInfo[2].substr(1).find_first_not_of("1234567890") == std::string::npos)) {
+                if (pizzaInfo[1].compare("S") == 0)
+                    sizePizza = Pizza::S;
+                else if (pizzaInfo[1].compare("M") == 0)
+                    sizePizza = Pizza::M;
+                else if (pizzaInfo[1].compare("L") == 0)
+                    sizePizza = Pizza::L;
+                else if (pizzaInfo[1].compare("XL") == 0)
+                    sizePizza = Pizza::XL;
+                else if (pizzaInfo[1].compare("XXL") == 0)
+                    sizePizza = Pizza::XXL;
+                pizzas.push_back(Pizza::Command{_name: pizzaInfo[0], _size: sizePizza, _multiplier: std::atoi(pizzaInfo[2].substr(1).c_str())});
+            } else {
+                throw Error::InvalidCommand("The formating of your command is invalid", "parsePizza");
+            }
         }
     }
-    return Pizza::Command{};
+    return pizzas;
 }

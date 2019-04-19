@@ -5,6 +5,8 @@
 ** Source file of the Reception class
 */
 
+#include <vector>
+#include <iostream>
 #include "reception/Reception.hpp"
 #include "reception/Error.hpp"
 #include "StringParser.hpp"
@@ -57,7 +59,12 @@ void Reception::launch() throw()
     while (_shell.isDone() == false) {
         inputType = _shell.readLine();
         if (inputType == ReceptionArea::Shell::OTHER) {
-            Pizza::Command parsePizza = _shell.parsePizza();
+            std::vector<Pizza::Command> parsePizza;
+            try {
+                parsePizza = _shell.parsePizza();
+            } catch (Error::InvalidCommand &e) {
+                std::cout << "Invalid command: " << e.what() << std::endl;
+            }
             (void)parsePizza;
         } else if (inputType == ReceptionArea::Shell::HELPER) {
             // TODO: Display helper in the shell

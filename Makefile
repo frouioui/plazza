@@ -27,6 +27,7 @@ plazza.ldflags		=
 
 LIBS				=	lib/logger/liblogger.a							\
 						lib/configuration_reader/libconfig_reader.a		\
+						lib/string_parser/libstring_parser.a			\
 
 # DOCS
 
@@ -68,7 +69,7 @@ debug.ldflags		=
 
 BUILD_DIR			=	build/
 
-HEADERS				=	-I ./include
+HEADERS				=	-I ./include -I ./lib/string_parser/include
 
 CXXFLAGS			=	-Wall -Wextra -std=c++14 $(HEADERS)
 
@@ -81,6 +82,8 @@ all: $(plazza.name)
 define LIB_RULES =
 $(1):
 	make -C $$(dir $$@)
+HEADERS += -I $$(dir $(1))include
+LDFLAGS += -L $$(dir $(1)) -l $$(subst lib,,$$(notdir $$(basename $(1))))
 
 $(1)_fclean:
 	make fclean -C $$(dir $$@)

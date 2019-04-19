@@ -49,6 +49,16 @@ Kitchen::CookBook::CookingTime &Kitchen::CookBook::getCookingTime(Pizza::Command
     return _cookingTime.at(pizza_name);
 }
 
+Kitchen::CookBook::Recipe &Kitchen::CookBook::getRecipe(Pizza::Command &command)
+{
+    std::string pizza_name = command._name;
+    for (auto c : pizza_name)
+        c = toupper(c);
+    if (_recipes.count(pizza_name) == 0)
+        throw Kitchen::Error("Unknow Pizza Name");
+    return _recipes.at(pizza_name);
+}
+
 Kitchen::CookBook::~CookBook()
 {
 }

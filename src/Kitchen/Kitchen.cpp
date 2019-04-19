@@ -8,7 +8,7 @@
 #include "Kitchen/Kitchen.hpp"
 
 Kitchen::Kitchen::Kitchen(const int nbCooks) :
-_maxPizza(2 * nbCooks)
+_maxPizza(2 * nbCooks), _saturated(false)
 {}
 
 Kitchen::Kitchen::~Kitchen()

@@ -53,29 +53,23 @@ namespace Kitchen {
             /**
              * \brief send ready order to the reception
              */
-            Pizza::Command sendReadyOrder(/*Must be determined*/);
+            const Pizza::Command &sendReadyOrder() noexcept;
             /**
              * \brief Add order to a list of pizza to cook
              *
              * \param pizza Pizza to cook
              */
-            void addOrder(Pizza::Command pizza) noexcept;
-
-            /**
-             * \brief Assign a pizza to a free cooks
-             *
-             * Take the first pizza of the pizza list and assign it to a free cooks
-             * When a ready order is send to the reception, this method is called.
-             */
-            void assignPizza();
+            void addOrder(const Pizza::Command &pizza) noexcept;
 
         private:
-            SafeThread<std::list<Pizza::Command *>> _toDo;
-            SafeThread<std::list<Pizza::Command *>> _finished;
+            SafeThread<std::list<std::reference_wrapper<Pizza::Command>>> _toDo;
+            SafeThread<std::list<std::reference_wrapper<Pizza::Command>>> _finished;
+            // SafeThread<std::list<Pizza::Command *>> _toDo;
+            // SafeThread<std::list<Pizza::Command *>> _finished;
 
             SafeThread<Stock> _stock;
 
-            int _maxPizza;
+            size_t _maxPizza;
             bool _saturated; /*!< True if kitchen is saturated, otherwise false */
 
             // Timer occupation /*!< Kitchen must close after 5 sec of inactivity*/

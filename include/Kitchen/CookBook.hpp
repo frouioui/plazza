@@ -9,6 +9,7 @@
     #define COOKBOOK_HPP_
 
 #include <vector>
+#include <map>
 #include "Ingrediant.hpp"
 #include "Command.hpp"
 #include "Singletons.hpp"
@@ -24,17 +25,20 @@ namespace Kitchen {
             CookBook() {};
             ~CookBook() {};
 
-        using Recipe = std::vector<Ingrediant>;
-        using CookingTime = int;
+            using Recipe = std::vector<Ingrediant>;
+            using CookingTime = int;
 
-        Recipe &getRecipe(Pizza::Command &command) {/* TODO */(void)command;return tmp;};
+            Recipe &getRecipe(Pizza::Command &command) {/* TODO */(void)command;return tmp;};
 
-        CookingTime &getCookingTime(Pizza::Command &command) {/* TODO */ (void)command;return tmp1;};
+            CookingTime &getCookingTime(Pizza::Command &command) {/* TODO */ (void)command;return tmp1;};
 
         protected:
         private:
-        Recipe tmp; /* TODO Remove */
-        CookingTime tmp1; /* TODO Remove */
+            static constexpr const char *_configPath = "./.plazza/Pizza.conf";
+            std::map<std::string, Recipe> _recipes;
+            std::map<std::string, CookingTime> _cookingTime;
+            Recipe tmp; /* TODO Remove */
+            CookingTime tmp1; /* TODO Remove */
     };
 
 };

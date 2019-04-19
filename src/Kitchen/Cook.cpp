@@ -29,14 +29,16 @@ Pizza::Command Kitchen::Cook::cookPizza(void)
     auto command = _toDo->begin();
     for (; command != _toDo->end(); command++) {
         auto recipe = Singleton<Kitchen::CookBook>::get().getRecipe(**command);
-        if (Singleton<Kitchen::Stock>::get().checkStockForRecipe(recipe)) {
+        if (Singleton<Kitchen::Stock>::get().getRecipe(recipe)) {
             _current = *command;
             _toDo->erase(command);
             break;
         }
     }
     _toDo.unlock();
-    std::this_thread::sleep_for(std::chrono::seconds(Singleton<Kitchen::CookBook>::get().getCookingTime(**command)));
+    if (command == _toDo->end()) {
+        std::this_thread::sleep_for(std::chrono::seconds(Singleton<Kitchen::CookBook>::get().getCookingTime(**command)));
+    }
     return Pizza::Command{};
 }
 

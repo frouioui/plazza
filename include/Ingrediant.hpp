@@ -15,11 +15,9 @@
  * \brief Ingrediant needed for Pizza
  */
 struct Ingrediant {
-    using CookingTime = int;
     using Name = std::string;
 
     const Name name;
-    const CookingTime cookingTime;
 };
 
 

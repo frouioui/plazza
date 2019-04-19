@@ -4,12 +4,14 @@
 ** File description:
 ** Kitchen methods
 */
-#include <cstdlib>
+
 #include "Kitchen/Kitchen.hpp"
 
 Kitchen::Kitchen::Kitchen(const int nbCooks) :
 _maxPizza(2 * nbCooks)
-{}
+{
+    Singleton<Stock>::get().setMultiplier(nbCooks);
+}
 
 Kitchen::Kitchen::~Kitchen()
 {

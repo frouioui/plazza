@@ -39,7 +39,7 @@ tests_compile:
 	$(CXX) $(SRC) $(TEST_SRC) -o $(TEST_NAME) $(CRITERION) -I$(INCLUDE_DIRECTORY)
 
 tests_run:
-	./$(TEST_NAME) -j1 --full-stats
+	./$(TEST_NAME) -j1 --full-stats --xml=../../report/configuration_reader.xml
 
 clean:
 	rm -f $(OBJS) $(TEST_OBJS)

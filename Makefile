@@ -39,7 +39,8 @@ DOXYFILE			=	Plazza
 
 unit_tests.name		=	unit_tests_$(plazza.name)
 
-unit_tests.srcs		=	$(plazza.srcs)	\
+unit_tests.srcs		=	$(plazza.srcs)						\
+						tests/reception/SetValuesTest.cpp	\
 
 unit_tests.main 	=	tests/criterion_main.cpp
 
@@ -110,7 +111,7 @@ $(unit_tests.name): $(LIBS) $(unit_tests.objs)
 tests_compile: $(LIB_TEST_COMPILE) $(unit_tests.name)
 
 tests_run: tests_compile $(LIB_TESTS_RUN)
-	./$(unit_tests.name) -j1 --verbose --full-stats
+	./$(unit_tests.name) -j1
 
 clean:
 	rm -rf $(BUILD_DIR)

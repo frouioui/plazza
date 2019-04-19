@@ -29,7 +29,7 @@ Test(string_parser_removeSpaceAndTabs, complex_string_extra_space)
     StringParse::StringParser strp("salut  t\t  les   \t\t \t  copains ");
 
     strp.removeSpaceAndTabs();
-    cr_assert_str_eq(strp.getStr().c_str(), "salut t\tles copains");
+    cr_assert_str_eq(strp.getStr().c_str(), "salut t les copains");
 }
 
 Test(string_parser_splitStr, simple_str)

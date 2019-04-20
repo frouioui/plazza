@@ -19,7 +19,7 @@ namespace Kitchen {
  * \class Cook
  * \brief is the One Who Cook the Pizza
  */
-    class Cook  {
+    class Cook {
         public:
             /**
              * \brief Constructor of a Cook Who Need what he can do

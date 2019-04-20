@@ -45,7 +45,9 @@ unit_tests.srcs		=	$(plazza.srcs)	\
 
 unit_tests.main 	=	tests/criterion_main.cpp			\
 						tests/test_Kitchen_CookBook.cpp		\
-						tests/test_CookBook_Singletons.cpp	\
+						tests/test_Singletons.cpp	\
+						tests/test_Stock_Kitchen.cpp		\
+						tests/test_SafeThread.cpp			\
 
 unit_tests.objs		=	$(addprefix $(dir $(BUILD_DIR)$(unit_tests.name)/), $(unit_tests.srcs:.cpp=.o))	\
 						$(addprefix $(dir $(BUILD_DIR)$(unit_tests.name)/), $(unit_tests.main:.cpp=.o))

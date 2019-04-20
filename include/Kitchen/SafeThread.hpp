@@ -41,6 +41,8 @@
 
             T *operator->(void)
             {
+                if (!_ImLock)
+                    throw Error("Can't use me i'm not lock");
                 return &_Safe;
             }
 

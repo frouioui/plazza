@@ -24,12 +24,13 @@ static std::vector<std::string> split(std::string s, char c)
    return tokens;
 }
 
-Kitchen::Stock::Stock()
+Kitchen::Stock::Stock() :
+_multiplier(1)
 {
     std::string allIngrediantVarName = "INGREDIANTS";
     ConfigurationReader::config_t config = ConfigurationReader::ConfigReader(_configPath).getConfig();
-    if (config.count(allIngrediantVarName) != 0)
-        throw Error("Cant't find INGREDIANT variable in config ingrediants file: " + std::string(_configPath));
+    if (config.count(allIngrediantVarName) == 0)
+        throw Error("Cant't find " + allIngrediantVarName + " variable in config ingrediants file: " + std::string(_configPath));
     auto allIngrediant = split(config.at(allIngrediantVarName), ',');
     if (!allIngrediant.size())
         throw Error("No Ingrediant check you config file: " + std::string(_configPath));
@@ -57,7 +58,7 @@ int Kitchen::Stock::timeToRefill(void)
 {
     _safe_time.lock();
     auto now = std::chrono::system_clock::now();
-    auto elapsedTime = _time - now;
+    auto elapsedTime = now - _time;
     int res = 0;
     if (elapsedTime > std::chrono::seconds(1) * _multiplier) {
         _time = now;
@@ -72,7 +73,7 @@ void Kitchen::Stock::tryRefillStock(void)
     int toadd = timeToRefill();
     if (toadd) {
         _safe_stock.lock();
-        for (auto ingrediant : _stock) {
+        for (auto &ingrediant : _stock) {
             ingrediant.second += toadd;
         }
         _safe_stock.unlock();
@@ -89,7 +90,7 @@ bool Kitchen::Stock::getRecipe(CookBook::Recipe &pizza)
             return false;
         }
     }
-    for (auto ingrediant : pizza)
+    for (auto &ingrediant : pizza)
         _stock[ingrediant.name] -= 1;
     _safe_stock.unlock();
     return true;

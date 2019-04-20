@@ -11,7 +11,7 @@
 #include "Kitchen/Error.hpp"
 #include <iostream>
 
-TestSuite(CookBook,
+TestSuite(Kitchen_CookBook,
 .init = NULL,
 .fini = NULL,
 .signal = 0,
@@ -20,12 +20,12 @@ TestSuite(CookBook,
 .description = "Test the Group: Kitchen",
 .timeout = 0);
 
-Test(CookBook, construct)
+Test(Kitchen_CookBook, construct)
 {
     Kitchen::CookBook();
 }
 
-Test(CookBook, ValueOfSubject_Margarita)
+Test(Kitchen_CookBook, ValueOfSubject_Margarita)
 {
     Kitchen::CookBook tmp;
     Pizza::Command command = {"Margarita", Pizza::Size::XXL};
@@ -38,7 +38,7 @@ Test(CookBook, ValueOfSubject_Margarita)
     }
 }
 
-Test(CookBook, ValueOfSubject_Regina)
+Test(Kitchen_CookBook, ValueOfSubject_Regina)
 {
     Kitchen::CookBook tmp;
     Pizza::Command command = {"Regina", Pizza::Size::XXL};
@@ -51,7 +51,7 @@ Test(CookBook, ValueOfSubject_Regina)
     }
 }
 
-Test(CookBook, ValueOfSubject_Americana)
+Test(Kitchen_CookBook, ValueOfSubject_Americana)
 {
     Kitchen::CookBook tmp;
     Pizza::Command command = {"Americana", Pizza::Size::XXL};
@@ -64,7 +64,7 @@ Test(CookBook, ValueOfSubject_Americana)
     }
 }
 
-Test(CookBook, ValueOfSubject_Fantasia)
+Test(Kitchen_CookBook, ValueOfSubject_Fantasia)
 {
     Kitchen::CookBook tmp;
     Pizza::Command command = {"Fantasia", Pizza::Size::XXL};
@@ -77,7 +77,7 @@ Test(CookBook, ValueOfSubject_Fantasia)
     }
 }
 
-Test(CookBook, Value_Invalid)
+Test(Kitchen_CookBook, Value_Invalid)
 {
     Kitchen::CookBook tmp;
     Pizza::Command command = {"Invalid", Pizza::Size::XXL};

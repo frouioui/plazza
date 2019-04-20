@@ -53,7 +53,7 @@
             private:
                 void tryRefillStock(void);
                 std::map<Ingrediant::Name, int> _stock;
-                static constexpr const char *_configPath = "./plazza/Ingrediant.conf";
+                static constexpr const char *_configPath = "./.plazza/Ingrediant.conf";
                 static constexpr const int _defaultQuantity = 5;
                 std::chrono::time_point<std::chrono::system_clock> _time;
                 std::mutex _safe_time;

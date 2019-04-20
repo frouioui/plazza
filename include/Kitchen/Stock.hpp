@@ -44,6 +44,10 @@
                  */
                 bool getRecipe(CookBook::Recipe &pizza);
 
+                /**
+                 * \brief display the Current Quantity of Ingrediant
+                 */
+                void displayStock(void);
 
             protected:
             private:

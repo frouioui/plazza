@@ -20,14 +20,10 @@ Kitchen::Kitchen::~Kitchen()
     std::exit(0);
 }
 
-// void Kitchen::Kitchen::displayStatus() const noexcept
-// {
-//     std::array<size_t, Ingredient::MAX_NB_INGREDIENT> ingredients;
-
-//     std::cout << "Stock of ingredients" << std::endl;
-//     for (const auto &it : ingredients)
-//         std::cout << "\t" << it << std::endl;
-// }
+void Kitchen::Kitchen::displayStatus() const noexcept
+{
+    Singleton<Stock>::get().displayStock();
+}
 
 void Kitchen::Kitchen::addOrder(Pizza::Command &pizza) noexcept
 {

@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <sstream>
+#include <iostream>
 #include "ConfigReader.hpp"
 #include "Kitchen/Stock.hpp"
 #include "Kitchen/Error.hpp"
@@ -40,6 +41,16 @@ Kitchen::Stock::Stock()
 void Kitchen::Stock::setMultiplier(const int multiplier)
 {
     _multiplier = multiplier;
+}
+
+void Kitchen::Stock::displayStock(void)
+{
+    std::string infoStock =  "Stock of ingredients\n";
+    _safe_stock.lock();
+    for (auto ingrediant : _stock)
+        infoStock += "\t" + ingrediant.first + ": " + std::to_string(ingrediant.second) + '\n';
+    _safe_stock.unlock();
+    std::cout << infoStock;
 }
 
 int Kitchen::Stock::timeToRefill(void)

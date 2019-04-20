@@ -42,6 +42,11 @@ Pizza::Command Kitchen::Cook::cookPizza(void)
     return Pizza::Command{};
 }
 
+bool Kitchen::Cook::isBusy(void)
+{
+    return _current;
+}
+
 void Kitchen::Cook::Stop(void)
 {
     _stop = true;

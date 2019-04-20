@@ -7,6 +7,7 @@
 
 #include <sys/msg.h>
 #include "MessageQueue.hpp"
+#include "MessageQueueError.hpp"
 
 using namespace MsgQueue;
 
@@ -41,7 +42,7 @@ key_t MessageQueue::generateKey(const std::string &path, const int id) const thr
     key_t key = ftok(path.c_str(), id);
 
     if (key == -1) {
-        // TODO: Throw exception
+        throw Error::DiversError{"Error with ftok", "generateKey"};
     }
     return key;
 }
@@ -57,7 +58,7 @@ int MessageQueue::createQueue(const key_t &key) const throw()
     int id = msgget(key, 0666 | IPC_CREAT);
 
     if (id == -1) {
-        // TODO: Throw exception
+        throw Error::DiversError{"Error with msgget", "createQueue"};
     }
     return id;
 }
@@ -73,7 +74,7 @@ int MessageQueue::sendMessage(const Message &msg, const int id) const throw()
     int i = msgsnd(id, &msg, sizeof(msg), 0);
 
     if (i == -1) {
-        // TODO: Throw exception
+        throw Error::DiversError{"Error with msgsnd", "sendMessage"};
     }
     return 0;
 }
@@ -89,7 +90,7 @@ ssize_t MessageQueue::receiveMessage(Message &msg, const int id) const throw()
     ssize_t bytes = msgrcv(id, &msg, sizeof(msg), 1, 0);
 
     if (bytes == -1 || bytes != sizeof(msg)) {
-        // TODO: Throw exception
+        throw Error::DiversError{"Error with msgrcv", "receiveMessage"};
     }
     return bytes;
 }

@@ -23,9 +23,10 @@ INCLUDE_DIRECTORY	=	./include
 
 # Source files
 SRC				=	$(SRC_DIRECTORY)/MessageQueue.cpp					\
+					$(SRC_DIRECTORY)/MessageQueueError.cpp				\
 
 # Test files
-TEST_SRC		=	$(TEST_DIRECTORY)/MessageQueueTest.cpp				\
+TEST_SRC		=	$(TEST_DIRECTORY)/MessageQueueTests.cpp				\
 
 # Rules
 all: $(LIBRARY_NAME)

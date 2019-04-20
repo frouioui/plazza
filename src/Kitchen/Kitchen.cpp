@@ -8,31 +8,51 @@
 #include <cstdlib>
 #include <iostream>
 #include <array>
+#include <unistd.h>
 #include "Kitchen/Kitchen.hpp"
 #include "Kitchen/Stock.hpp"
 
-Kitchen::Kitchen::Kitchen(const int nbCooks) :
-_maxPizza(2 * nbCooks), _saturated(false)
-{}
+Kitchen::Kitchen::Kitchen(size_t nbCooks) :
+_nbCooks(nbCooks), _maxPizza(2 * nbCooks), _saturated(false)
+{
+    startCooking();
+}
 
 Kitchen::Kitchen::~Kitchen()
 {
+    for (auto &thread : _cooks)
+        thread.join();
     std::exit(0);
 }
 
-// void Kitchen::Kitchen::displayStatus() const noexcept
-// {
-//     std::array<size_t, Ingredient::MAX_NB_INGREDIENT> ingredients;
+void Kitchen::Kitchen::startCooking() noexcept
+{
+    for (size_t i = 0; i < _nbCooks; i += 1)
+        _cooks.emplace_back(_toDo, _finished);
+}
 
-//     std::cout << "Stock of ingredients" << std::endl;
-//     for (const auto &it : ingredients)
-//         std::cout << "\t" << it << std::endl;
-// }
+void Kitchen::Kitchen::displayStatus() const noexcept
+{
+    // std::array<size_t, Ingredient::MAX_NB_INGREDIENT> ingredients = _stock->getStock(); //TODO:
+    // size_t i = 0;
+
+    std::cout << std::endl << "********** KITCHEN N° " << getpid() << "**********" << std::endl;
+
+    std::cout << "---------- Cooks status ----------" << std::endl;
+    // for (const auto &it : _cooks) {
+    //     std::cout << "\tCook n° " << i << " -> " << _cooks.isBuszy() << std::endl; //TODO:
+    //     i += 1;
+    // }
+
+    std::cout << "------ Stock of ingredients ------" << std::endl;
+    // for (const auto &it : ingredients)
+    //     std::cout << "\t" << it << std::endl;
+}
 
 void Kitchen::Kitchen::addOrder(Pizza::Command &pizza) noexcept
 {
     _toDo.lock();
-    _toDo->push_back(pizza);
+    _toDo->push_back(&pizza);
     _toDo.unlock();
 }
 
@@ -53,7 +73,14 @@ void Kitchen::Kitchen::sendReadyOrder() noexcept
 {
 }
 
-// std::ostream &operator<<(std::ostream &out, const Kitchen::Ingredient &ingredient)
+// std::ostream &operator<<(std::ostream &out, bool isBusy) //TODO:
+// {
+//     if (isBusy)
+//         return out << "COOKING";
+//     return out << "WAITING";
+// }
+
+// std::ostream &operator<<(std::ostream &out, const Kitchen::Ingredient &ingredient) //TODO:
 // {
 //     std::string name;
 

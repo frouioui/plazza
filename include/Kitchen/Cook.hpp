@@ -19,7 +19,7 @@ namespace Kitchen {
  * \class Cook
  * \brief is the One Who Cook the Pizza
  */
-    class Cook  : std::thread {
+    class Cook  : public std::thread {
         public:
             /**
              * \brief Constructor of a Cook Who Need what he can do

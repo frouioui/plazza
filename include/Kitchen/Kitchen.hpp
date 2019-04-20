@@ -11,6 +11,7 @@
 #include <list>
 #include "Command.hpp"
 #include "Stock.hpp"
+#include "Cook.hpp"
 #include "SafeThread.hpp"
 
 /**
@@ -31,9 +32,10 @@ namespace Kitchen {
              * \param[in] nbCooks --> Program Param
              * \param[in] link between the reception and the Kitchen
              */
-            Kitchen(const int nbCooks/*, TODO IPC IDENTIFIER*/);
+            Kitchen(size_t nbCooks/*, TODO IPC IDENTIFIER*/);
 
             ~Kitchen();
+
             /**
              * \brief Display the kitchen status
              *
@@ -41,8 +43,8 @@ namespace Kitchen {
              * theirs stocks of ingredient.
              * This methods is called using the 'status' user command.
              */
-
             void displayStatus() const noexcept;
+
             /**
              * \brief Indicate if the current kitchen is saturated
              *
@@ -54,6 +56,7 @@ namespace Kitchen {
              * \brief send ready order to the reception
              */
             void sendReadyOrder() noexcept;
+
             /**
              * \brief Add order to a list of pizza to cook
              *
@@ -62,18 +65,27 @@ namespace Kitchen {
             void addOrder(Pizza::Command &pizza) noexcept;
 
         private:
-            SafeThread<std::list<std::reference_wrapper<Pizza::Command>>> _toDo;
-            SafeThread<std::list<std::reference_wrapper<Pizza::Command>>> _finished;
-            // SafeThread<std::list<Pizza::Command *>> _toDo;
-            // SafeThread<std::list<Pizza::Command *>> _finished;
+            SafeThread<std::list<Pizza::Command *>> _toDo;
+            SafeThread<std::list<Pizza::Command *>> _finished;
 
             SafeThread<Stock> _stock;
 
-            size_t _maxPizza;
+            size_t _nbCooks; /*!< Number of cooks in the kitchen */
+            std::list<Cook> _cooks; /*!< Cook threads */
+
+            size_t _maxPizza; /*!< Maximum number of pizza that can b cooked at the same moment */
+
             bool _saturated; /*!< True if kitchen is saturated, otherwise false */
 
             // Timer occupation /*!< Kitchen must close after 5 sec of inactivity*/
 
+            /**
+             * \brief Launch Cook thread
+             *
+             * Create Cook threads, which launch directy
+             */
+
+            void startCooking() noexcept;
             /**
              * \brief Calculate saturation indicator
              */

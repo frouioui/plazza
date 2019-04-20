@@ -26,7 +26,7 @@
             EGGPLANT,
             GOATCHEESE,
             CHIEFLOVE,
-            MAX_NB_INGREDIANT
+            MAX_NB_INGREDIENT
         };
 
         /**
@@ -51,7 +51,7 @@
 
             protected:
             private:
-                std::array<std::size_t, Ingredient::MAX_NB_INGREDIANT> _ingrediantRemaining;
+                std::array<std::size_t, Ingredient::MAX_NB_INGREDIENT> _ingredientRemaining;
         };
 
     };

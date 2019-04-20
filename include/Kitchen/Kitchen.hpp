@@ -53,13 +53,13 @@ namespace Kitchen {
             /**
              * \brief send ready order to the reception
              */
-            const Pizza::Command &sendReadyOrder() noexcept;
+            void sendReadyOrder() noexcept;
             /**
              * \brief Add order to a list of pizza to cook
              *
              * \param pizza Pizza to cook
              */
-            void addOrder(const Pizza::Command &pizza) noexcept;
+            void addOrder(Pizza::Command &pizza) noexcept;
 
         private:
             SafeThread<std::list<std::reference_wrapper<Pizza::Command>>> _toDo;
@@ -77,7 +77,7 @@ namespace Kitchen {
             /**
              * \brief Calculate saturation indicator
              */
-            void calculStaturation() noexcept;
+            void calculSaturation() noexcept;
     };
 
 };

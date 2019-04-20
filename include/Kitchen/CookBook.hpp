@@ -9,7 +9,7 @@
     #define COOKBOOK_HPP_
 
 #include <vector>
-#include "Ingrediant.hpp"
+#include "Ingredient.hpp"
 #include "Command.hpp"
 #include "Singletons.hpp"
 
@@ -24,7 +24,7 @@ namespace Kitchen {
             CookBook() {};
             ~CookBook() {};
 
-        using Recipe = std::vector<Ingrediant>;
+        using Recipe = std::vector<Ingredient>;
         using CookingTime = int;
 
         Recipe &getRecipe(Pizza::Command &command) {/* TODO */(void)command;return tmp;};

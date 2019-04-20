@@ -2,19 +2,19 @@
 ** EPITECH PROJECT, 2019
 ** plazza
 ** File description:
-** Ingrediant
+** Ingredient
 */
 
-#ifndef INGREDIANT_HPP_
-    #define INGREDIANT_HPP_
+#ifndef INGREDIENT_HPP_
+    #define INGREDIENT_HPP_
 
 #include <string>
 
 /**
- * \class Ingrediant
- * \brief Ingrediant needed for Pizza
+ * \class Ingredient
+ * \brief Ingredient needed for Pizza
  */
-struct Ingrediant {
+struct Ingredient {
     using CookingTime = int;
     using Name = std::string;
 
@@ -23,4 +23,4 @@ struct Ingrediant {
 };
 
 
-#endif /* !INGREDIANT_HPP_ */
+#endif /* !INGREDIENT_HPP_ */

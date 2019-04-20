@@ -18,6 +18,11 @@ _current(nullptr),
 _toDo(toDo),
 _finished(finished)
 {
+    _thread = std::thread([this]() { this->Start();});
+}
+
+void Kitchen::Cook::Start(void)
+{
     while (!_stop) {
         cookPizza();
     }
@@ -31,14 +36,14 @@ Pizza::Command Kitchen::Cook::cookPizza(void)
         auto recipe = Singleton<Kitchen::CookBook>::get().getRecipe(**command);
         if (Singleton<Kitchen::Stock>::get().getRecipe(recipe)) {
             _current = *command;
-            _toDo->erase(command);
+            _toDo->remove(*command);
             break;
         }
     }
-    _toDo.unlock();
-    if (command == _toDo->end()) {
+    if (command != _toDo->end()) {
         std::this_thread::sleep_for(std::chrono::seconds(Singleton<Kitchen::CookBook>::get().getCookingTime(**command)));
     }
+    _toDo.unlock();
     return Pizza::Command{};
 }
 
@@ -59,4 +64,5 @@ void Kitchen::Cook::Stop(void)
 
 Kitchen::Cook::~Cook()
 {
+    _thread.join();
 }

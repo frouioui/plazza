@@ -19,7 +19,7 @@ namespace Kitchen {
  * \class Cook
  * \brief is the One Who Cook the Pizza
  */
-    class Cook  : std::thread {
+    class Cook  {
         public:
             /**
              * \brief Constructor of a Cook Who Need what he can do
@@ -40,6 +40,7 @@ namespace Kitchen {
              */
             ~Cook();
 
+            void Start(void);
 
             void Stop(void);
 
@@ -50,6 +51,7 @@ namespace Kitchen {
             Pizza::Command *_current;
             SafeThread<std::list<Pizza::Command *>> &_toDo;
             SafeThread<std::list<Pizza::Command *>> &_finished;
+            std::thread _thread;
     };
 
 };

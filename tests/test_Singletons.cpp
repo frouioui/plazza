@@ -17,7 +17,7 @@ TestSuite(Singleton,
 .signal = 0,
 .exit_code = 0,
 .disabled = 0,
-.description = "Test the Group: Kitchen",
+.description = "Test the Group: Singleton",
 .timeout = 0);
 
 Test(Singleton, int)

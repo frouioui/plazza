@@ -17,7 +17,7 @@ TestSuite(Kitchen_CookBook,
 .signal = 0,
 .exit_code = 0,
 .disabled = 0,
-.description = "Test the Group: Kitchen",
+.description = "Test the Group: Kitchen_CookBook",
 .timeout = 0);
 
 Test(Kitchen_CookBook, construct)

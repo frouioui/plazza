@@ -17,7 +17,7 @@ TestSuite(Kitchen_Stock,
 .signal = 0,
 .exit_code = 0,
 .disabled = 0,
-.description = "Test the Group: Stock",
+.description = "Test the Group: Kitchen_Stock",
 .timeout = 0);
 
 Test(Kitchen_Stock, Create)

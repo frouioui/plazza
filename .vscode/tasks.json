@@ -16,7 +16,7 @@
     {
       "label": "make debug",
       "type": "shell",
-      "command": "make fclean && make debug",
+      "command": "make debug",
       "group": {
         "kind": "build",
         "isDefault": true

@@ -14,6 +14,8 @@ plazza.srcs			=	src/Kitchen/Kitchen.cpp			\
 						src/reception/Reception.cpp		\
 						src/reception/Shell.cpp			\
 						src/Kitchen/Cook.cpp			\
+						src/Kitchen/Stock.cpp			\
+						src/Kitchen/CookBook.cpp		\
 
 plazza.main 		=	src/main.cpp
 
@@ -41,12 +43,16 @@ unit_tests.name		=	unit_tests_$(plazza.name)
 
 unit_tests.srcs		=	$(plazza.srcs)	\
 
-unit_tests.main 	=	tests/criterion_main.cpp
+unit_tests.main 	=	tests/criterion_main.cpp			\
+						tests/test_Kitchen_CookBook.cpp		\
+						tests/test_Singletons.cpp	\
+						tests/test_Stock_Kitchen.cpp		\
+						tests/test_SafeThread.cpp			\
 
 unit_tests.objs		=	$(addprefix $(dir $(BUILD_DIR)$(unit_tests.name)/), $(unit_tests.srcs:.cpp=.o))	\
 						$(addprefix $(dir $(BUILD_DIR)$(unit_tests.name)/), $(unit_tests.main:.cpp=.o))
 
-unit_tests.cxxflags	=	-fprofile-arcs -ftest-coverage
+unit_tests.cxxflags	=	-fprofile-arcs -ftest-coverage -g3
 
 unit_tests.ldflags	=	-lcriterion -lgcov
 

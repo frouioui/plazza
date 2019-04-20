@@ -26,19 +26,26 @@ namespace Kitchen {
              */
             explicit Cook(
                 SafeThread<std::list<Pizza::Command *>> &toDo,
-                SafeThread<std::list<Pizza::Command *>> &finished);
+                SafeThread<std::list<Pizza::Command *>> &finished
+            );
+
+            /**
+             * \brief Check if the Cook is Busy
+             * \return true if the Cook is Busy
+             */
+            bool isBusy();
 
             /**
              * \brief DeConstructor
              */
             ~Cook();
 
-            Pizza::Command cookPizza(void);
 
             void Stop(void);
 
         protected:
         private:
+            Pizza::Command cookPizza(void);
             bool _stop;
             Pizza::Command *_current;
             SafeThread<std::list<Pizza::Command *>> &_toDo;

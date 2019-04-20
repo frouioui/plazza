@@ -8,26 +8,12 @@
 #ifndef STOCK_HPP_
     #define STOCK_HPP_
 
-    #include <array>
+    #include <map>
     #include <mutex>
     #include "Command.hpp"
     #include "CookBook.hpp"
-    #include "Singletons.hpp"
 
     namespace Kitchen {
-
-        enum Ingredient {
-            DOE,
-            TOMATO,
-            GRUYERE,
-            HAM,
-            MUSHROOMS,
-            STEAK,
-            EGGPLANT,
-            GOATCHEESE,
-            CHIEFLOVE,
-            MAX_NB_INGREDIENT
-        };
 
         /**
          * \class Stock
@@ -38,20 +24,42 @@
                 /**
                  * \brief Constructor
                  */
-                Stock() {};
+                Stock();
 
                 /**
                  * \brief Deconstructor
                  */
-                ~Stock() = default;
+                ~Stock();
 
-                bool checkStockForRecipe(CookBook::Recipe &pizza) {/* TODO */(void)pizza;return true;};
+                /**
+                 * \brief Set the refill time
+                 * \param[in] multiplier 1s * multiplier
+                 */
+                void setMultiplier(const int multiplier);
 
-                bool update(void) /* TODO or maybe make it private and update on a call to the instance*/;
+                /**
+                 * \brief check if the recipe is available and remove ingrediant if it's the case
+                 * \param[in] Recipe of the Pizza
+                 * \return true if there is enought Ingrediant false otherwise
+                 */
+                bool getRecipe(CookBook::Recipe &pizza);
+
+                /**
+                 * \brief display the Current Quantity of Ingrediant
+                 */
+                void displayStock(void);
 
             protected:
             private:
-                std::array<std::size_t, Ingredient::MAX_NB_INGREDIENT> _ingredientRemaining;
+                void tryRefillStock(void);
+                std::map<Ingrediant::Name, int> _stock;
+                static constexpr const char *_configPath = "./.plazza/Ingrediant.conf";
+                static constexpr const int _defaultQuantity = 5;
+                std::chrono::time_point<std::chrono::system_clock> _time;
+                std::mutex _safe_time;
+                std::mutex _safe_stock;
+                int _multiplier;
+                int timeToRefill(void);
         };
 
     };

@@ -5,10 +5,7 @@
 ** Kitchen methods
 */
 
-#include <cstdlib>
 #include <iostream>
-#include <array>
-#include <unistd.h>
 #include "Kitchen/Kitchen.hpp"
 #include "Kitchen/Stock.hpp"
 
@@ -16,6 +13,7 @@ Kitchen::Kitchen::Kitchen(size_t nbCooks) :
 _nbCooks(nbCooks), _maxPizza(2 * nbCooks), _saturated(false)
 {
     startCooking();
+    Singleton<Stock>::get().setMultiplier(nbCooks);
 }
 
 Kitchen::Kitchen::~Kitchen()
@@ -33,10 +31,9 @@ void Kitchen::Kitchen::startCooking() noexcept
 
 void Kitchen::Kitchen::displayStatus() const noexcept
 {
-    // std::array<size_t, Ingredient::MAX_NB_INGREDIENT> ingredients = _stock->getStock(); //TODO:
     // size_t i = 0;
 
-    std::cout << std::endl << "********** KITCHEN N° " << getpid() << "**********" << std::endl;
+    // std::cout << std::endl << "********** KITCHEN N° " << getpid() << "**********" << std::endl;
 
     std::cout << "---------- Cooks status ----------" << std::endl;
     // for (const auto &it : _cooks) {
@@ -45,8 +42,7 @@ void Kitchen::Kitchen::displayStatus() const noexcept
     // }
 
     std::cout << "------ Stock of ingredients ------" << std::endl;
-    // for (const auto &it : ingredients)
-    //     std::cout << "\t" << it << std::endl;
+    Singleton<Stock>::get().displayStock();
 }
 
 void Kitchen::Kitchen::addOrder(Pizza::Command &pizza) noexcept

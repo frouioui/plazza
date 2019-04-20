@@ -14,12 +14,10 @@
  * \class Ingredient
  * \brief Ingredient needed for Pizza
  */
-struct Ingredient {
-    using CookingTime = int;
+struct Ingrediant {
     using Name = std::string;
 
     const Name name;
-    const CookingTime cookingTime;
 };
 
 

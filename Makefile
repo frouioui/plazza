@@ -79,7 +79,7 @@ HEADERS				=	-I ./include
 
 CXXFLAGS			=	-Wall -Wextra -std=c++14 $(HEADERS)
 
-LDFLAGS				=
+LDFLAGS				=	-lpthread
 
 all: $(plazza.name)
 

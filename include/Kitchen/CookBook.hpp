@@ -22,15 +22,15 @@ namespace Kitchen {
      */
     class CookBook {
         public:
-            CookBook() {};
-            ~CookBook() {};
+            CookBook();
+            ~CookBook();
 
             using Recipe = std::vector<Ingrediant>;
             using CookingTime = int;
 
-            Recipe &getRecipe(Pizza::Command &command) {/* TODO */(void)command;return tmp;};
+            Recipe &getRecipe(Pizza::Command &command);
 
-            CookingTime &getCookingTime(Pizza::Command &command) {/* TODO */ (void)command;return tmp1;};
+            CookingTime &getCookingTime(Pizza::Command &command);
 
         protected:
         private:

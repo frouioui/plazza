@@ -6,6 +6,7 @@
 */
 
 #include <sstream>
+#include <iostream>
 #include "ConfigReader.hpp"
 #include "Kitchen/Error.hpp"
 #include "Kitchen/CookBook.hpp"
@@ -42,8 +43,8 @@ Kitchen::CookBook::CookBook()
 Kitchen::CookBook::CookingTime &Kitchen::CookBook::getCookingTime(Pizza::Command &command)
 {
     std::string pizza_name = command._name;
-    for (auto c : pizza_name)
-        c = toupper(c);
+    for (auto c = pizza_name.begin(); c != pizza_name.end(); c++)
+        *c = toupper(*c);
     if (_cookingTime.count(pizza_name) == 0)
         throw Kitchen::Error("Unknow Pizza Name");
     return _cookingTime.at(pizza_name);
@@ -52,8 +53,8 @@ Kitchen::CookBook::CookingTime &Kitchen::CookBook::getCookingTime(Pizza::Command
 Kitchen::CookBook::Recipe &Kitchen::CookBook::getRecipe(Pizza::Command &command)
 {
     std::string pizza_name = command._name;
-    for (auto c : pizza_name)
-        c = toupper(c);
+    for (auto c = pizza_name.begin(); c != pizza_name.end(); c++)
+        *c = toupper(*c);
     if (_recipes.count(pizza_name) == 0)
         throw Kitchen::Error("Unknow Pizza Name");
     return _recipes.at(pizza_name);

@@ -10,7 +10,7 @@
 
 #include <vector>
 #include <map>
-#include "Ingrediant.hpp"
+#include "Ingredient.hpp"
 #include "Command.hpp"
 #include "Singletons.hpp"
 
@@ -37,8 +37,6 @@ namespace Kitchen {
             static constexpr const char *_configPath = "./.plazza/Pizza.conf";
             std::map<std::string, Recipe> _recipes;
             std::map<std::string, CookingTime> _cookingTime;
-            Recipe tmp; /* TODO Remove */
-            CookingTime tmp1; /* TODO Remove */
     };
 
 };

@@ -8,6 +8,7 @@
 #if !defined(_SHELL_HPP)
 #define _SHELL_HPP
 
+#include <vector>
 #include <string>
 #include "Command.hpp"
 
@@ -32,7 +33,7 @@ namespace ReceptionArea
             bool isDone() const noexcept;
             void writeUser(const std::string &msg) const noexcept;
             InputType readLine() noexcept;
-            Pizza::Command parsePizza();
+            std::vector<Pizza::Command> parsePizza() throw();
 
         private:
             std::string _lastLine;

@@ -1,15 +1,15 @@
 ##
 ## Plazza
 ##
-## Makefile of the configuration_reader static library
+## Makefile of the string_parser static library
 ##
 
 # Compilation
 CXX			=	g++
 CXXFLAGS	=	-W -Werror -Wextra -Wall -I$(INCLUDE_DIRECTORY) -std=c++14
 
-LIBRARY_NAME	=	libconfig_reader.a
-TEST_NAME		=	config_reader_test
+LIBRARY_NAME	=	libstring_parser.a
+TEST_NAME		=	string_parser_test
 
 OBJS		=	$(SRC:.cpp=.o)
 TEST_OBJS	=	$(TEST_SRC:.cpp=.o)
@@ -22,11 +22,10 @@ TEST_DIRECTORY		=	./tests
 INCLUDE_DIRECTORY	=	./include
 
 # Source files
-SRC				=	$(SRC_DIRECTORY)/ConfigReader.cpp				\
-					$(SRC_DIRECTORY)/ConfigReaderError.cpp			\
+SRC				=	$(SRC_DIRECTORY)/StringParser.cpp					\
 
 # Test files
-TEST_SRC		=	$(TEST_DIRECTORY)/ConfigReaderTests.cpp			\
+TEST_SRC		=	$(TEST_DIRECTORY)/StringParserTest.cpp				\
 
 # Rules
 all: $(LIBRARY_NAME)
@@ -38,8 +37,8 @@ $(LIBRARY_NAME): $(OBJS)
 tests_compile:
 	$(CXX) $(SRC) $(TEST_SRC) -o $(TEST_NAME) $(CRITERION) -I$(INCLUDE_DIRECTORY)
 
-tests_run:
-	./$(TEST_NAME) -j1 --full-stats --verbose --xml=../../report/configuration_reader.xml
+tests_run: tests_compile
+	./$(TEST_NAME) -j1 --full-stats --verbose --xml=../../report/string_parser.xml
 
 clean:
 	rm -f $(OBJS) $(TEST_OBJS)

@@ -27,6 +27,7 @@ plazza.ldflags		=
 
 LIBS				=	lib/logger/liblogger.a							\
 						lib/configuration_reader/libconfig_reader.a		\
+						lib/string_parser/libstring_parser.a			\
 
 # DOCS
 
@@ -38,7 +39,8 @@ DOXYFILE			=	Plazza
 
 unit_tests.name		=	unit_tests_$(plazza.name)
 
-unit_tests.srcs		=	$(plazza.srcs)	\
+unit_tests.srcs		=	$(plazza.srcs)						\
+						tests/reception/SetValuesTest.cpp	\
 
 unit_tests.main 	=	tests/criterion_main.cpp
 

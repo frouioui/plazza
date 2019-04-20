@@ -33,19 +33,21 @@ namespace Kitchen {
              * \brief Check if the Cook is Busy
              * \return true if the Cook is Busy
              */
-            bool isBusy();
+            bool isBusy() const;
 
             /**
              * \brief DeConstructor
              */
             ~Cook();
 
-            void Start(void);
-
+            /**
+             * \brief the Cook go to sleep and stop working
+             */
             void Stop(void);
 
         protected:
         private:
+            void Start(void);
             Pizza::Command cookPizza(void);
             bool _stop;
             Pizza::Command *_current;

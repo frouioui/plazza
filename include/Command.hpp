@@ -37,6 +37,7 @@ namespace Pizza {
     struct Command {
         const Pizza::Type _name;/*<! Name of the Pizza */
         const Pizza::Size _size;/*!< Size of the Pizza */
+        const int _multiplier;/*!< Number of pizza needed */
     };
 
 };

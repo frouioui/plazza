@@ -46,7 +46,7 @@ void Kitchen::Stock::setMultiplier(const int multiplier)
 
 void Kitchen::Stock::displayStock(void)
 {
-    std::string infoStock =  "Stock of ingredients\n";
+    std::string infoStock =  "------ Stock of ingredients ------\n";
     _safe_stock.lock();
     for (auto ingrediant : _stock)
         infoStock += "\t" + ingrediant.first + ": " + std::to_string(ingrediant.second) + '\n';

@@ -30,6 +30,7 @@ plazza.ldflags		=
 
 LIBS				=	lib/logger/liblogger.a							\
 						lib/configuration_reader/libconfig_reader.a		\
+						lib/string_parser/libstring_parser.a			\
 
 # DOCS
 
@@ -41,7 +42,8 @@ DOXYFILE			=	Plazza
 
 unit_tests.name		=	unit_tests_$(plazza.name)
 
-unit_tests.srcs		=	$(plazza.srcs)	\
+unit_tests.srcs		=	$(plazza.srcs)						\
+						tests/reception/SetValuesTest.cpp	\
 
 unit_tests.main 	=	tests/criterion_main.cpp			\
 						tests/test_Kitchen_CookBook.cpp		\
@@ -116,7 +118,7 @@ $(unit_tests.name): $(LIBS) $(unit_tests.objs)
 tests_compile: $(LIB_TEST_COMPILE) $(unit_tests.name)
 
 tests_run: tests_compile $(LIB_TESTS_RUN)
-	./$(unit_tests.name) -j1 --verbose --full-stats
+	./$(unit_tests.name) -j1 --verbose --full-stats --xml=./report/main.xml
 
 clean:
 	rm -rf $(BUILD_DIR)

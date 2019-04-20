@@ -12,14 +12,14 @@
 Kitchen::Kitchen::Kitchen(size_t nbCooks) :
 _nbCooks(nbCooks), _maxPizza(2 * nbCooks), _saturated(false)
 {
-    startCooking();
     Singleton<Stock>::get().setMultiplier(nbCooks);
+    startCooking();
 }
 
 Kitchen::Kitchen::~Kitchen()
 {
     for (auto &thread : _cooks)
-        thread.join();
+        thread.Stop();
     std::exit(0);
 }
 
@@ -31,17 +31,16 @@ void Kitchen::Kitchen::startCooking() noexcept
 
 void Kitchen::Kitchen::displayStatus() const noexcept
 {
-    // size_t i = 0;
+    size_t i = 0;
 
     // std::cout << std::endl << "********** KITCHEN N° " << getpid() << "**********" << std::endl;
 
     std::cout << "---------- Cooks status ----------" << std::endl;
-    // for (const auto &it : _cooks) {
-    //     std::cout << "\tCook n° " << i << " -> " << _cooks.isBuszy() << std::endl; //TODO:
-    //     i += 1;
-    // }
+    for (const auto &it : _cooks) {
+        std::cout << "\tCook n° " << i << " -> " << it.isBusy() << std::endl; //TODO:
+        i += 1;
+    }
 
-    std::cout << "------ Stock of ingredients ------" << std::endl;
     Singleton<Stock>::get().displayStock();
 }
 
@@ -74,42 +73,4 @@ void Kitchen::Kitchen::sendReadyOrder() noexcept
 //     if (isBusy)
 //         return out << "COOKING";
 //     return out << "WAITING";
-// }
-
-// std::ostream &operator<<(std::ostream &out, const Kitchen::Ingredient &ingredient) //TODO:
-// {
-//     std::string name;
-
-//     switch (ingredient) {
-//         case Kitchen::Ingredient::DOE:
-//             name = "Doe";
-//             break;
-//         case Kitchen::Ingredient::TOMATO:
-//             name = "Tomato";
-//             break;
-//         case Kitchen::Ingredient::GRUYERE:
-//             name = "Gruyere";
-//             break;
-//         case Kitchen::Ingredient::HAM:
-//             name = "Ham";
-//             break;
-//         case Kitchen::Ingredient::MUSHROOMS:
-//             name = "Mushrooms";
-//             break;
-//         case Kitchen::Ingredient::STEAK:
-//             name = "Steak";
-//             break;
-//         case Kitchen::Ingredient::EGGPLANT:
-//             name = "Eggplant";
-//             break;
-//         case Kitchen::Ingredient::GOATCHEESE:
-//             name = "Goat cheese";
-//             break;
-//         case Kitchen::Ingredient::CHIEFLOVE:
-//             name = "Chief love";
-//             break;
-//         default:
-//             break;
-//     }
-//     return out << name;
 // }

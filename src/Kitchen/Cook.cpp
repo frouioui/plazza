@@ -47,7 +47,7 @@ Pizza::Command Kitchen::Cook::cookPizza(void)
     return Pizza::Command{};
 }
 
-bool Kitchen::Cook::isBusy(void)
+bool Kitchen::Cook::isBusy(void) const
 {
     return _current;
 }

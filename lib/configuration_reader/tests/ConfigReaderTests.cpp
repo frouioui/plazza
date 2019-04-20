@@ -10,24 +10,24 @@
 #include "ConfigReader.hpp"
 #include "ConfigReaderError.hpp"
 
-Test(constructor, default_ctor)
+Test(config_reader_constructor, default_ctor)
 {
     ConfigurationReader::ConfigReader cfr;
 }
 
-Test(constructor, param_ctor)
+Test(config_reader_constructor, param_ctor)
 {
     ConfigurationReader::ConfigReader cfr("./toto");
 }
 
-Test(setpath, set_simple_path)
+Test(config_reader_setpath, set_simple_path)
 {
     ConfigurationReader::ConfigReader cfr;
 
     cfr.setPath("toto");
 }
 
-Test(getConfig, simple_config)
+Test(config_reader_getConfig, simple_config)
 {
     ConfigurationReader::config_t conf;
     ConfigurationReader::ConfigReader cfr;
@@ -41,7 +41,7 @@ Test(getConfig, simple_config)
     cr_assert_str_eq(conf["TOTO"].c_str(), "salut");
 }
 
-Test(getConfig, key_with_no_value)
+Test(config_reader_getConfig, key_with_no_value)
 {
     ConfigurationReader::config_t conf;
     ConfigurationReader::ConfigReader cfr;
@@ -55,7 +55,7 @@ Test(getConfig, key_with_no_value)
     cr_assert_str_eq(conf["TOTO"].c_str(), "");
 }
 
-Test(getConfig, multiple_line)
+Test(config_reader_getConfig, multiple_line)
 {
     ConfigurationReader::config_t conf;
     ConfigurationReader::ConfigReader cfr;
@@ -70,7 +70,7 @@ Test(getConfig, multiple_line)
     cr_assert_str_eq(conf["HEY"].c_str(), "okay");
 }
 
-Test(getConfig, comment_line)
+Test(config_reader_getConfig, comment_line)
 {
     ConfigurationReader::config_t conf;
     ConfigurationReader::ConfigReader cfr;
@@ -83,7 +83,7 @@ Test(getConfig, comment_line)
     cr_assert_eq(conf.empty(), true);
 }
 
-Test(getConfig, invalid_file_format)
+Test(config_reader_getConfig, invalid_file_format)
 {
     ConfigurationReader::ConfigReader cfr;
     std::ofstream outfile("config_test.conf");
@@ -94,7 +94,7 @@ Test(getConfig, invalid_file_format)
     cr_assert_throw(cfr.getConfig(), ConfigurationReader::Error::FileContentError);
 }
 
-Test(getConfig, invalid_file)
+Test(config_reader_getConfig, invalid_file)
 {
     ConfigurationReader::ConfigReader cfr;
 

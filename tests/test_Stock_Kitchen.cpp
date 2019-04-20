@@ -45,7 +45,7 @@ Test(Kitchen_Stock, Display, .init=cr_redirect_stdout)
 
     tmp.displayStock();
     std::cout.flush();
-    cr_assert_stdout_eq_str("Stock of ingredients\n\
+    cr_assert_stdout_eq_str("------ Stock of ingredients ------\n\
 \tCHIEF LOVE: 5\n\
 \tDOE: 5\n\
 \tEGGPLANT: 5\n\

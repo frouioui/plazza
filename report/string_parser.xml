@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Tests compiled with Criterion v2.3.2 -->
+<testsuites name="Criterion Tests" tests="5" failures="0" errors="0" disabled="0">
+  <testsuite name="string_parser_splitStr" tests="2" failures="0" errors="0" disabled="0" skipped="0" time="0.001">
+    <testcase name="simple_str" assertions="4" status="PASSED" time="0.001">
+    </testcase>
+    <testcase name="one_word_str" assertions="2" status="PASSED" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="string_parser_removeSpaceAndTabs" tests="3" failures="0" errors="0" disabled="0" skipped="0" time="0.001">
+    <testcase name="simple_string_no_extra_space" assertions="1" status="PASSED" time="0.000">
+    </testcase>
+    <testcase name="simple_string_extra_space" assertions="1" status="PASSED" time="0.000">
+    </testcase>
+    <testcase name="complex_string_extra_space" assertions="1" status="PASSED" time="0.000">
+    </testcase>
+  </testsuite>
+</testsuites>

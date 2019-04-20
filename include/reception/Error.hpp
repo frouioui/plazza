@@ -45,6 +45,13 @@ namespace ReceptionArea
             virtual ~Helper() throw() {};
         };
 
+        class InvalidCommand : public ReceptionError
+        {
+        public:
+            InvalidCommand(std::string const &message, std::string const &where = "Unknown") : ReceptionError(message, where) {};
+            virtual ~InvalidCommand() throw() {};
+        };
+
     } // Error
 
 } // ReceptionArea

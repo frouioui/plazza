@@ -28,7 +28,7 @@ namespace Kitchen {
             using Recipe = std::vector<Ingrediant>;
             using CookingTime = int;
 
-            void setMultiplier(int mult);
+            void setMultiplier(const float mult);
 
             Recipe &getRecipe(Pizza::Command &command);
 
@@ -39,7 +39,7 @@ namespace Kitchen {
             static constexpr const char *_configPath = "./.plazza/Pizza.conf";
             std::map<std::string, Recipe> _recipes;
             std::map<std::string, CookingTime> _cookingTime;
-            int _mult;
+            float _mult;
     };
 
 };

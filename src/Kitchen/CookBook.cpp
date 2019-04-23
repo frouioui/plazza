@@ -40,7 +40,7 @@ Kitchen::CookBook::CookBook() : _mult(1)
     }
 }
 
-void Kitchen::CookBook::setMultiplier(int mult)
+void Kitchen::CookBook::setMultiplier(const float mult)
 {
     _mult = mult;
 }

@@ -35,7 +35,7 @@
                  * \brief Set the refill time
                  * \param[in] multiplier 1s * multiplier
                  */
-                void setMultiplier(const int multiplier);
+                void setMultiplier(const long multiplier);
 
                 /**
                  * \brief check if the recipe is available and remove ingrediant if it's the case
@@ -58,7 +58,7 @@
                 std::chrono::time_point<std::chrono::system_clock> _time;
                 std::mutex _safe_time;
                 std::mutex _safe_stock;
-                int _multiplier;
+                long _multiplier;
                 int timeToRefill(void);
         };
 

@@ -39,7 +39,7 @@ _multiplier(1)
     _time = std::chrono::system_clock::now();
 }
 
-void Kitchen::Stock::setMultiplier(const int multiplier)
+void Kitchen::Stock::setMultiplier(const long multiplier)
 {
     _multiplier = multiplier;
 }

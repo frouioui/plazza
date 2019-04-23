@@ -25,7 +25,7 @@ static std::vector<std::string> split(std::string s, char c)
 }
 
 Kitchen::Stock::Stock() :
-_multiplier(1)
+_multiplier(1000)
 {
     std::string allIngrediantVarName = "INGREDIANTS";
     ConfigurationReader::config_t config = ConfigurationReader::ConfigReader(_configPath).getConfig();
@@ -60,9 +60,9 @@ int Kitchen::Stock::timeToRefill(void)
     auto now = std::chrono::system_clock::now();
     auto elapsedTime = now - _time;
     int res = 0;
-    if (elapsedTime > std::chrono::seconds(1) * _multiplier) {
+    if (elapsedTime > std::chrono::milliseconds(1) * _multiplier) {
         _time = now;
-        res = elapsedTime / std::chrono::seconds(1) * _multiplier;
+        res = elapsedTime / std::chrono::milliseconds(1) * _multiplier;
     }
     _safe_time.unlock();
     return res;

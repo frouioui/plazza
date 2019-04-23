@@ -32,7 +32,7 @@ namespace Kitchen {
              * \param[in] nbCooks --> Program Param
              * \param[in] link between the reception and the Kitchen
              */
-            Kitchen(size_t nbCooks/*, TODO IPC IDENTIFIER*/);
+            Kitchen(float multiplier, size_t nbCooks, long timeReplace, int msgId);
 
             ~Kitchen();
 
@@ -70,8 +70,14 @@ namespace Kitchen {
 
             SafeThread<Stock> _stock;
 
+            float _multiplier; /*!< Cooking time multiplier */
+
             size_t _nbCooks; /*!< Number of cooks in the kitchen */
             std::list<Cook> _cooks; /*!< Cook threads */
+
+            long _timeReplace; /*!< Time to replace ingredient on stock */
+
+            int _msgId; /*!< Message queue ID */
 
             size_t _maxPizza; /*!< Maximum number of pizza that can b cooked at the same moment */
 

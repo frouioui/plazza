@@ -24,7 +24,7 @@ static std::vector<Ingrediant> split(std::string s, char c)
 }
 
 
-Kitchen::CookBook::CookBook()
+Kitchen::CookBook::CookBook() : _mult(1)
 {
     ConfigurationReader::config_t config = ConfigurationReader::ConfigReader(_configPath).getConfig();
     for (auto line : config) {

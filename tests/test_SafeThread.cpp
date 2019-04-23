@@ -19,12 +19,12 @@ TestSuite(SafeThread,
 .description = "Test the Group: SafeThread",
 .timeout = 0);
 
-Test(SafeThread, Create)
+Test(SafeThread, Create__G__)
 {
     SafeThread<int> tmp;
 }
 
-Test(SafeThread, trylock)
+Test(SafeThread, trylock__G__)
 {
     SafeThread<Kitchen::Stock> tmp;
 
@@ -33,7 +33,7 @@ Test(SafeThread, trylock)
     tmp.unlock();
 }
 
-Test(SafeThread, getlock, .init=cr_redirect_stdout)
+Test(SafeThread, getlock__G__, .init=cr_redirect_stdout)
 {
     SafeThread<Kitchen::Stock> tmp;
 
@@ -42,7 +42,7 @@ Test(SafeThread, getlock, .init=cr_redirect_stdout)
     tmp.unlock();
 }
 
-Test(SafeThread, getUnlock)
+Test(SafeThread, getUnlock__G__)
 {
     SafeThread<Kitchen::Stock> tmp;
 

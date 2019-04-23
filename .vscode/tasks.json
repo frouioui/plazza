@@ -77,7 +77,10 @@
       "label": "Fclean All",
       "type": "shell",
       "command": "make fclean",
-      "group": "none",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
       "problemMatcher": []
     },
     {

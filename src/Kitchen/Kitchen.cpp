@@ -11,7 +11,7 @@
 
 Kitchen::Kitchen::Kitchen(float multiplier, size_t nbCooks, long timeReplace, int msgId) :
 _multiplier(multiplier), _nbCooks(nbCooks), _timeReplace(timeReplace),
-_msgId(msgId), _maxPizza(2 * nbCooks), _saturated(false)
+_msgId(msgId), _maxPizza(2 * nbCooks), _saturated(false), _time(std::chrono::system_clock::now())
 {
     Singleton<CookBook>::get().setMultiplier(multiplier);
     Singleton<Stock>::get().setMultiplier(timeReplace);
@@ -44,6 +44,23 @@ void Kitchen::Kitchen::displayStatus() const noexcept
     }
 
     Singleton<Stock>::get().displayStock();
+}
+
+bool Kitchen::Kitchen::CheckAfkForTooLong(void)
+{
+    bool res = false;
+    _toDo.lock();
+    _finished.lock();
+    if (!_toDo->size() && !_finished->size()) {
+        auto now = std::chrono::system_clock::now();
+        auto elapsedTime = now - _time;
+        if (elapsedTime < std::chrono::seconds(5))
+            res = true;
+    } else
+        _time = std::chrono::system_clock::now();
+    _finished.unlock();
+    _toDo.unlock();
+    return res;
 }
 
 void Kitchen::Kitchen::addOrder(Pizza::Command &pizza) noexcept

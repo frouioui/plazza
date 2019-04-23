@@ -83,7 +83,7 @@ namespace Kitchen {
 
             bool _saturated; /*!< True if kitchen is saturated, otherwise false */
 
-            // Timer occupation /*!< Kitchen must close after 5 sec of inactivity*/
+            std::chrono::time_point<std::chrono::system_clock> _time; /*!< Kitchen must close after 5 sec of inactivity*/
 
             /**
              * \brief Launch Cook thread
@@ -96,6 +96,11 @@ namespace Kitchen {
              * \brief Calculate saturation indicator
              */
             void calculSaturation() noexcept;
+
+            /**
+             * \brief Check if the Kitchen afk more then X time
+             */
+            bool CheckAfkForTooLong(void);
     };
 
 };

@@ -7,7 +7,7 @@
     <testcase name="one_word_str" assertions="2" status="PASSED" time="0.000">
     </testcase>
   </testsuite>
-  <testsuite name="string_parser_removeSpaceAndTabs" tests="3" failures="0" errors="0" disabled="0" skipped="0" time="0.001">
+  <testsuite name="string_parser_removeSpaceAndTabs" tests="3" failures="0" errors="0" disabled="0" skipped="0" time="0.000">
     <testcase name="simple_string_no_extra_space" assertions="1" status="PASSED" time="0.000">
     </testcase>
     <testcase name="simple_string_extra_space" assertions="1" status="PASSED" time="0.000">

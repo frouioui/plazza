@@ -9,8 +9,9 @@
 #include "Kitchen/Kitchen.hpp"
 #include "Kitchen/Stock.hpp"
 
-Kitchen::Kitchen::Kitchen(size_t nbCooks) :
-_nbCooks(nbCooks), _maxPizza(2 * nbCooks), _saturated(false)
+Kitchen::Kitchen::Kitchen(float multiplier, size_t nbCooks, long timeReplace, int msgId) :
+_multiplier(multiplier), _nbCooks(nbCooks), _timeReplace(timeReplace),
+_msgId(msgId), _maxPizza(2 * nbCooks), _saturated(false)
 {
     Singleton<Stock>::get().setMultiplier(nbCooks);
     startCooking();

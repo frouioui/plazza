@@ -13,7 +13,8 @@ Kitchen::Kitchen::Kitchen(float multiplier, size_t nbCooks, long timeReplace, in
 _multiplier(multiplier), _nbCooks(nbCooks), _timeReplace(timeReplace),
 _msgId(msgId), _maxPizza(2 * nbCooks), _saturated(false)
 {
-    Singleton<Stock>::get().setMultiplier(nbCooks);
+    Singleton<CookBook>::get().setMultiplier(multiplier);
+    Singleton<Stock>::get().setMultiplier(timeReplace);
     startCooking();
 }
 

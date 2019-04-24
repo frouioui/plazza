@@ -25,6 +25,7 @@ Test(msg_queue_create_queue, check_creation)
 
     msgq.generateKey();
     msgq.createQueue();
+    msgq.destroyQueue();
 }
 
 Test(msg_queue_create_queue, check_send)
@@ -41,6 +42,7 @@ Test(msg_queue_create_queue, check_send)
     cr_assert_eq(body.type, BodyType::CMD);
     cr_assert_eq(body.descrpt, "negrita");
     cr_assert_eq(body.value, "XL");
+    msgq.destroyQueue();
 }
 
 Test(msg_queue_create_queue, check_receive)
@@ -56,4 +58,5 @@ Test(msg_queue_create_queue, check_receive)
     cr_assert_eq(body.type, BodyType::CMD);
     cr_assert_eq(body.descrpt, "negrita");
     cr_assert_eq(body.value, "XL");
+    msgq.destroyQueue();
 }

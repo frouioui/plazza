@@ -33,6 +33,7 @@ LIBS				=	lib/logger/liblogger.a							\
 						lib/configuration_reader/libconfig_reader.a		\
 						lib/string_parser/libstring_parser.a			\
 						lib/msg_queue/libmsg_queue.a					\
+						lib/fork/libfork.a								\
 
 # DOCS
 

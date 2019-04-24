@@ -26,6 +26,7 @@ Test(msg_queue_read_queue, check_cmd)
     cr_assert_eq(body.type, BodyType::CMD);
     cr_assert_eq(body.descrpt, "negrita");
     cr_assert_eq(body.value, "XL");
+    msgq.destroyQueue();
 }
 
 Test(msg_queue_read_queue, check_error)
@@ -42,6 +43,7 @@ Test(msg_queue_read_queue, check_error)
     cr_assert_eq(body.type, BodyType::ERROR);
     cr_assert_eq(body.descrpt, "Error");
     cr_assert_eq(body.value, "-1");
+    msgq.destroyQueue();
 }
 
 Test(msg_queue_read_queue, check_shell)
@@ -58,6 +60,7 @@ Test(msg_queue_read_queue, check_shell)
     cr_assert_eq(body.type, BodyType::SHELL);
     cr_assert_eq(body.descrpt, "status");
     cr_assert_eq(body.value, "-1");
+    msgq.destroyQueue();
 }
 
 Test(msg_queue_read_queue, check_resp)
@@ -74,4 +77,5 @@ Test(msg_queue_read_queue, check_resp)
     cr_assert_eq(body.type, BodyType::RESP);
     cr_assert_eq(body.descrpt, "true");
     cr_assert_eq(body.value, "2");
+    msgq.destroyQueue();
 }

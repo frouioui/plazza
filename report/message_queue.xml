@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Tests compiled with Criterion v2.3.2 -->
-<testsuites name="Criterion Tests" tests="3" failures="0" errors="0" disabled="0">
-  <testsuite name="msg_queue_generate_key" tests="1" failures="0" errors="0" disabled="0" skipped="0" time="0.002">
-    <testcase name="valid_key" assertions="1" status="PASSED" time="0.002">
+<testsuites name="Criterion Tests" tests="4" failures="0" errors="0" disabled="0">
+  <testsuite name="msg_queue_generate_key" tests="1" failures="0" errors="0" disabled="0" skipped="0" time="0.000">
+    <testcase name="valid_key" assertions="1" status="PASSED" time="0.000">
     </testcase>
   </testsuite>
-  <testsuite name="msg_queue_create_queue" tests="2" failures="0" errors="0" disabled="0" skipped="0" time="0.001">
-    <testcase name="check_send" assertions="3" status="PASSED" time="0.001">
+  <testsuite name="msg_queue_create_queue" tests="3" failures="0" errors="0" disabled="0" skipped="0" time="0.001">
+    <testcase name="check_send" assertions="3" status="PASSED" time="0.000">
+    </testcase>
+    <testcase name="check_receive" assertions="3" status="PASSED" time="0.000">
     </testcase>
     <testcase name="check_creation" assertions="0" status="PASSED" time="0.000">
     </testcase>

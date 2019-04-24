@@ -240,3 +240,10 @@ MessageQueue &MsgQueue::operator>>(MessageQueue &msgQueue, BodyMsg &body)
     }
     return msgQueue;
 }
+
+MessageQueue &MsgQueue::operator<<(MessageQueue &msgQueue, Message &msg)
+{
+    msgQueue.setMsgToSend(msg);
+    msgQueue.sendMessage();
+    return msgQueue;
+}

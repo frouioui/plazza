@@ -42,3 +42,18 @@ Test(msg_queue_create_queue, check_send)
     cr_assert_eq(body.descrpt, "negrita");
     cr_assert_eq(body.value, "XL");
 }
+
+Test(msg_queue_create_queue, check_receive)
+{
+    MessageQueue msgq("./msg_queue_test", 90);
+    Message msg = {SEND, "TYPE=pizza\nNAME=negrita\nSIZE=XL"};
+    BodyMsg body;
+
+    msgq.generateKey();
+    msgq.createQueue();
+    msgq << msg;
+    msgq >> body;
+    cr_assert_eq(body.type, BodyType::CMD);
+    cr_assert_eq(body.descrpt, "negrita");
+    cr_assert_eq(body.value, "XL");
+}

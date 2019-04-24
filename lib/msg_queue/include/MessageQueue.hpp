@@ -74,6 +74,7 @@ namespace MsgQueue
     };
 
     MessageQueue &operator>>(MessageQueue &msgQueue, BodyMsg &body);
+    MessageQueue &operator<<(MessageQueue &msgQueue, Message &msg);
 } // MsgQueue
 
 

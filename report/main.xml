@@ -15,48 +15,42 @@
     <testcase name="CookBook" assertions="0" status="PASSED" time="0.000">
     </testcase>
   </testsuite>
-  <testsuite name="SafeThread" tests="4" failures="0" errors="0" disabled="0" skipped="0" time="0.001">
+  <testsuite name="SafeThread" tests="4" failures="0" errors="0" disabled="0" skipped="0" time="0.002">
     <testcase name="trylock__G__" assertions="2" status="PASSED" time="0.000">
     </testcase>
-    <testcase name="getlock__G__" assertions="0" status="PASSED" time="0.000">
+    <testcase name="getlock__G__" assertions="0" status="PASSED" time="0.001">
     </testcase>
-    <testcase name="getUnlock__G__" assertions="0" status="PASSED" time="0.000">
+    <testcase name="getUnlock__G__" assertions="0" status="PASSED" time="0.001">
     </testcase>
     <testcase name="Create__G__" assertions="0" status="PASSED" time="0.000">
     </testcase>
   </testsuite>
-  <testsuite name="Kitchen_Stock" tests="4" failures="0" errors="0" disabled="0" skipped="0" time="2.001">
+  <testsuite name="Kitchen_Stock" tests="4" failures="0" errors="0" disabled="0" skipped="0" time="2.003">
     <testcase name="Refill" assertions="7" status="PASSED" time="2.001">
     </testcase>
-    <testcase name="Recipe" assertions="6" status="PASSED" time="0.000">
+    <testcase name="Recipe" assertions="6" status="PASSED" time="0.001">
     </testcase>
     <testcase name="Display" assertions="1" status="PASSED" time="0.000">
     </testcase>
     <testcase name="Create" assertions="0" status="PASSED" time="0.000">
     </testcase>
   </testsuite>
-  <testsuite name="Kitchen_CookBook" tests="6" failures="0" errors="0" disabled="0" skipped="0" time="0.002">
-    <testcase name="construct" assertions="0" status="PASSED" time="0.000">
+  <testsuite name="Kitchen_CookBook" tests="6" failures="0" errors="0" disabled="0" skipped="0" time="0.006">
+    <testcase name="construct" assertions="0" status="PASSED" time="0.001">
     </testcase>
     <testcase name="Value_Invalid" assertions="0" status="PASSED" time="0.000">
     </testcase>
     <testcase name="ValueOfSubject_Regina" assertions="7" status="PASSED" time="0.001">
     </testcase>
-    <testcase name="ValueOfSubject_Margarita" assertions="5" status="PASSED" time="0.000">
+    <testcase name="ValueOfSubject_Margarita" assertions="5" status="PASSED" time="0.001">
     </testcase>
     <testcase name="ValueOfSubject_Fantasia" assertions="7" status="PASSED" time="0.000">
     </testcase>
-    <testcase name="ValueOfSubject_Americana" assertions="6" status="PASSED" time="0.000">
+    <testcase name="ValueOfSubject_Americana" assertions="6" status="PASSED" time="0.003">
     </testcase>
   </testsuite>
-  <testsuite name="Kitchen_Cook" tests="2" failures="0" errors="0" disabled="0" skipped="0" time="4.000">
-    <testcase name="Create" assertions="0" status="PASSED" time="0.000">
-    </testcase>
-    <testcase name="Busy" assertions="1" status="PASSED" time="4.000">
-    </testcase>
-  </testsuite>
-  <testsuite name="Command_operator" tests="2" failures="0" errors="0" disabled="0" skipped="0" time="0.001">
-    <testcase name="test_simple_command" assertions="2" status="PASSED" time="0.000">
+  <testsuite name="Kitchen_Cook" tests="2" failures="0" errors="0" disabled="0" skipped="0" time="4.001">
+    <testcase name="Create" assertions="0" status="PASSED" time="0.001">
     </testcase>
     <testcase name="send_command_to_queue" assertions="3" status="PASSED" time="0.000">
     </testcase>

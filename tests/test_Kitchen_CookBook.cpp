@@ -28,7 +28,7 @@ Test(Kitchen_CookBook, construct)
 Test(Kitchen_CookBook, ValueOfSubject_Margarita)
 {
     Kitchen::CookBook tmp;
-    Pizza::Command command = {"Margarita", Pizza::Size::XXL};
+    Pizza::Command command = {Pizza::Margarita, Pizza::Size::XXL};
     Kitchen::CookBook::Recipe recipe = {{"DOE"}, {"TOMATO"}, {"GRUYERE"}};
 
     cr_assert_eq(tmp.getCookingTime(command), 1);
@@ -41,7 +41,7 @@ Test(Kitchen_CookBook, ValueOfSubject_Margarita)
 Test(Kitchen_CookBook, ValueOfSubject_Regina)
 {
     Kitchen::CookBook tmp;
-    Pizza::Command command = {"Regina", Pizza::Size::XXL};
+    Pizza::Command command = {Pizza::Regina, Pizza::Size::XXL};
     Kitchen::CookBook::Recipe recipe = {{"DOE"}, {"TOMATO"}, {"GRUYERE"}, {"HAM"}, {"MUSHROOMS"}};
 
     cr_assert_eq(tmp.getCookingTime(command), 2);
@@ -54,7 +54,7 @@ Test(Kitchen_CookBook, ValueOfSubject_Regina)
 Test(Kitchen_CookBook, ValueOfSubject_Americana)
 {
     Kitchen::CookBook tmp;
-    Pizza::Command command = {"Americana", Pizza::Size::XXL};
+    Pizza::Command command = {Pizza::Americana, Pizza::Size::XXL};
     Kitchen::CookBook::Recipe recipe = {{"DOE"}, {"TOMATO"}, {"GRUYERE"}, {"STEAK"}};
 
     cr_assert_eq(tmp.getCookingTime(command), 2);
@@ -67,7 +67,7 @@ Test(Kitchen_CookBook, ValueOfSubject_Americana)
 Test(Kitchen_CookBook, ValueOfSubject_Fantasia)
 {
     Kitchen::CookBook tmp;
-    Pizza::Command command = {"Fantasia", Pizza::Size::XXL};
+    Pizza::Command command = {Pizza::Fantasia, Pizza::Size::XXL};
     Kitchen::CookBook::Recipe recipe = {{"DOE"}, {"TOMATO"}, {"EGGPLANT"}, {"GOAT CHEESE"}, {"CHIEF LOVE"}};
 
     cr_assert_eq(tmp.getCookingTime(command), 4);
@@ -80,7 +80,7 @@ Test(Kitchen_CookBook, ValueOfSubject_Fantasia)
 Test(Kitchen_CookBook, Value_Invalid)
 {
     Kitchen::CookBook tmp;
-    Pizza::Command command = {"Invalid", Pizza::Size::XXL};
+    Pizza::Command command = {static_cast<Pizza::Type>(567), Pizza::Size::XXL};
     Kitchen::CookBook::Recipe recipe = {{"DOE"}, {"TOMATO"}, {"EGGPLANT"}, {"GOAT CHEESE"}, {"CHIEF LOVE"}};
 
     cr_assert_throw(tmp.getCookingTime(command), Kitchen::Error);

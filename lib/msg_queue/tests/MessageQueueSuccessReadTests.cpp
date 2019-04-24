@@ -14,7 +14,7 @@ using namespace MsgQueue;
 
 Test(msg_queue_read_queue, check_cmd)
 {
-    MessageQueue msgq("./msg_queue_test", 90);
+    MessageQueue msgq(90, "./msg_queue_test");
     Message msg = {SEND, "TYPE=pizza\nNAME=negrita\nSIZE=XL"};
     BodyMsg body;
 
@@ -31,7 +31,7 @@ Test(msg_queue_read_queue, check_cmd)
 
 Test(msg_queue_read_queue, check_error)
 {
-    MessageQueue msgq("./msg_queue_test", 90);
+    MessageQueue msgq(90, "./msg_queue_test");
     Message msg = {SEND, "TYPE=error\nMSG=Error"};
     BodyMsg body;
 
@@ -48,7 +48,7 @@ Test(msg_queue_read_queue, check_error)
 
 Test(msg_queue_read_queue, check_shell)
 {
-    MessageQueue msgq("./msg_queue_test", 90);
+    MessageQueue msgq(90, "./msg_queue_test");
     Message msg = {SEND, "TYPE=shell\nINSTRUCTION=status"};
     BodyMsg body;
 
@@ -65,7 +65,7 @@ Test(msg_queue_read_queue, check_shell)
 
 Test(msg_queue_read_queue, check_resp)
 {
-    MessageQueue msgq("./msg_queue_test", 90);
+    MessageQueue msgq(90, "./msg_queue_test");
     Message msg = {SEND, "TYPE=resp\nAVAILABLE=true\nSLOT=2"};
     BodyMsg body;
 

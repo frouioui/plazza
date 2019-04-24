@@ -14,14 +14,14 @@ using namespace MsgQueue;
 
 Test(msg_queue_generate_key, valid_key)
 {
-    MessageQueue msgq("./msg_queue_test", 90);
+    MessageQueue msgq(90, "./msg_queue_test");
 
     cr_assert_gt(msgq.generateKey(), 0);
 }
 
 Test(msg_queue_create_queue, check_creation)
 {
-    MessageQueue msgq("./msg_queue_test", 90);
+    MessageQueue msgq(90, "./msg_queue_test");
 
     msgq.generateKey();
     msgq.createQueue();
@@ -30,7 +30,7 @@ Test(msg_queue_create_queue, check_creation)
 
 Test(msg_queue_create_queue, check_send)
 {
-    MessageQueue msgq("./msg_queue_test", 90);
+    MessageQueue msgq(90, "./msg_queue_test");
     Message msg = {SEND, "TYPE=pizza\nNAME=negrita\nSIZE=XL"};
     BodyMsg body;
 
@@ -47,7 +47,7 @@ Test(msg_queue_create_queue, check_send)
 
 Test(msg_queue_create_queue, check_receive)
 {
-    MessageQueue msgq("./msg_queue_test", 90);
+    MessageQueue msgq(90, "./msg_queue_test");
     Message msg = {SEND, "TYPE=pizza\nNAME=negrita\nSIZE=XL"};
     BodyMsg body;
 

@@ -16,7 +16,7 @@ MessageQueue::MessageQueue()
 {
 }
 
-MessageQueue::MessageQueue(const std::string &path, const int id) :
+MessageQueue::MessageQueue(const int id, const std::string &path) :
     _path(path), _id(id)
 {
 }
@@ -142,6 +142,8 @@ static void getType(const std::string &msgType, BodyMsg &body) throw()
         body.type = SHELL;
     if (getValue(msgType, '=') == "resp")
         body.type = RESP;
+    if (getValue(msgType, '=') == "delivery")
+        body.type = DELY;
 }
 
 static std::queue<std::string> &parseMessage(const std::string &msg, std::queue<std::string> &msgParse)
@@ -155,7 +157,7 @@ static std::queue<std::string> &parseMessage(const std::string &msg, std::queue<
     return msgParse;
 }
 
-static void getCommand(std::queue<std::string> &msgParse, BodyMsg &body)
+static void getPizza(std::queue<std::string> &msgParse, BodyMsg &body)
 {
     std::string name = msgParse.front();
 
@@ -168,6 +170,7 @@ static void getCommand(std::queue<std::string> &msgParse, BodyMsg &body)
     if (getKey(msgParse.front(), '=') != "SIZE")
         throw Error::DiversError{"Error with command value key", "getCommand"};
     body.value = getValue(msgParse.front(), '=');
+    std::cerr << body.value << std::endl;
     if (body.value != "S" && body.value != "M" && body.value != "L" &&
     body.value != "XL" && body.value != "XXL")
         throw Error::DiversError{"Error with command message", "getCommand"};
@@ -230,7 +233,10 @@ MessageQueue &MsgQueue::operator>>(MessageQueue &msgQueue, BodyMsg &body)
     msgParse.pop();
     switch (body.type) {
         case CMD:
-            getCommand(msgParse, body);
+            getPizza(msgParse, body);
+            break;
+        case DELY:
+            getPizza(msgParse, body);
             break;
         case ERROR:
             getError(msgParse, body);

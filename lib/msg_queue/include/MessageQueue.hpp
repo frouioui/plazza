@@ -29,7 +29,8 @@ namespace MsgQueue
         CMD,
         ERROR,
         SHELL,
-        RESP
+        RESP,
+        DELY
     };
 
     struct BodyMsg {
@@ -42,7 +43,7 @@ namespace MsgQueue
     {
     public:
         MessageQueue();
-        MessageQueue(const std::string &path, const int id);
+        MessageQueue(const int id, const std::string &path = "./msg_queue"); //TODO: set default path
         ~MessageQueue();
 
         // Direct call to C library function

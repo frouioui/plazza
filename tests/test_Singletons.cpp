@@ -30,7 +30,7 @@ Test(Singleton, CookBook)
     Singleton<Kitchen::CookBook>::get();
 }
 
-Test(Singleton, Stock)
+Test(Singleton, Stock__G__)
 {
     Singleton<Kitchen::Stock>::get();
 }

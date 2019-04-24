@@ -20,13 +20,13 @@ TestSuite(Kitchen_Stock,
 .description = "Test the Group: Kitchen_Stock",
 .timeout = 0);
 
-Test(Kitchen_Stock, Create)
+Test(Kitchen_Stock, Create__G__)
 {
     Kitchen::Stock tmp;
     tmp.setMultiplier(01);
 }
 
-Test(Kitchen_Stock, Recipe, .timeout=1)
+Test(Kitchen_Stock, Recipe__G__, .timeout=1)
 {
     Kitchen::Stock tmp;
     Kitchen::CookBook::Recipe recipe = {{"DOE"}};
@@ -39,7 +39,7 @@ Test(Kitchen_Stock, Recipe, .timeout=1)
     cr_assert_eq(tmp.getRecipe(recipe), false);
 }
 
-Test(Kitchen_Stock, Display, .init=cr_redirect_stdout)
+Test(Kitchen_Stock, Display__G__, .init=cr_redirect_stdout)
 {
     Kitchen::Stock tmp;
 
@@ -57,7 +57,7 @@ Test(Kitchen_Stock, Display, .init=cr_redirect_stdout)
 \tTOMATO: 5\n");
 }
 
-Test(Kitchen_Stock, Refill)
+Test(Kitchen_Stock, Refill__G__)
 {
     Kitchen::Stock tmp;
     Kitchen::CookBook::Recipe recipe = {{"DOE"}};

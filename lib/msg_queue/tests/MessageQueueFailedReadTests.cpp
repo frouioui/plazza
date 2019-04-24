@@ -25,7 +25,7 @@ Test(msg_queue_failed_read_queue, check_cmd)
     try {
         msgq >> body;
     } catch (MsgQueue::Error::DiversError &e) {
-        cr_assert_eq(e.what(), "Error with command message");
+        cr_assert_str_eq(e.what(), "Error with command message");
     }
 }
 
@@ -42,7 +42,7 @@ Test(msg_queue_failed_read_queue, check_error)
     try {
         msgq >> body;
     } catch (MsgQueue::Error::DiversError &e) {
-        cr_assert_eq(e.what(), "Error with error message key");
+        cr_assert_str_eq(e.what(), "Error with error message key");
     }
 }
 
@@ -59,7 +59,7 @@ Test(msg_queue_failed_read_queue, check_shell)
     try {
         msgq >> body;
     } catch (MsgQueue::Error::DiversError &e) {
-        cr_assert_eq(e.what(), "Error with status description");
+        cr_assert_str_eq(e.what(), "Error with status description");
     }
 }
 
@@ -76,6 +76,6 @@ Test(msg_queue_failed_read_queue, check_resp)
     try {
         msgq >> body;
     } catch (MsgQueue::Error::DiversError &e) {
-        cr_assert_eq(e.what(), "Error with shell description");
+        cr_assert_str_eq(e.what(), "Error with shell description");
     }
 }

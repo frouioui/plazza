@@ -18,7 +18,7 @@ TestSuite(Kitchen_Cook,
 .description = "Test the Group: Kitchen_Cook",
 .timeout = 3);
 
-Test(Kitchen_Cook, Create)
+Test(Kitchen_Cook, Create__G__)
 {
     Pizza::Command command = {"Regina", Pizza::Size::XXL};
     SafeThread<std::list<Pizza::Command *>> _toDo;
@@ -30,7 +30,7 @@ Test(Kitchen_Cook, Create)
     cook.Stop();
 }
 
-Test(Kitchen_Cook, Busy, .timeout=5)
+Test(Kitchen_Cook, Busy__G__, .timeout=5)
 {
     Pizza::Command command = {"Fantasia", Pizza::Size::XXL};
     SafeThread<std::list<Pizza::Command *>> _toDo;

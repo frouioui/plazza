@@ -76,7 +76,10 @@ std::vector<Pizza::Command> Shell::Shell::parsePizza() throw()
                     sizePizza = Pizza::XL;
                 else if (pizzaInfo[1].compare("XXL") == 0)
                     sizePizza = Pizza::XXL;
-                pizzas.push_back(Pizza::Command{_name: pizzaInfo[0], _size: sizePizza, _multiplier: std::atoi(pizzaInfo[2].substr(1).c_str())});
+                int times = std::atoi(pizzaInfo[2].substr(1).c_str());
+                for (int j = 0; j < times; j++) {
+                    pizzas.push_back(Pizza::Command{_name: pizzaInfo[0], _size: sizePizza});
+                }
             } else {
                 throw Error::InvalidCommand("The formating of your command is invalid", "parsePizza");
             }

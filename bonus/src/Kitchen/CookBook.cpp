@@ -47,13 +47,7 @@ void Kitchen::CookBook::setMultiplier(const float mult)
 
 Kitchen::CookBook::CookingTime Kitchen::CookBook::getCookingTime(Pizza::Command &command)
 {
-    std::string pizza_name = "Invalid";
-    try {
-        pizza_name = Pizza::getStringFromType(command._name);
-    }
-    catch(const Pizza::Error& e) {
-        throw Kitchen::Error(e.what());
-    }
+    std::string pizza_name = command._name;
     for (auto c = pizza_name.begin(); c != pizza_name.end(); c++)
         *c = toupper(*c);
     if (_cookingTime.count(pizza_name) == 0)
@@ -63,13 +57,7 @@ Kitchen::CookBook::CookingTime Kitchen::CookBook::getCookingTime(Pizza::Command 
 
 Kitchen::CookBook::Recipe &Kitchen::CookBook::getRecipe(Pizza::Command &command)
 {
-    std::string pizza_name = "Invalid";
-    try {
-        pizza_name = Pizza::getStringFromType(command._name);
-    }
-    catch(const Pizza::Error& e) {
-        throw Kitchen::Error(e.what());
-    }
+    std::string pizza_name = command._name;
     for (auto c = pizza_name.begin(); c != pizza_name.end(); c++)
         *c = toupper(*c);
     if (_recipes.count(pizza_name) == 0)

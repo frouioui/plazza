@@ -9,10 +9,14 @@
 
 plazza.name			=	plazza
 
-plazza.srcs			=	src/reception/Error.cpp			\
+plazza.srcs			=	src/Kitchen/Kitchen.cpp			\
+						src/reception/Error.cpp			\
 						src/reception/Reception.cpp		\
 						src/reception/Shell.cpp			\
-
+						src/Kitchen/Cook.cpp			\
+						src/Kitchen/Stock.cpp			\
+						src/Kitchen/CookBook.cpp		\
+						src/command/command.cpp			\
 
 plazza.main 		=	src/main.cpp
 
@@ -29,6 +33,7 @@ LIBS				=	lib/logger/liblogger.a							\
 						lib/configuration_reader/libconfig_reader.a		\
 						lib/string_parser/libstring_parser.a			\
 						lib/msg_queue/libmsg_queue.a					\
+						lib/fork/libfork.a								\
 
 # DOCS
 
@@ -40,15 +45,21 @@ DOXYFILE			=	Plazza
 
 unit_tests.name		=	unit_tests_$(plazza.name)
 
-unit_tests.srcs		=	$(plazza.srcs)						\
-						tests/reception/SetValuesTest.cpp	\
+unit_tests.srcs		=	$(plazza.srcs)							\
 
-unit_tests.main 	=	tests/criterion_main.cpp
+unit_tests.main 	=	tests/criterion_main.cpp				\
+						tests/test_Kitchen_CookBook.cpp			\
+						tests/test_Singletons.cpp				\
+						tests/test_Stock_Kitchen.cpp			\
+						tests/test_SafeThread.cpp				\
+						tests/test_Kitchen_Cook.cpp				\
+						tests/reception/SetValuesTest.cpp		\
+						tests/command/test_command_operator.cpp	\
 
 unit_tests.objs		=	$(addprefix $(dir $(BUILD_DIR)$(unit_tests.name)/), $(unit_tests.srcs:.cpp=.o))	\
 						$(addprefix $(dir $(BUILD_DIR)$(unit_tests.name)/), $(unit_tests.main:.cpp=.o))
 
-unit_tests.cxxflags	=	-fprofile-arcs -ftest-coverage
+unit_tests.cxxflags	=	-fprofile-arcs -ftest-coverage -g3
 
 unit_tests.ldflags	=	-lcriterion -lgcov
 
@@ -75,7 +86,7 @@ HEADERS				=	-I ./include
 
 CXXFLAGS			=	-Wall -Wextra -std=c++14 $(HEADERS)
 
-LDFLAGS				=
+LDFLAGS				=	-lpthread
 
 all: $(plazza.name)
 

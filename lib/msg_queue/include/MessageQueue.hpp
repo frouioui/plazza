@@ -22,7 +22,20 @@ namespace MsgQueue
 
     struct Message {
         MsgType type;
-        std::string msg;
+        char msg[BUFSIZ];
+    };
+
+    enum BodyType {
+        CMD,
+        ERROR,
+        SHELL,
+        RESP
+    };
+
+    struct BodyMsg {
+        BodyType type;
+        std::string descrpt;
+        std::string value;
     };
 
     class MessageQueue
@@ -50,6 +63,7 @@ namespace MsgQueue
         Message getLastReceived() const noexcept;
         void setMsgToSend(const Message &msg) noexcept;
 
+
     private:
         std::string _path;
         int _id;
@@ -59,6 +73,8 @@ namespace MsgQueue
         Message _msgReceive;
     };
 
+    MessageQueue &operator>>(MessageQueue &msgQueue, BodyMsg &body);
+    MessageQueue &operator<<(MessageQueue &msgQueue, Message &msg);
 } // MsgQueue
 
 

@@ -16,7 +16,7 @@
     {
       "label": "make debug",
       "type": "shell",
-      "command": "make fclean && make debug",
+      "command": "make debug",
       "group": {
         "kind": "build",
         "isDefault": true
@@ -77,7 +77,10 @@
       "label": "Fclean All",
       "type": "shell",
       "command": "make fclean",
-      "group": "none",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
       "problemMatcher": []
     },
     {

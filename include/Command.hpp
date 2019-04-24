@@ -9,6 +9,7 @@
     #define COMMAND_HPP_
 
     #include <string>
+    #include "MessageQueue.hpp"
 
 /**
  * \namespace Pizza
@@ -38,6 +39,8 @@ namespace Pizza {
         const Pizza::Type _name;/*<! Name of the Pizza */
         const Pizza::Size _size;/*!< Size of the Pizza */
     };
+
+    MsgQueue::Message &operator<<(MsgQueue::Message &msg, Command &cmd);
 
 };
 

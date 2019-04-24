@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.h": "c",
         "array": "cpp",
         "*.tcc": "cpp",
         "bitset": "cpp",
@@ -40,5 +41,13 @@
         "utility": "cpp",
         "string": "cpp",
         "queue": "cpp"
+        "chrono": "cpp",
+        "condition_variable": "cpp",
+        "list": "cpp",
+        "mutex": "cpp",
+        "ratio": "cpp",
+        "thread": "cpp",
+        "algorithm": "cpp",
+        "string": "cpp"
     }
 }

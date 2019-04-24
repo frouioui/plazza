@@ -65,21 +65,3 @@ Test(msg_queue_failed_read_queue, check_shell)
     // }
     msgq.destroyQueue();
 }
-
-Test(msg_queue_failed_read_queue, check_resp)
-{
-    MessageQueue msgq("./msg_queue_test", 89);
-    Message msg = {SEND, "TYPE=resp\nAVAILABLE=ready\nSLOT=2"};
-    BodyMsg body;
-
-    msgq.generateKey();
-    msgq.createQueue();
-    msgq.setMsgToSend(msg);
-    msgq.sendMessage();
-    // try {
-    //     msgq >> body;
-    // } catch (MsgQueue::Error::DiversError &e) {
-    //     cr_assert_eq(e.what(), "Error with shell description");
-    // }
-    msgq.destroyQueue();
-}

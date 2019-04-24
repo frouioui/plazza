@@ -155,7 +155,7 @@ static std::queue<std::string> &parseMessage(const std::string &msg, std::queue<
     return msgParse;
 }
 
-static void getCommand(std::queue<std::string> &msgParse, BodyMsg &body) throw()
+static void getCommand(std::queue<std::string> &msgParse, BodyMsg &body)
 {
     std::string name = msgParse.front();
 
@@ -173,7 +173,7 @@ static void getCommand(std::queue<std::string> &msgParse, BodyMsg &body) throw()
         throw Error::DiversError{"Error with command message", "getCommand"};
 }
 
-static void getError(std::queue<std::string> &msgParse, BodyMsg &body) throw()
+static void getError(std::queue<std::string> &msgParse, BodyMsg &body)
 {
     std::string msg = msgParse.front();
 
@@ -186,7 +186,7 @@ static void getError(std::queue<std::string> &msgParse, BodyMsg &body) throw()
         throw Error::DiversError{"Error with error message", "getError"};
 }
 
-static void getShell(std::queue<std::string> &msgParse, BodyMsg &body) throw()
+static void getShell(std::queue<std::string> &msgParse, BodyMsg &body)
 {
     std::string instruction = msgParse.front();
 
@@ -201,7 +201,7 @@ static void getShell(std::queue<std::string> &msgParse, BodyMsg &body) throw()
         throw Error::DiversError{"Error with shell message", "getShell"};
 }
 
-static void getStatus(std::queue<std::string> &msgParse, BodyMsg &body) throw()
+static void getStatus(std::queue<std::string> &msgParse, BodyMsg &body)
 {
     std::string name = msgParse.front();
 
@@ -218,7 +218,7 @@ static void getStatus(std::queue<std::string> &msgParse, BodyMsg &body) throw()
     body.value = getValue(msgParse.front(), '=');
 }
 
-MessageQueue &MsgQueue::operator>>(MessageQueue &msgQueue, BodyMsg &body) throw()
+MessageQueue &MsgQueue::operator>>(MessageQueue &msgQueue, BodyMsg &body)
 {
     std::queue<std::string> msgParse;
     Message revcMsg;

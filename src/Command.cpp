@@ -98,7 +98,7 @@ MsgQueue::Message &Pizza::operator<<(MsgQueue::Message &msg, Pizza::Command &cmd
     pizzamsg.append(Pizza::getStringFromType(cmd._name));
     pizzamsg.append("\nSIZE=");
     pizzamsg.append(getStringFromSize(cmd._size));
-    msg.type = MsgQueue::KITCHEN;
+    msg.type = MsgQueue::UNDEFINED;
     for (unsigned int i = 0; i < pizzamsg.size(); i++) {
         msg.msg[i] = pizzamsg[i];
     }

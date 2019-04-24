@@ -6,7 +6,7 @@
     </testcase>
   </testsuite>
   <testsuite name="config_reader_getConfig" tests="6" failures="0" errors="0" disabled="0" skipped="0" time="0.002">
-    <testcase name="simple_config" assertions="2" status="PASSED" time="0.001">
+    <testcase name="simple_config" assertions="2" status="PASSED" time="0.000">
     </testcase>
     <testcase name="multiple_line" assertions="3" status="PASSED" time="0.001">
     </testcase>

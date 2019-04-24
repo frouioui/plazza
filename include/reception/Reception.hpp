@@ -9,9 +9,20 @@
 #define _RECEPTION_HPP
 
 #include "reception/Shell.hpp"
+#include "Kitchen/Kitchen.hpp"
+#include "MessageQueue.hpp"
 
 namespace ReceptionArea
 {
+
+    using OneKitchen = Kitchen::Kitchen;
+
+    struct KichenManager {
+        OneKitchen kitchen;
+        MsgQueue::MessageQueue msgq;
+    };
+
+    using KitchenArray = std::vector<KichenManager>;
 
     class Reception
     {
@@ -27,6 +38,11 @@ namespace ReceptionArea
         unsigned int    _nbCook;
         long            _replaceTime;
         Shell::Shell    _shell;
+
+        KitchenArray    _kitchens;
+
+
+        void sendStatus();
     };
 
 } // ReceptionArea

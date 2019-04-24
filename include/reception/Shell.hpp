@@ -21,6 +21,7 @@ namespace ReceptionArea
         enum InputType {
             OTHER,
             QUIT,
+            STATUS,
             HELPER
         };
 

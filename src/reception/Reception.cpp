@@ -68,6 +68,18 @@ void Reception::launch() throw()
             (void)parsePizza;
         } else if (inputType == ReceptionArea::Shell::HELPER) {
             // TODO: Display helper in the shell
+        } else if (inputType == ReceptionArea::Shell::STATUS) {
+            sendStatus();
         }
+    }
+}
+
+void Reception::sendStatus()
+{
+    MsgQueue::Message msg = {MsgQueue::SEND, "TYPE=shell\nINSTRUCTION=status"};
+
+    for (unsigned int i = 0; i < _kitchens.size(); i++) {
+        _kitchens[i].msgq.setMsgToSend(msg);
+        _kitchens[i].msgq.sendMessage();
     }
 }

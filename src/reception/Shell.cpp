@@ -40,6 +40,8 @@ Shell::InputType Shell::Shell::readLine() noexcept
         return QUIT;
     } else if (_lastLine.compare("help") == 0) {
         return HELPER;
+    } else if (_lastLine.compare("status") == 0) {
+        return STATUS;
     }
     return OTHER;
 }

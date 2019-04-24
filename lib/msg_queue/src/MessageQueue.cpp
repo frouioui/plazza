@@ -160,11 +160,13 @@ static void getCommand(std::queue<std::string> &msgParse, BodyMsg &body) throw()
     std::string name = msgParse.front();
 
     if (getKey(name, '=') != "NAME")
-        throw Error::DiversError{"Error with command message", "getCommand"};
+        throw Error::DiversError{"Error with command description key", "getCommand"};
     body.descrpt = getValue(name, '=');
     msgParse.pop();
     if (msgParse.empty())
         throw Error::DiversError{"Error with command message", "getCommand"};
+    if (getKey(msgParse.front(), '=') != "SIZE")
+        throw Error::DiversError{"Error with command value key", "getCommand"};
     body.value = getValue(msgParse.front(), '=');
     if (body.value != "S" && body.value != "M" && body.value != "L" &&
     body.value != "XL" && body.value != "XXL")
@@ -176,9 +178,9 @@ static void getError(std::queue<std::string> &msgParse, BodyMsg &body) throw()
     std::string msg = msgParse.front();
 
     if (getKey(msg, '=') != "MSG")
-        throw Error::DiversError{"Error with error message", "getError"};
+        throw Error::DiversError{"Error with error message key", "getError"};
     body.descrpt = getValue(msg, '=');
-    body.value = -1;
+    body.value = "-1";
     msgParse.pop();
     if (!msgParse.empty())
         throw Error::DiversError{"Error with error message", "getError"};
@@ -189,9 +191,11 @@ static void getShell(std::queue<std::string> &msgParse, BodyMsg &body) throw()
     std::string instruction = msgParse.front();
 
     if (getKey(instruction, '=') != "INSTRUCTION")
-        throw Error::DiversError{"Error with shell message", "getShell"};
+        throw Error::DiversError{"Error with shell description key", "getShell"};
     body.descrpt = getValue(instruction, '=');
-    body.value = -1;
+    if (body.descrpt != "status" && body.descrpt != "available")
+        throw Error::DiversError{"Error with shell description", "getShell"};
+    body.value = "-1";
     msgParse.pop();
     if (!msgParse.empty())
         throw Error::DiversError{"Error with shell message", "getShell"};
@@ -202,17 +206,19 @@ static void getStatus(std::queue<std::string> &msgParse, BodyMsg &body) throw()
     std::string name = msgParse.front();
 
     if (getKey(name, '=') != "AVAILABLE")
-        throw Error::DiversError{"Error with status message", "getStatus"};
+        throw Error::DiversError{"Error with status description key", "getStatus"};
     body.descrpt = getValue(name, '=');
+    if (body.descrpt != "true" && body.descrpt != "false")
+        throw Error::DiversError{"Error with status description", "getStatus"};
     msgParse.pop();
     if (msgParse.empty())
         throw Error::DiversError{"Error with status message", "getStatus"};
+    if (getKey(msgParse.front(), '=') != "SLOT")
+        throw Error::DiversError{"Error with status value key", "getStatus"};
     body.value = getValue(msgParse.front(), '=');
-    if (body.value != "true" && body.value != "false")
-        throw Error::DiversError{"Error with status message", "getStatus"};
 }
 
-MessageQueue &MsgQueue::operator>>(MessageQueue &msgQueue, BodyMsg &body)
+MessageQueue &MsgQueue::operator>>(MessageQueue &msgQueue, BodyMsg &body) throw()
 {
     std::queue<std::string> msgParse;
     Message revcMsg;

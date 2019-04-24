@@ -73,7 +73,7 @@ namespace MsgQueue
         Message _msgReceive;
     };
 
-    MessageQueue &operator>>(MessageQueue &msgQueue, BodyMsg &body);
+    MessageQueue &operator>>(MessageQueue &msgQueue, BodyMsg &body) throw();
 } // MsgQueue
 
 

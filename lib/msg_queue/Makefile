@@ -27,6 +27,8 @@ SRC				=	$(SRC_DIRECTORY)/MessageQueue.cpp					\
 
 # Test files
 TEST_SRC		=	$(TEST_DIRECTORY)/MessageQueueTests.cpp				\
+					$(TEST_DIRECTORY)/MessageQueueFailedReadTests.cpp	\
+					$(TEST_DIRECTORY)/MessageQueueSuccessReadTests.cpp	\
 
 # Rules
 all: $(LIBRARY_NAME)

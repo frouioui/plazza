@@ -26,19 +26,3 @@ Test(msg_queue_create_queue, check_creation)
     msgq.generateKey();
     msgq.createQueue();
 }
-
-Test(msg_queue_create_queue, check_send)
-{
-    MessageQueue msgq("./msg_queue_test", 90);
-    Message msg = {SEND, "TYPE=pizza\nNAME=negrita\nSIZE=XL"};
-    BodyMsg body;
-
-    msgq.generateKey();
-    msgq.createQueue();
-    msgq.setMsgToSend(msg);
-    msgq.sendMessage();
-    msgq >> body;
-    cr_assert_eq(body.type, BodyType::CMD);
-    cr_assert_eq(body.descrpt, "negrita");
-    cr_assert_eq(body.value, "XL");
-}

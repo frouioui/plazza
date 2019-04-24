@@ -86,6 +86,8 @@ namespace Kitchen {
              */
             void startCooking() noexcept;
 
+            bool CookisCooking(void) noexcept;
+
             /**
              * \brief Stop Cook thread
              *

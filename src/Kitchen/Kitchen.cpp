@@ -122,20 +122,31 @@ void Kitchen::Kitchen::displayStatus() const noexcept
     Singleton<Stock>::get().displayStock();
 }
 
+bool Kitchen::Kitchen::CookisCooking(void) noexcept
+{
+    for (auto it = _cooks.begin();
+    it != _cooks.end();
+    it++) {
+        if (it->isBusy())
+            return true;
+    }
+    return false;
+}
+
 bool Kitchen::Kitchen::CheckAfkForTooLong(void)
 {
     bool res = false;
     _toDo.lock();
     _finished.lock();
-    if (!_toDo->size() && !_finished->size()) {
+    if (!_toDo->size() && !_finished->size() && !this->CookisCooking()) {
         auto now = std::chrono::system_clock::now();
         auto elapsedTime = now - _time;
         if (elapsedTime < std::chrono::seconds(5))
             res = true;
     } else
         _time = std::chrono::system_clock::now();
-    _finished.unlock();
     _toDo.unlock();
+    _finished.unlock();
     return res;
 }
 

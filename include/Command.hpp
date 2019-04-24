@@ -47,13 +47,13 @@ namespace Pizza {
         const Pizza::Size _size;/*!< Size of the Pizza */
     };
 
-    Pizza::Type getTypeFromString(const std::string &str);
+    Type getTypeFromString(const std::string &str);
 
     bool isAType(std::string &str);
 
     bool isASize(std::string &str);
 
-    Pizza::Size getSizeFromString(const std::string &str);
+    Size getSizeFromString(const std::string &str);
 
     std::string getStringFromType(const Pizza::Type &type);
     std::string getStringFromSize(const Pizza::Size &size);

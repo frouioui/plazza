@@ -15,7 +15,8 @@
 namespace MsgQueue
 {
 
-    enum MsgType {
+    enum MsgType: long {
+        UNDEFINED = 0,
         KITCHEN = 1,
         RECEPTION = 2
     };
@@ -64,6 +65,7 @@ namespace MsgQueue
         Message getLastReceived() const noexcept;
         void setMsgToSend(const Message &msg) noexcept;
         void setMsgType(MsgType type) noexcept;
+        MsgType getMsgTypeToSend() const noexcept;
 
     private:
         std::string _path;

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Tests compiled with Criterion v2.3.2 -->
-<testsuites name="Criterion Tests" tests="21" failures="0" errors="0" disabled="0">
+<testsuites name="Criterion Tests" tests="23" failures="0" errors="0" disabled="0">
   <testsuite name="setValues" tests="2" failures="0" errors="0" disabled="0" skipped="0" time="0.000">
     <testcase name="valid_values" assertions="0" status="PASSED" time="0.000">
     </testcase>
     <testcase name="valid_multiplier" assertions="0" status="PASSED" time="0.000">
     </testcase>
   </testsuite>
-  <testsuite name="Singleton" tests="3" failures="0" errors="0" disabled="0" skipped="0" time="0.000">
+  <testsuite name="Singleton" tests="3" failures="0" errors="0" disabled="0" skipped="0" time="0.001">
     <testcase name="int" assertions="0" status="PASSED" time="0.000">
     </testcase>
     <testcase name="Stock__G__" assertions="0" status="PASSED" time="0.000">
@@ -16,7 +16,7 @@
     </testcase>
   </testsuite>
   <testsuite name="SafeThread" tests="4" failures="0" errors="0" disabled="0" skipped="0" time="0.002">
-    <testcase name="trylock__G__" assertions="2" status="PASSED" time="0.000">
+    <testcase name="trylock__G__" assertions="2" status="PASSED" time="0.001">
     </testcase>
     <testcase name="getlock__G__" assertions="0" status="PASSED" time="0.000">
     </testcase>
@@ -35,7 +35,7 @@
     <testcase name="Create__G__" assertions="0" status="PASSED" time="0.000">
     </testcase>
   </testsuite>
-  <testsuite name="Kitchen_CookBook" tests="6" failures="0" errors="0" disabled="0" skipped="0" time="0.006">
+  <testsuite name="Kitchen_CookBook" tests="6" failures="0" errors="0" disabled="0" skipped="0" time="0.004">
     <testcase name="construct" assertions="0" status="PASSED" time="0.000">
     </testcase>
     <testcase name="Value_Invalid" assertions="0" status="PASSED" time="0.000">
@@ -44,7 +44,7 @@
     </testcase>
     <testcase name="ValueOfSubject_Margarita" assertions="5" status="PASSED" time="0.001">
     </testcase>
-    <testcase name="ValueOfSubject_Fantasia" assertions="7" status="PASSED" time="0.002">
+    <testcase name="ValueOfSubject_Fantasia" assertions="7" status="PASSED" time="0.001">
     </testcase>
     <testcase name="ValueOfSubject_Americana" assertions="6" status="PASSED" time="0.002">
     </testcase>
@@ -53,6 +53,12 @@
     <testcase name="Create__G__" assertions="0" status="PASSED" time="0.001">
     </testcase>
     <testcase name="Busy__G__" assertions="1" status="PASSED" time="4.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="Command_operator" tests="2" failures="0" errors="0" disabled="0" skipped="0" time="0.001">
+    <testcase name="test_simple_command" assertions="2" status="PASSED" time="0.000">
+    </testcase>
+    <testcase name="send_command_to_queue" assertions="3" status="PASSED" time="0.000">
     </testcase>
   </testsuite>
 </testsuites>

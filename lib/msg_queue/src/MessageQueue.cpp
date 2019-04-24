@@ -30,6 +30,14 @@ void MessageQueue::setMsgType(MsgType type) noexcept
     _msgType = type;
 }
 
+MsgType MessageQueue::getMsgTypeToSend() const noexcept
+{
+    if (_msgType == RECEPTION)
+        return KITCHEN;
+    else
+        return RECEPTION;
+}
+
 Message MessageQueue::getLastReceived() const noexcept
 {
     return _msgReceive;
@@ -37,9 +45,6 @@ Message MessageQueue::getLastReceived() const noexcept
 
 void MessageQueue::setMsgToSend(const Message &msg) noexcept
 {
-    // if (msg.type != SEND) {
-        // PROBLEM: Do we need to catch the error here?
-    // }
     _msgSend = msg;
 }
 
@@ -175,7 +180,6 @@ static void getPizza(std::queue<std::string> &msgParse, BodyMsg &body)
     if (getKey(msgParse.front(), '=') != "SIZE")
         throw Error::DiversError{"Error with command value key", "getCommand"};
     body.value = getValue(msgParse.front(), '=');
-    std::cerr << body.value << std::endl;
     if (body.value != "S" && body.value != "M" && body.value != "L" &&
     body.value != "XL" && body.value != "XXL")
         throw Error::DiversError{"Error with command message", "getCommand"};
@@ -260,6 +264,11 @@ MessageQueue &MsgQueue::operator>>(MessageQueue &msgQueue, BodyMsg &body)
 
 MessageQueue &MsgQueue::operator<<(MessageQueue &msgQueue, Message &msg)
 {
+    msg.type = msgQueue.getMsgTypeToSend();
+    if (msg.type ==KITCHEN)
+        std::cout << "KITCHEN" << std::endl;
+    else
+        std::cout << "RECEPTION" << std::endl;
     msgQueue.setMsgToSend(msg);
     msgQueue.sendMessage();
     return msgQueue;

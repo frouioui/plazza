@@ -25,7 +25,7 @@ Test(Command_operator, test_simple_command)
 
     msg << cmd;
     cr_assert_str_eq(msg.msg, "TYPE=pizza\nNAME=regina\nSIZE=L");
-    cr_assert_eq(msg.type, MsgQueue::SEND);
+    cr_assert_eq(msg.type, MsgQueue::UNDEFINED);
 }
 
 Test(Command_operator, send_command_to_queue)
@@ -39,6 +39,7 @@ Test(Command_operator, send_command_to_queue)
     msgq.createQueue();
     msg << cmd;
     msgq << msg;
+    msgq.setMsgType(MsgQueue::KITCHEN);
     msgq >> body;
     cr_assert_eq(body.type, MsgQueue::BodyType::CMD);
     cr_assert_eq(body.descrpt, "regina");

@@ -31,7 +31,7 @@ Test(msg_queue_create_queue, check_creation)
 Test(msg_queue_create_queue, check_send)
 {
     MessageQueue msgq(90, "./msg_queue_test");
-    Message msg = {RECEPTION, "TYPE=pizza\nNAME=negrita\nSIZE=XL"};
+    Message msg = {MsgQueue::RECEPTION, "TYPE=pizza\nNAME=negrita\nSIZE=XL"};
     BodyMsg body;
 
     msgq.generateKey();
@@ -48,12 +48,13 @@ Test(msg_queue_create_queue, check_send)
 Test(msg_queue_create_queue, check_receive)
 {
     MessageQueue msgq(90, "./msg_queue_test");
-    Message msg = {RECEPTION, "TYPE=pizza\nNAME=negrita\nSIZE=XL"};
+    Message msg = {MsgQueue::KITCHEN, "TYPE=pizza\nNAME=negrita\nSIZE=XL"};
     BodyMsg body;
 
     msgq.generateKey();
     msgq.createQueue();
     msgq << msg;
+    msgq.setMsgType(MsgQueue::KITCHEN);
     msgq >> body;
     cr_assert_eq(body.type, BodyType::CMD);
     cr_assert_eq(body.descrpt, "negrita");

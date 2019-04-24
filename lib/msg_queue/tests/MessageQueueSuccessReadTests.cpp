@@ -15,7 +15,7 @@ using namespace MsgQueue;
 Test(msg_queue_read_queue, check_cmd)
 {
     MessageQueue msgq(90, "./msg_queue_test");
-    Message msg = {RECEPTION, "TYPE=pizza\nNAME=negrita\nSIZE=XL"};
+    Message msg = {MsgQueue::RECEPTION, "TYPE=pizza\nNAME=negrita\nSIZE=XL"};
     BodyMsg body;
 
     msgq.generateKey();
@@ -32,7 +32,7 @@ Test(msg_queue_read_queue, check_cmd)
 Test(msg_queue_read_queue, check_error)
 {
     MessageQueue msgq(90, "./msg_queue_test");
-    Message msg = {RECEPTION, "TYPE=error\nMSG=Error"};
+    Message msg = {MsgQueue::RECEPTION, "TYPE=error\nMSG=Error"};
     BodyMsg body;
 
     msgq.generateKey();
@@ -49,7 +49,7 @@ Test(msg_queue_read_queue, check_error)
 Test(msg_queue_read_queue, check_shell)
 {
     MessageQueue msgq(90, "./msg_queue_test");
-    Message msg = {RECEPTION, "TYPE=shell\nINSTRUCTION=status"};
+    Message msg = {MsgQueue::RECEPTION, "TYPE=shell\nINSTRUCTION=status"};
     BodyMsg body;
 
     msgq.generateKey();
@@ -66,7 +66,7 @@ Test(msg_queue_read_queue, check_shell)
 Test(msg_queue_read_queue, check_resp)
 {
     MessageQueue msgq(90, "./msg_queue_test");
-    Message msg = {RECEPTION, "TYPE=resp\nAVAILABLE=true\nSLOT=2"};
+    Message msg = {MsgQueue::RECEPTION, "TYPE=resp\nAVAILABLE=true\nSLOT=2"};
     BodyMsg body;
 
     msgq.generateKey();

@@ -15,7 +15,7 @@ using namespace MsgQueue;
 Test(msg_queue_failed_read_queue, check_cmd)
 {
     MessageQueue msgq(90, "./msg_queue_test");
-    Message msg = {RECEPTION, "TYPE=pizza\nNAME=negrita\nSIZE=R"};
+    Message msg = {MsgQueue::RECEPTION, "TYPE=pizza\nNAME=negrita\nSIZE=R"};
     BodyMsg body;
 
     msgq.generateKey();
@@ -33,7 +33,7 @@ Test(msg_queue_failed_read_queue, check_cmd)
 Test(msg_queue_failed_read_queue, check_error)
 {
     MessageQueue msgq(90, "./msg_queue_test");
-    Message msg = {RECEPTION, "TYPE=error\nNAME=Error"};
+    Message msg = {MsgQueue::RECEPTION, "TYPE=error\nNAME=Error"};
     BodyMsg body;
 
     msgq.generateKey();
@@ -51,7 +51,7 @@ Test(msg_queue_failed_read_queue, check_error)
 Test(msg_queue_failed_read_queue, check_shell)
 {
     MessageQueue msgq(90, "./msg_queue_test");
-    Message msg = {RECEPTION, "TYPE=shell\nINSTRUCTION=send"};
+    Message msg = {MsgQueue::RECEPTION, "TYPE=shell\nINSTRUCTION=send"};
     BodyMsg body;
 
     msgq.generateKey();

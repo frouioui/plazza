@@ -17,12 +17,17 @@ MessageQueue::MessageQueue()
 }
 
 MessageQueue::MessageQueue(const int id, const std::string &path) :
-    _path(path), _id(id)
+    _path(path), _id(id), _msgType(RECEPTION)
 {
 }
 
 MessageQueue::~MessageQueue()
 {
+}
+
+void MessageQueue::setMsgType(MsgType type) noexcept
+{
+    _msgType = type;
 }
 
 Message MessageQueue::getLastReceived() const noexcept
@@ -32,9 +37,9 @@ Message MessageQueue::getLastReceived() const noexcept
 
 void MessageQueue::setMsgToSend(const Message &msg) noexcept
 {
-    if (msg.type != SEND) {
+    // if (msg.type != SEND) {
         // PROBLEM: Do we need to catch the error here?
-    }
+    // }
     _msgSend = msg;
 }
 
@@ -88,7 +93,7 @@ int MessageQueue::sendMessage() throw()
 
 ssize_t MessageQueue::receiveMessage(Message &msg, const int id) const throw()
 {
-    ssize_t bytes = msgrcv(id, &msg, sizeof(msg.msg), 0, 0);
+    ssize_t bytes = msgrcv(id, &msg, sizeof(msg.msg), _msgType, 0);
 
     if (bytes == -1 || bytes != sizeof(msg.msg)) {
         throw Error::DiversError{"Error with msgrcv", "receiveMessage"};

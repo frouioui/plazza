@@ -9,13 +9,14 @@
 #include "Kitchen/Kitchen.hpp"
 #include "Kitchen/Stock.hpp"
 
-Kitchen::Kitchen::Kitchen(float multiplier, size_t nbCooks, long timeReplace, MsgQueue::MessageQueue msgQueue) :
+Kitchen::Kitchen::Kitchen(float multiplier, size_t nbCooks, long timeReplace, MsgQueue::MessageQueue &msgQueue) :
 _multiplier(multiplier), _nbCooks(nbCooks), _timeReplace(timeReplace),
 _msgQueue(msgQueue), _maxPizza(2 * nbCooks), _saturated(false),
 _time(std::chrono::system_clock::now())
 {
     Singleton<CookBook>::get().setMultiplier(multiplier);
     Singleton<Stock>::get().setMultiplier(timeReplace);
+    _msgQueue.setMsgType(MsgQueue::KITCHEN);
     startCooking();
 }
 
@@ -24,31 +25,86 @@ Kitchen::Kitchen::~Kitchen()
     stopCooking();
 }
 
+void Kitchen::Kitchen::stopCooking() noexcept
+{
+    for (auto &thread : _cooks)
+        thread.Stop();
+    std::exit(0);
+}
+
 void Kitchen::Kitchen::startCooking() noexcept
 {
     MsgQueue::BodyMsg request;
-    // MsgQueue::Message response;
+    MsgQueue::Message response;
 
     for (size_t i = 0; i < _nbCooks; i += 1)
         _cooks.emplace_back(_toDo, _finished);
 
     while (CheckAfkForTooLong()) {
         _msgQueue >> request;
-        // if (request.type == MsgQueue::SHELL && request.descrpt == "available") {
-        //     answerReception(request, response);
-        //     _msgQueue << response;
-        // } else {
-        //     executeRequest(request);
-        // }
+        if (request.type == MsgQueue::SHELL && request.descrpt == "available") {
+            getFreeSlot(response);
+            _msgQueue << response;
+        } else {
+            executeRequest(request);
+        }
+        sendReadyOrder();
     }
     stopCooking();
 }
 
-void Kitchen::Kitchen::stopCooking() noexcept
+static void convPizzaToMsg(MsgQueue::Message &msg, const Pizza::Command &pizza)
 {
-    for (auto &thread : _cooks)
-        thread.Stop();
-    std::exit(0);
+    std::string resp = "TYPE=delivery\nNAME=" + Pizza::getStringFromType(pizza._name);
+    std::string size = "\nSIZE=" + Pizza::getStringFromSize(pizza._size);
+
+    msg.type = MsgQueue::RECEPTION;
+    resp += size;
+    for (size_t i = 0; i < resp.size(); i++) {
+        msg.msg[i] = resp[i];
+    }
+}
+
+void Kitchen::Kitchen::getFreeSlot(MsgQueue::Message &response)
+{
+    std::string resp = "TYPE=resp\nALAIVABLE=";
+    std::string slot = "\nSLOT=" + std::to_string(calculSaturation());
+
+    response.type = MsgQueue::RECEPTION;
+    if (_saturated == true)
+        resp += "true";
+    else
+        resp += "false";
+    resp += slot;
+    for (size_t i = 0; i < resp.size(); i++) {
+        response.msg[i] = resp[i];
+    }
+}
+
+void Kitchen::Kitchen::executeRequest(const MsgQueue::BodyMsg &request) noexcept
+{
+    switch (request.type) {
+        case MsgQueue::CMD:
+            addOrder(request);
+            break;
+        case MsgQueue::SHELL:
+            displayStatus();
+            break;
+        default:
+            break;
+    }
+}
+
+void Kitchen::Kitchen::sendReadyOrder() noexcept
+{
+    MsgQueue::Message msg;
+
+    while (_finished->empty()) {
+        Pizza::Command *pizza = _finished->front();
+        _finished->pop_front();
+        convPizzaToMsg(msg, *pizza);
+        _msgQueue << msg;
+    }
 }
 
 void Kitchen::Kitchen::displayStatus() const noexcept
@@ -83,8 +139,19 @@ bool Kitchen::Kitchen::CheckAfkForTooLong(void)
     return res;
 }
 
-void Kitchen::Kitchen::addOrder(Pizza::Command &pizza) noexcept
+static Pizza::Command convMsgToPizza(const MsgQueue::BodyMsg &msg)
 {
+    Pizza::Type name = Pizza::getTypeFromString(msg.descrpt);
+    Pizza::Size size = Pizza::getSizeFromString(msg.value);
+    Pizza::Command pizza = {name, size};
+
+    return pizza;
+}
+
+void Kitchen::Kitchen::addOrder(const MsgQueue::BodyMsg &msg) noexcept
+{
+    Pizza::Command pizza = convMsgToPizza(msg);
+
     _toDo.lock();
     _toDo->push_back(&pizza);
     _toDo.unlock();
@@ -100,10 +167,6 @@ size_t Kitchen::Kitchen::calculSaturation() noexcept
     } else
         _saturated = true;
     return freeSlot;
-}
-
-void Kitchen::Kitchen::sendReadyOrder() noexcept
-{
 }
 
 std::ostream &operator<<(std::ostream &out, bool isBusy)

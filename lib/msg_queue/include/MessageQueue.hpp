@@ -16,8 +16,8 @@ namespace MsgQueue
 {
 
     enum MsgType {
-        RECEIVE,
-        SEND
+        KITCHEN = 1,
+        RECEPTION = 2
     };
 
     struct Message {
@@ -63,7 +63,7 @@ namespace MsgQueue
         // Getters and Setters
         Message getLastReceived() const noexcept;
         void setMsgToSend(const Message &msg) noexcept;
-
+        void setMsgType(MsgType type) noexcept;
 
     private:
         std::string _path;
@@ -72,6 +72,7 @@ namespace MsgQueue
         int _idQueue;
         Message _msgSend;
         Message _msgReceive;
+        MsgType _msgType;
     };
 
     MessageQueue &operator>>(MessageQueue &msgQueue, BodyMsg &body);

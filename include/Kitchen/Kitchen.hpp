@@ -33,7 +33,7 @@ namespace Kitchen {
              * \param[in] nbCooks --> Program Param
              * \param[in] link between the reception and the Kitchen
              */
-            Kitchen(float multiplier, size_t nbCooks, long timeReplace, MsgQueue::MessageQueue msgQueue);
+            Kitchen(float multiplier, size_t nbCooks, long timeReplace, MsgQueue::MessageQueue &msgQueue);
 
             ~Kitchen();
 
@@ -56,7 +56,7 @@ namespace Kitchen {
              *
              * \param pizza Pizza to cook
              */
-            void addOrder(Pizza::Command &pizza) noexcept;
+            void addOrder(const MsgQueue::BodyMsg &msg) noexcept;
 
         private:
             SafeThread<std::list<Pizza::Command *>> _toDo;
@@ -93,7 +93,7 @@ namespace Kitchen {
              */
             void stopCooking() noexcept;
 
-            void answerReception(const MsgQueue::BodyMsg &request, MsgQueue::Message &response);
+            void getFreeSlot(MsgQueue::Message &response);
             void executeRequest(const MsgQueue::BodyMsg &request) noexcept;
             /**
              * \brief Calculate saturation indicator

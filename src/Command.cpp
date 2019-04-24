@@ -9,7 +9,7 @@
 #include "Command.hpp"
 
 
-Pizza::Type Pizza::getTypeFromString(std::string &str)
+Pizza::Type Pizza::getTypeFromString(const std::string &str)
 {
     if (str.compare("regina") == 0)
         return Type::Regina;
@@ -40,7 +40,7 @@ bool Pizza::isASize(std::string &str)
             || str.compare("XXL") == 0);
 }
 
-Pizza::Size Pizza::getSizeFromString(std::string &str)
+Pizza::Size Pizza::getSizeFromString(const std::string &str)
 {
     if (str.compare("S") == 0)
         return Pizza::S;
@@ -67,6 +67,25 @@ std::string Pizza::getStringFromType(const Pizza::Type &type)
         return "margarita";
     case Type::Americana:
         return "AMERICANA";
+    default:
+        throw Error("No Type for this Value");
+        break;
+    }
+}
+
+std::string Pizza::getStringFromSize(const Pizza::Size &size)
+{
+    switch (size) {
+    case Size::S:
+        return "S";
+    case Size::M:
+        return "M";
+    case Size::L:
+        return "L";
+    case Size::XL:
+        return "XL";
+    case Size::XXL:
+        return "XXL";
     default:
         throw Error("No Type for this Value");
         break;

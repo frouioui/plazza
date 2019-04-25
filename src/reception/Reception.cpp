@@ -9,6 +9,7 @@
 #include <iostream>
 #include "reception/Reception.hpp"
 #include "reception/Error.hpp"
+#include "Fork.hpp"
 #include "StringParser.hpp"
 
 using namespace ReceptionArea;
@@ -65,7 +66,7 @@ void Reception::launch() throw()
             } catch (Error::InvalidCommand &e) {
                 std::cout << "Invalid command: " << e.what() << std::endl;
             }
-            (void)parsePizza;
+            sendCommands(parsePizza);
         } else if (inputType == ReceptionArea::Shell::HELPER) {
             // TODO: Display helper in the shell
         } else if (inputType == ReceptionArea::Shell::STATUS) {
@@ -81,5 +82,48 @@ void Reception::sendStatus()
     for (unsigned int i = 0; i < _kitchens.size(); i++) {
         _kitchens[i].msgq.setMsgToSend(msg);
         _kitchens[i].msgq.sendMessage();
+    }
+}
+
+void Reception::createKitchen()
+{
+    MsgQueue::MessageQueue msgq;
+    msgq.generateKey();
+    msgq.createQueue();
+
+    Kitchen::Kitchen newKitchen();
+    ReceptionArea::KitchenManager kman{
+        kitchen: newKitchen,
+        msgq: msgq};
+    _kitchens.push_back(newKitchen);
+}
+
+void Reception::sendCommands(const std::vector<Pizza::Command> commands)
+{
+    MsgQueue::Message msg = {MsgQueue::SEND, "TYPE=shell\nINSTRUCTION=available"};
+
+    for (unsigned int i = 0; i < commands.size(); i++) {
+        bool gave = false;
+        if (_kitchens.size() == 0) {
+            createKitchen();
+        }
+        for (unsigned int j = 0; j < _kitchens.size() && gave == false; j++) {
+            MsgQueue::BodyMsg body;
+            while (body.type != MsgQueue::RESP) {
+                _kitchens[j].msgq >> body;
+            }
+            if (body.descrpt.compare("true") == 0 && body.value.compare("0") != 0) {
+                MsgQueue::Message pizzaMsg;
+                pizzaMsg << commands[i];
+                _kitchens[j].msgq << pizzaMsg;
+                gave = true;
+            }
+        }
+        if (gave == false) {
+            createKitchen();
+            MsgQueue::Message pizzaMsg;
+            pizzaMsg << commands[i];
+            _kitchens[_kitchens.size() - 1].msgq << pizzaMsg;
+        }
     }
 }

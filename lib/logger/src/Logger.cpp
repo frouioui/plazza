@@ -13,6 +13,8 @@
 
 using namespace Log;
 
+// TODO: timestamps
+
 Logger::Logger() :
     _stdout(true)
 {

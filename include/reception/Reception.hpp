@@ -17,12 +17,13 @@ namespace ReceptionArea
 
     using OneKitchen = Kitchen::Kitchen;
 
-    struct KichenManager {
+    // Refers to a proccess
+    struct KitchenManager {
         OneKitchen kitchen;
         MsgQueue::MessageQueue msgq;
     };
 
-    using KitchenArray = std::vector<KichenManager>;
+    using KitchenArray = std::vector<KitchenManager>;
 
     class Reception
     {
@@ -41,8 +42,9 @@ namespace ReceptionArea
 
         KitchenArray    _kitchens;
 
-
         void sendStatus();
+        void sendCommands(const std::vector<Pizza::Command> commands);
+        void createKitchen();
     };
 
 } // ReceptionArea

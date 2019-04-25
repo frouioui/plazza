@@ -40,7 +40,7 @@ namespace Pizza {
         const Pizza::Size _size;/*!< Size of the Pizza */
     };
 
-    MsgQueue::Message &operator<<(MsgQueue::Message &msg, Command &cmd);
+    MsgQueue::Message &operator<<(MsgQueue::Message &msg, const Command &cmd);
 
 };
 

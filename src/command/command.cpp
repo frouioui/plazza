@@ -8,7 +8,7 @@
 #include "MessageQueue.hpp"
 #include "Command.hpp"
 
-MsgQueue::Message &Pizza::operator<<(MsgQueue::Message &msg, Pizza::Command &cmd)
+MsgQueue::Message &Pizza::operator<<(MsgQueue::Message &msg, const Pizza::Command &cmd)
 {
     std::string pizzamsg = "TYPE=pizza\nNAME=";
 

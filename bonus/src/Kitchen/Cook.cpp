@@ -58,7 +58,6 @@ void Kitchen::Cook::Stop(void)
     if (_current) {
         _toDo.lock();
         _toDo->push_back(_current);
-        _current = nullptr;
         _toDo.unlock();
     }
 }

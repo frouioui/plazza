@@ -13,6 +13,7 @@
 #include "Stock.hpp"
 #include "Cook.hpp"
 #include "SafeThread.hpp"
+#include "MessageQueue.hpp"
 
 /**
  * \namespace Kitchen
@@ -32,7 +33,7 @@ namespace Kitchen {
              * \param[in] nbCooks --> Program Param
              * \param[in] link between the reception and the Kitchen
              */
-            Kitchen(float multiplier, size_t nbCooks, long timeReplace, int msgId);
+            Kitchen(float multiplier, size_t nbCooks, long timeReplace, MsgQueue::MessageQueue &msgQueue);
 
             ~Kitchen();
 
@@ -46,13 +47,6 @@ namespace Kitchen {
             void displayStatus() const noexcept;
 
             /**
-             * \brief Indicate if the current kitchen is saturated
-             *
-             * \return True if the kitchen cannot accept another pizza to cook
-             */
-            bool isSaturated() const noexcept;
-
-            /**
              * \brief send ready order to the reception
              */
             void sendReadyOrder() noexcept;
@@ -62,7 +56,7 @@ namespace Kitchen {
              *
              * \param pizza Pizza to cook
              */
-            void addOrder(Pizza::Command &pizza) noexcept;
+            void addOrder(const MsgQueue::BodyMsg &msg) noexcept;
 
         private:
             SafeThread<std::list<Pizza::Command *>> _toDo;
@@ -77,7 +71,7 @@ namespace Kitchen {
 
             long _timeReplace; /*!< Time to replace ingredient on stock */
 
-            int _msgId; /*!< Message queue ID */
+            MsgQueue::MessageQueue _msgQueue; /*!< Message Queue */
 
             size_t _maxPizza; /*!< Maximum number of pizza that can b cooked at the same moment */
 
@@ -90,12 +84,23 @@ namespace Kitchen {
              *
              * Create Cook threads, which launch directy
              */
-
             void startCooking() noexcept;
+
+            bool CookisCooking(void) noexcept;
+
+            /**
+             * \brief Stop Cook thread
+             *
+             * Join Cook threads and quit Kitchen
+             */
+            void stopCooking() noexcept;
+
+            void getFreeSlot(MsgQueue::Message &response);
+            void executeRequest(const MsgQueue::BodyMsg &request) noexcept;
             /**
              * \brief Calculate saturation indicator
              */
-            void calculSaturation() noexcept;
+            size_t calculSaturation() noexcept;
 
             /**
              * \brief Check if the Kitchen afk more then X time

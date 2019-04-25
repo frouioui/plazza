@@ -14,54 +14,54 @@ using namespace MsgQueue;
 
 Test(msg_queue_failed_read_queue, check_cmd)
 {
-    MessageQueue msgq("./msg_queue_test", 90);
-    Message msg = {SEND, "TYPE=pizza\nNAME=negrita\nSIZE=R"};
+    MessageQueue msgq(90, "./msg_queue_test");
+    Message msg = {MsgQueue::RECEPTION, "TYPE=pizza\nNAME=negrita\nSIZE=R"};
     BodyMsg body;
 
     msgq.generateKey();
     msgq.createQueue();
     msgq.setMsgToSend(msg);
     msgq.sendMessage();
-    // try {
-    //     msgq >> body;
-    // } catch (MsgQueue::Error::DiversError &e) {
-    //     cr_assert_eq(e.what(), "Error with command message");
-    // }
+    try {
+        msgq >> body;
+    } catch (MsgQueue::Error::DiversError &e) {
+        cr_assert_str_eq(e.what(), "Error with command message");
+    }
     msgq.destroyQueue();
 }
 
 Test(msg_queue_failed_read_queue, check_error)
 {
-    MessageQueue msgq("./msg_queue_test", 90);
-    Message msg = {SEND, "TYPE=error\nNAME=Error"};
+    MessageQueue msgq(90, "./msg_queue_test");
+    Message msg = {MsgQueue::RECEPTION, "TYPE=error\nNAME=Error"};
     BodyMsg body;
 
     msgq.generateKey();
     msgq.createQueue();
     msgq.setMsgToSend(msg);
     msgq.sendMessage();
-    // try {
-    //     msgq >> body;
-    // } catch (MsgQueue::Error::DiversError &e) {
-    //     cr_assert_eq(e.what(), "Error with error message key");
-    // }
+    try {
+        msgq >> body;
+    } catch (MsgQueue::Error::DiversError &e) {
+        cr_assert_str_eq(e.what(), "Error with error message key");
+    }
     msgq.destroyQueue();
 }
 
 Test(msg_queue_failed_read_queue, check_shell)
 {
-    MessageQueue msgq("./msg_queue_test", 90);
-    Message msg = {SEND, "TYPE=shell\nINSTRUCTION=send"};
+    MessageQueue msgq(90, "./msg_queue_test");
+    Message msg = {MsgQueue::RECEPTION, "TYPE=shell\nINSTRUCTION=send"};
     BodyMsg body;
 
     msgq.generateKey();
     msgq.createQueue();
     msgq.setMsgToSend(msg);
     msgq.sendMessage();
-    // try {
-    //     msgq >> body;
-    // } catch (MsgQueue::Error::DiversError &e) {
-    //     cr_assert_eq(e.what(), "Error with status description");
-    // }
+    try {
+        msgq >> body;
+    } catch (MsgQueue::Error::DiversError &e) {
+        cr_assert_str_eq(e.what(), "Error with shell description");
+    }
     msgq.destroyQueue();
 }

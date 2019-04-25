@@ -8,6 +8,7 @@
 #ifndef COMMAND_HPP_
     #define COMMAND_HPP_
 
+    #include <exception>
     #include <string>
     #include "MessageQueue.hpp"
 
@@ -16,8 +17,6 @@
  * \brief All Data Pizza
  */
 namespace Pizza {
-
-    using Type = std::string;
 
     /**
      * \enum Size
@@ -31,6 +30,14 @@ namespace Pizza {
         XXL = 16,/* Extra extra large size */
     };
 
+    enum Type
+    {
+        Regina = 1 ,
+        Margarita = 2 ,
+        Americana = 4 ,
+        Fantasia = 8
+    };
+
     /**
      * \struct Command::Command
      * \brief Command Data (type and size)
@@ -40,7 +47,27 @@ namespace Pizza {
         const Pizza::Size _size;/*!< Size of the Pizza */
     };
 
-    MsgQueue::Message &operator<<(MsgQueue::Message &msg, const Command &cmd);
+    Type getTypeFromString(const std::string &str);
+
+    bool isAType(std::string &str);
+
+    bool isASize(std::string &str);
+
+    Size getSizeFromString(const std::string &str);
+
+    std::string getStringFromType(const Pizza::Type &type);
+    std::string getStringFromSize(const Pizza::Size &size);
+
+    class Error : std::exception {
+        std::string _msg;
+        public:
+            Error(const std::string &msg) : _msg(msg) {};
+            ~Error() = default;
+
+            const char *what(void) const noexcept override {    return _msg.c_str();    };
+    };
+
+    MsgQueue::Message &operator<<(MsgQueue::Message &msg, Command &cmd);
 
 };
 

@@ -16,13 +16,26 @@ MessageQueue::MessageQueue()
 {
 }
 
-MessageQueue::MessageQueue(const std::string &path, const int id) :
-    _path(path), _id(id)
+MessageQueue::MessageQueue(const int id, const std::string &path) :
+    _path(path), _id(id), _msgType(RECEPTION)
 {
 }
 
 MessageQueue::~MessageQueue()
 {
+}
+
+void MessageQueue::setMsgType(MsgType type) noexcept
+{
+    _msgType = type;
+}
+
+MsgType MessageQueue::getMsgTypeToSend() const noexcept
+{
+    if (_msgType == RECEPTION)
+        return KITCHEN;
+    else
+        return RECEPTION;
 }
 
 Message MessageQueue::getLastReceived() const noexcept
@@ -32,9 +45,6 @@ Message MessageQueue::getLastReceived() const noexcept
 
 void MessageQueue::setMsgToSend(const Message &msg) noexcept
 {
-    if (msg.type != SEND) {
-        // PROBLEM: Do we need to catch the error here?
-    }
     _msgSend = msg;
 }
 
@@ -88,7 +98,7 @@ int MessageQueue::sendMessage() throw()
 
 ssize_t MessageQueue::receiveMessage(Message &msg, const int id) const throw()
 {
-    ssize_t bytes = msgrcv(id, &msg, sizeof(msg.msg), 0, 0);
+    ssize_t bytes = msgrcv(id, &msg, sizeof(msg.msg), _msgType, 0);
 
     if (bytes == -1 || bytes != sizeof(msg.msg)) {
         throw Error::DiversError{"Error with msgrcv", "receiveMessage"};
@@ -142,6 +152,8 @@ static void getType(const std::string &msgType, BodyMsg &body) throw()
         body.type = SHELL;
     if (getValue(msgType, '=') == "resp")
         body.type = RESP;
+    if (getValue(msgType, '=') == "delivery")
+        body.type = DELY;
 }
 
 static std::queue<std::string> &parseMessage(const std::string &msg, std::queue<std::string> &msgParse)
@@ -155,7 +167,7 @@ static std::queue<std::string> &parseMessage(const std::string &msg, std::queue<
     return msgParse;
 }
 
-static void getCommand(std::queue<std::string> &msgParse, BodyMsg &body)
+static void getPizza(std::queue<std::string> &msgParse, BodyMsg &body)
 {
     std::string name = msgParse.front();
 
@@ -230,7 +242,10 @@ MessageQueue &MsgQueue::operator>>(MessageQueue &msgQueue, BodyMsg &body)
     msgParse.pop();
     switch (body.type) {
         case CMD:
-            getCommand(msgParse, body);
+            getPizza(msgParse, body);
+            break;
+        case DELY:
+            getPizza(msgParse, body);
             break;
         case ERROR:
             getError(msgParse, body);
@@ -249,6 +264,11 @@ MessageQueue &MsgQueue::operator>>(MessageQueue &msgQueue, BodyMsg &body)
 
 MessageQueue &MsgQueue::operator<<(MessageQueue &msgQueue, Message &msg)
 {
+    msg.type = msgQueue.getMsgTypeToSend();
+    if (msg.type ==KITCHEN)
+        std::cout << "KITCHEN" << std::endl;
+    else
+        std::cout << "RECEPTION" << std::endl;
     msgQueue.setMsgToSend(msg);
     msgQueue.sendMessage();
     return msgQueue;

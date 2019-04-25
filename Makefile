@@ -16,7 +16,7 @@ plazza.srcs			=	src/Kitchen/Kitchen.cpp			\
 						src/Kitchen/Cook.cpp			\
 						src/Kitchen/Stock.cpp			\
 						src/Kitchen/CookBook.cpp		\
-						src/command/command.cpp			\
+						src/Command.cpp					\
 
 plazza.main 		=	src/main.cpp
 

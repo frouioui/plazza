@@ -20,7 +20,7 @@ TestSuite(Kitchen_Cook,
 
 Test(Kitchen_Cook, Create__G__)
 {
-    Pizza::Command command = {"Regina", Pizza::Size::XXL};
+    Pizza::Command command = {Pizza::Regina, Pizza::Size::XXL};
     SafeThread<std::list<Pizza::Command *>> _toDo;
     SafeThread<std::list<Pizza::Command *>> _finish;
     _toDo.lock();
@@ -32,7 +32,7 @@ Test(Kitchen_Cook, Create__G__)
 
 Test(Kitchen_Cook, Busy__G__, .timeout=5)
 {
-    Pizza::Command command = {"Fantasia", Pizza::Size::XXL};
+    Pizza::Command command = {Pizza::Fantasia, Pizza::Size::XXL};
     SafeThread<std::list<Pizza::Command *>> _toDo;
     SafeThread<std::list<Pizza::Command *>> _finish;
     _toDo.lock();

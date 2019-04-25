@@ -20,18 +20,18 @@ TestSuite(Command_operator,
 
 Test(Command_operator, test_simple_command)
 {
-    Pizza::Command cmd{_name: "regina", _size: Pizza::L};
+    Pizza::Command cmd{_name: Pizza::Regina, _size: Pizza::L};
     MsgQueue::Message msg;
 
     msg << cmd;
     cr_assert_str_eq(msg.msg, "TYPE=pizza\nNAME=regina\nSIZE=L");
-    cr_assert_eq(msg.type, MsgQueue::SEND);
+    cr_assert_eq(msg.type, MsgQueue::UNDEFINED);
 }
 
 Test(Command_operator, send_command_to_queue)
 {
-    MsgQueue::MessageQueue msgq("./unit_tests_plazza", 123);
-    Pizza::Command cmd{_name: "regina", _size: Pizza::L};
+    MsgQueue::MessageQueue msgq(123, "./unit_tests_plazza");
+    Pizza::Command cmd{_name: Pizza::Regina, _size: Pizza::L};
     MsgQueue::Message msg;
     MsgQueue::BodyMsg body;
 
@@ -39,6 +39,7 @@ Test(Command_operator, send_command_to_queue)
     msgq.createQueue();
     msg << cmd;
     msgq << msg;
+    msgq.setMsgType(MsgQueue::KITCHEN);
     msgq >> body;
     cr_assert_eq(body.type, MsgQueue::BodyType::CMD);
     cr_assert_eq(body.descrpt, "regina");

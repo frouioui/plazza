@@ -15,9 +15,10 @@
 namespace MsgQueue
 {
 
-    enum MsgType {
-        RECEIVE,
-        SEND
+    enum MsgType: long {
+        UNDEFINED = 0,
+        KITCHEN = 1,
+        RECEPTION = 2
     };
 
     struct Message {
@@ -29,7 +30,8 @@ namespace MsgQueue
         CMD,
         ERROR,
         SHELL,
-        RESP
+        RESP,
+        DELY
     };
 
     struct BodyMsg {
@@ -42,7 +44,7 @@ namespace MsgQueue
     {
     public:
         MessageQueue();
-        MessageQueue(const std::string &path, const int id);
+        MessageQueue(const int id, const std::string &path = "./msg_queue"); //TODO: set default path
         ~MessageQueue();
 
         // Direct call to C library function
@@ -62,7 +64,8 @@ namespace MsgQueue
         // Getters and Setters
         Message getLastReceived() const noexcept;
         void setMsgToSend(const Message &msg) noexcept;
-
+        void setMsgType(MsgType type) noexcept;
+        MsgType getMsgTypeToSend() const noexcept;
 
     private:
         std::string _path;
@@ -71,6 +74,7 @@ namespace MsgQueue
         int _idQueue;
         Message _msgSend;
         Message _msgReceive;
+        MsgType _msgType;
     };
 
     MessageQueue &operator>>(MessageQueue &msgQueue, BodyMsg &body);

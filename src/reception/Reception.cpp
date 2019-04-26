@@ -89,7 +89,7 @@ void Reception::sendStatus()
 
 void Reception::createKitchen()
 {
-    MsgQueue::MessageQueue msgq;
+    MsgQueue::MessageQueue msgq(rand(), "queue");
     msgq.generateKey();
     msgq.createQueue();
 

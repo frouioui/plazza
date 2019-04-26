@@ -19,6 +19,7 @@ MessageQueue::MessageQueue()
 MessageQueue::MessageQueue(const int id, const std::string &path) :
     _path(path), _id(id), _msgType(RECEPTION)
 {
+    std::cout << "id msg queue = " << id << std::endl;
 }
 
 MessageQueue::~MessageQueue()
@@ -82,7 +83,8 @@ int MessageQueue::createQueue() throw()
 
 int MessageQueue::sendMessage(const Message &msg, const int id) const throw()
 {
-    int i = msgsnd(id, &msg, sizeof(msg.msg), 0);
+    Message *tosend = new Message(msg);
+    int i = msgsnd(id, tosend, sizeof(msg.msg), 0);
 
     if (i == -1) {
         throw Error::DiversError{"Error with msgsnd", "sendMessage"};
@@ -217,7 +219,7 @@ static void getStatus(std::queue<std::string> &msgParse, BodyMsg &body)
 {
     std::string name = msgParse.front();
 
-    if (getKey(name, '=') != "AVAILABLE")
+    if (getKey(name, '=').compare("AVAILABLE") != 0)
         throw Error::DiversError{"Error with status description key", "getStatus"};
     body.descrpt = getValue(name, '=');
     if (body.descrpt != "true" && body.descrpt != "false")

@@ -19,7 +19,6 @@ namespace ReceptionArea
 
     // Refers to a proccess
     struct KitchenManager {
-        OneKitchen kitchen;
         MsgQueue::MessageQueue msgq;
     };
 

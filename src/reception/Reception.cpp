@@ -6,6 +6,7 @@
 */
 
 #include <vector>
+#include <cstdlib>
 #include <iostream>
 #include <cstring>
 #include "reception/Reception.hpp"
@@ -17,6 +18,7 @@ using namespace ReceptionArea;
 
 Reception::Reception()
 {
+    srand(time(NULL));
 }
 
 Reception::~Reception()
@@ -81,6 +83,10 @@ void Reception::sendStatus()
     MsgQueue::Message msg;
 
     std::strcpy(msg.msg, "TYPE=shell\nINSTRUCTION=status");
+    if (_kitchens.size() == 0) {
+        std::cout << "No kitchen yet." << std::endl;
+        return;
+    }
     for (unsigned int i = 0; i < _kitchens.size(); i++) {
         _kitchens[i].msgq.setMsgToSend(msg);
         _kitchens[i].msgq.sendMessage();
@@ -89,15 +95,20 @@ void Reception::sendStatus()
 
 void Reception::createKitchen()
 {
+    Fork::Forker fk;
     MsgQueue::MessageQueue msgq(rand(), "queue");
     msgq.generateKey();
     msgq.createQueue();
+    pid_t pid = fk.forkProcess();
 
-    OneKitchen kt(_multiplier, _nbCook, _replaceTime, msgq);
-
-    ReceptionArea::KitchenManager kmn{kitchen: kt, msgq: msgq};
-
-    _kitchens.push_back(kmn);
+    if (pid == 0) {
+        std::cout << "Start kitchen" << std::endl;
+        OneKitchen kt(_multiplier, _nbCook, _replaceTime, msgq);
+        exit(0);
+    } else {
+        ReceptionArea::KitchenManager kmn{msgq: msgq};
+        _kitchens.push_back(kmn);
+    }
 }
 
 void Reception::sendCommands(const std::vector<Pizza::Command> commands)
@@ -109,6 +120,7 @@ void Reception::sendCommands(const std::vector<Pizza::Command> commands)
         bool gave = false;
         if (_kitchens.size() == 0) {
             createKitchen();
+            std::cout << "Kitchen was created" << std::endl;
         }
         for (unsigned int j = 0; j < _kitchens.size() && gave == false; j++) {
             MsgQueue::BodyMsg body;

@@ -78,14 +78,14 @@ static void convPizzaToMsg(MsgQueue::Message &msg, const Pizza::Command &pizza)
 
 void Kitchen::Kitchen::getFreeSlot(MsgQueue::Message &response)
 {
-    std::string resp = "TYPE=resp\nALAIVABLE=";
+    std::string resp = "TYPE=resp\nAVAILABLE=";
     std::string slot = "\nSLOT=" + std::to_string(calculSaturation());
 
     response.type = MsgQueue::RECEPTION;
     if (_saturated == true)
-        resp += "true";
-    else
         resp += "false";
+    else
+        resp += "true";
     resp += slot;
     for (size_t i = 0; i < resp.size(); i++) {
         response.msg[i] = resp[i];

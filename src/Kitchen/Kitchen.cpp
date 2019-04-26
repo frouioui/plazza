@@ -6,6 +6,7 @@
 */
 
 #include <iostream>
+#include <cstring>
 #include "Kitchen/Kitchen.hpp"
 #include "Kitchen/Stock.hpp"
 
@@ -51,7 +52,9 @@ void Kitchen::Kitchen::startCooking() noexcept
     for (size_t i = 0; i < _nbCooks; i += 1)
         _cooks.emplace_back(_toDo, _finished);
 
-    while (CheckAfkForTooLong()) {
+    // while (CheckAfkForTooLong()) {
+    while (true) {
+        std::cout << "true" << std::endl;
         _msgQueue >> request;
         if (request.type == MsgQueue::SHELL && request.descrpt == "available") {
             getFreeSlot(response);
@@ -61,7 +64,7 @@ void Kitchen::Kitchen::startCooking() noexcept
         }
         sendReadyOrder();
     }
-    stopCooking();
+    // stopCooking();
 }
 
 static void convPizzaToMsg(MsgQueue::Message &msg, const Pizza::Command &pizza)
@@ -109,13 +112,19 @@ void Kitchen::Kitchen::executeRequest(const MsgQueue::BodyMsg &request) noexcept
 void Kitchen::Kitchen::sendReadyOrder() noexcept
 {
     MsgQueue::Message msg;
+    std::string emptyMsg = "TYPE=empty\nMSG=empty";
 
-    while (_finished->empty()) {
+    while (!_finished->empty()) {
         Pizza::Command *pizza = _finished->front();
         _finished->pop_front();
         convPizzaToMsg(msg, *pizza);
         _msgQueue << msg;
     }
+    msg.type = MsgQueue::UNDEFINED;
+    std::memset(msg.msg, 0, BUFSIZ);
+    for (size_t i = 0; i < emptyMsg.size(); i += 1)
+        msg.msg[i] = emptyMsg[i];
+    _msgQueue << msg;
 }
 
 void Kitchen::Kitchen::displayStatus() const noexcept

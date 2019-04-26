@@ -21,7 +21,7 @@ Reception::~Reception()
 {
 }
 
-void Reception::setValues(const int argc, const char *argv[]) throw()
+void Reception::setValues(const int argc, const char *argv[])
 {
     std::string shelp = "-h";
     std::string lhelp = "--help";
@@ -52,7 +52,7 @@ void Reception::setValues(const int argc, const char *argv[]) throw()
     _replaceTime = std::atol(timestr.c_str());
 }
 
-void Reception::launch() throw()
+void Reception::launch()
 {
     ReceptionArea::Shell::InputType inputType;
 

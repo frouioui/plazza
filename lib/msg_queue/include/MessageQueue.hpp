@@ -31,7 +31,8 @@ namespace MsgQueue
         ERROR,
         SHELL,
         RESP,
-        DELY
+        DELY,
+        EMPTY
     };
 
     struct BodyMsg {
@@ -48,18 +49,18 @@ namespace MsgQueue
         ~MessageQueue();
 
         // Direct call to C library function
-        key_t generateKey(const std::string &path, const int id) const throw();
-        int createQueue(const key_t &key) const throw();
-        int sendMessage(const Message &msg, const int id) const throw();
-        ssize_t receiveMessage(Message &msg, const int id) const throw();
-        void destroyQueue(const int id) const throw();
+        key_t generateKey(const std::string &path, const int id) const;
+        int createQueue(const key_t &key) const;
+        int sendMessage(const Message &msg, const int id) const;
+        ssize_t receiveMessage(Message &msg, const int id) const;
+        void destroyQueue(const int id) const;
 
         // Using the current class's data
-        key_t generateKey() throw();
-        int createQueue() throw();
-        int sendMessage() throw();
-        ssize_t receiveMessage() throw();
-        void destroyQueue() throw();
+        key_t generateKey();
+        int createQueue();
+        int sendMessage();
+        ssize_t receiveMessage();
+        void destroyQueue();
 
         // Getters and Setters
         Message getLastReceived() const noexcept;

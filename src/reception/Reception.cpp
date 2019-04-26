@@ -25,7 +25,7 @@ Reception::~Reception()
 {
 }
 
-void Reception::setValues(const int argc, const char *argv[]) throw()
+void Reception::setValues(const int argc, const char *argv[])
 {
     std::string shelp = "-h";
     std::string lhelp = "--help";
@@ -56,7 +56,7 @@ void Reception::setValues(const int argc, const char *argv[]) throw()
     _replaceTime = std::atol(timestr.c_str());
 }
 
-void Reception::launch() throw()
+void Reception::launch()
 {
     ReceptionArea::Shell::InputType inputType;
 
@@ -75,6 +75,22 @@ void Reception::launch() throw()
         } else if (inputType == ReceptionArea::Shell::STATUS) {
             sendStatus();
         }
+        sendEmptyMsg();
+    }
+}
+
+void Reception::sendEmptyMsg()
+{
+    MsgQueue::Message msg;
+    std::string emptyMsg = "TYPE=empty\nMSG=empty";
+
+    msg.type = MsgQueue::UNDEFINED;
+    std::memset(msg.msg, 0, BUFSIZ);
+    for (size_t i = 0; i < emptyMsg.size(); i += 1)
+        msg.msg[i] = emptyMsg[i];
+    for (unsigned int i = 0; i < _kitchens.size(); i++) {
+        _kitchens[i].msgq.setMsgToSend(msg);
+        _kitchens[i].msgq << msg;
     }
 }
 
@@ -89,7 +105,8 @@ void Reception::sendStatus()
     }
     for (unsigned int i = 0; i < _kitchens.size(); i++) {
         _kitchens[i].msgq.setMsgToSend(msg);
-        _kitchens[i].msgq.sendMessage();
+        _kitchens[i].msgq << msg;
+        // _kitchens[i].msgq.sendMessage();
     }
 }
 

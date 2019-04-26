@@ -30,8 +30,8 @@ namespace ReceptionArea
         Reception();
         ~Reception();
 
-        void setValues(const int argc, const char *argv[]) throw();
-        void launch() throw();
+        void setValues(const int argc, const char *argv[]);
+        void launch();
 
     private:
         float           _multiplier;
@@ -41,6 +41,7 @@ namespace ReceptionArea
 
         KitchenArray    _kitchens;
 
+        void sendEmptyMsg();
         void sendStatus();
         void sendCommands(const std::vector<Pizza::Command> commands);
         void createKitchen();

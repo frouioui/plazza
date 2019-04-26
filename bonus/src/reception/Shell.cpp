@@ -44,7 +44,7 @@ Shell::InputType Shell::Shell::readLine() noexcept
     return OTHER;
 }
 
-std::vector<Pizza::Command> Shell::Shell::parsePizza() throw()
+std::vector<Pizza::Command> Shell::Shell::parsePizza()
 {
     std::vector<Pizza::Command> pizzas;
     StringParse::StringParser strp(_lastLine);

@@ -49,7 +49,7 @@ void MessageQueue::setMsgToSend(const Message &msg) noexcept
     _msgSend = msg;
 }
 
-key_t MessageQueue::generateKey(const std::string &path, const int id) const throw()
+key_t MessageQueue::generateKey(const std::string &path, const int id) const
 {
     key_t key = ftok(path.c_str(), id);
 
@@ -59,13 +59,13 @@ key_t MessageQueue::generateKey(const std::string &path, const int id) const thr
     return key;
 }
 
-key_t MessageQueue::generateKey() throw()
+key_t MessageQueue::generateKey()
 {
     _key = generateKey(_path, _id);
     return _key;
 }
 
-int MessageQueue::createQueue(const key_t &key) const throw()
+int MessageQueue::createQueue(const key_t &key) const
 {
     int id = msgget(key, 0666 | IPC_CREAT);
 
@@ -75,13 +75,13 @@ int MessageQueue::createQueue(const key_t &key) const throw()
     return id;
 }
 
-int MessageQueue::createQueue() throw()
+int MessageQueue::createQueue()
 {
     _idQueue = createQueue(_key);
     return _idQueue;
 }
 
-int MessageQueue::sendMessage(const Message &msg, const int id) const throw()
+int MessageQueue::sendMessage(const Message &msg, const int id) const
 {
     Message *tosend = new Message(msg);
     int i = msgsnd(id, tosend, sizeof(msg.msg), 0);
@@ -92,13 +92,13 @@ int MessageQueue::sendMessage(const Message &msg, const int id) const throw()
     return 0;
 }
 
-int MessageQueue::sendMessage() throw()
+int MessageQueue::sendMessage()
 {
     sendMessage(_msgSend, _idQueue);
     return 0;
 }
 
-ssize_t MessageQueue::receiveMessage(Message &msg, const int id) const throw()
+ssize_t MessageQueue::receiveMessage(Message &msg, const int id) const
 {
     ssize_t bytes = msgrcv(id, &msg, sizeof(msg.msg), _msgType, 0);
 
@@ -108,22 +108,22 @@ ssize_t MessageQueue::receiveMessage(Message &msg, const int id) const throw()
     return bytes;
 }
 
-ssize_t MessageQueue::receiveMessage() throw()
+ssize_t MessageQueue::receiveMessage()
 {
     return receiveMessage(_msgReceive, _idQueue);
 }
 
-void MessageQueue::destroyQueue(const int id) const throw()
+void MessageQueue::destroyQueue(const int id) const
 {
     msgctl(id, IPC_RMID, NULL);
 }
 
-void MessageQueue::destroyQueue() throw()
+void MessageQueue::destroyQueue()
 {
     destroyQueue(_idQueue);
 }
 
-static std::string getKey(const std::string &str, char delim) throw()
+static std::string getKey(const std::string &str, char delim)
 {
     size_t delimPos = str.find(delim);
 
@@ -132,7 +132,7 @@ static std::string getKey(const std::string &str, char delim) throw()
     return str.substr(0, delimPos);
 }
 
-static std::string getValue(const std::string &str, char delim) throw()
+static std::string getValue(const std::string &str, char delim)
 {
     size_t len = str.length();
     size_t delimPos = str.find(delim);
@@ -142,7 +142,7 @@ static std::string getValue(const std::string &str, char delim) throw()
     return str.substr(delimPos + 1, len - 1);
 }
 
-static void getType(const std::string &msgType, BodyMsg &body) throw()
+static void getType(const std::string &msgType, BodyMsg &body)
 {
     if (getKey(msgType, '=') != "TYPE")
         throw Error::DiversError{"Error with type message", "getType"};
@@ -156,6 +156,8 @@ static void getType(const std::string &msgType, BodyMsg &body) throw()
         body.type = RESP;
     if (getValue(msgType, '=') == "delivery")
         body.type = DELY;
+    if (getValue(msgType, '=') == "empty")
+        body.type = EMPTY;
 }
 
 static std::queue<std::string> &parseMessage(const std::string &msg, std::queue<std::string> &msgParse)
@@ -267,11 +269,8 @@ MessageQueue &MsgQueue::operator>>(MessageQueue &msgQueue, BodyMsg &body)
 MessageQueue &MsgQueue::operator<<(MessageQueue &msgQueue, Message &msg)
 {
     msg.type = msgQueue.getMsgTypeToSend();
-    if (msg.type == KITCHEN)
-        std::cout << "KITCHEN" << std::endl;
-    else
-        std::cout << "RECEPTION" << std::endl;
     msgQueue.setMsgToSend(msg);
+    std::cout << "*********** sendMsgQueue: " << msg.type << " - " << msg.msg << std::endl;
     msgQueue.sendMessage();
     return msgQueue;
 }

@@ -89,24 +89,8 @@ void Reception::launch()
         } else if (inputType == ReceptionArea::Shell::STATUS) {
             sendStatus();
         }
-        // sendEmptyMsg();
     }
 }
-
-// void Reception::sendEmptyMsg()
-// {
-//     MsgQueue::Message msg;
-//     std::string emptyMsg = "TYPE=empty\nMSG=empty";
-
-//     msg.type = MsgQueue::UNDEFINED;
-//     std::memset(msg.msg, 0, BUFSIZ);
-//     for (size_t i = 0; i < emptyMsg.size(); i += 1)
-//         msg.msg[i] = emptyMsg[i];
-//     for (unsigned int i = 0; i < _kitchens.size(); i++) {
-//         _kitchens[i].msgq.setMsgToSend(msg);
-//         _kitchens[i].msgq << msg;
-//     }
-// }
 
 void Reception::sendStatus()
 {

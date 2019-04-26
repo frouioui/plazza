@@ -52,8 +52,8 @@ void Kitchen::Kitchen::startCooking() noexcept
     for (size_t i = 0; i < _nbCooks; i += 1)
         _cooks.emplace_back(_toDo, _finished);
 
-    // while (CheckAfkForTooLong()) {
-    while (true) {
+    while (CheckAfkForTooLong()) {
+    // while (true) {
         request.descrpt.clear();
         _msgQueue >> request;
         if (!request.descrpt.empty() && request.type == MsgQueue::SHELL &&
@@ -66,7 +66,7 @@ void Kitchen::Kitchen::startCooking() noexcept
         }
         sendReadyOrder();
     }
-    // stopCooking();
+    stopCooking();
 }
 
 static void convPizzaToMsg(MsgQueue::Message &msg, const Pizza::Command &pizza)

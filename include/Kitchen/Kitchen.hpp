@@ -34,7 +34,7 @@ namespace Kitchen {
              * \param[in] link between the reception and the Kitchen
              */
             Kitchen(float multiplier, size_t nbCooks, long timeReplace, MsgQueue::MessageQueue &msgQueue);
-
+            Kitchen(const Kitchen &old);
             ~Kitchen();
 
             /**
@@ -57,6 +57,11 @@ namespace Kitchen {
              * \param pizza Pizza to cook
              */
             void addOrder(const MsgQueue::BodyMsg &msg) noexcept;
+
+            float getMultiplier() const;
+            size_t getNbCooks() const;
+            long getTimeReplace() const;
+            const MsgQueue::MessageQueue &getMsgQueue() const;
 
         private:
             SafeThread<std::list<Pizza::Command *>> _toDo;

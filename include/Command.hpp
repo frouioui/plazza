@@ -67,7 +67,7 @@ namespace Pizza {
             const char *what(void) const noexcept override {    return _msg.c_str();    };
     };
 
-    MsgQueue::Message &operator<<(MsgQueue::Message &msg, Command &cmd);
+    MsgQueue::Message &operator<<(MsgQueue::Message &msg, const Command &cmd);
 
 };
 

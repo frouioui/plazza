@@ -35,11 +35,7 @@
     <testcase name="Create__G__" assertions="0" status="PASSED" time="0.000">
     </testcase>
   </testsuite>
-<<<<<<< HEAD
   <testsuite name="Kitchen_CookBook" tests="6" failures="0" errors="0" disabled="0" skipped="0" time="0.002">
-=======
-  <testsuite name="Kitchen_CookBook" tests="6" failures="0" errors="0" disabled="0" skipped="0" time="0.005">
->>>>>>> feature/kitchen
     <testcase name="construct" assertions="0" status="PASSED" time="0.000">
     </testcase>
     <testcase name="Value_Invalid" assertions="0" status="PASSED" time="0.000">

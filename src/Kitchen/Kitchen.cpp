@@ -20,6 +20,17 @@ _time(std::chrono::system_clock::now())
     startCooking();
 }
 
+Kitchen::Kitchen::Kitchen(const Kitchen &old) :
+_multiplier(old.getMultiplier()), _nbCooks(old.getNbCooks()), _timeReplace(old.getTimeReplace()),
+_msgQueue(old.getMsgQueue()), _maxPizza(2 * old.getNbCooks()), _saturated(false),
+_time(std::chrono::system_clock::now())
+{
+    Singleton<CookBook>::get().setMultiplier(old.getMultiplier());
+    Singleton<Stock>::get().setMultiplier(old.getTimeReplace());
+    _msgQueue.setMsgType(MsgQueue::KITCHEN);
+    startCooking();
+}
+
 Kitchen::Kitchen::~Kitchen()
 {
     stopCooking();
@@ -185,4 +196,24 @@ std::ostream &operator<<(std::ostream &out, bool isBusy)
     if (isBusy)
         return out << "COOKING";
     return out << "WAITING";
+}
+
+float Kitchen::Kitchen::getMultiplier() const
+{
+    return _multiplier;
+}
+
+size_t Kitchen::Kitchen::getNbCooks() const
+{
+    return _nbCooks;
+}
+
+long Kitchen::Kitchen::getTimeReplace() const
+{
+    return _timeReplace;
+}
+
+const MsgQueue::MessageQueue &Kitchen::Kitchen::getMsgQueue() const
+{
+    return _msgQueue;
 }

@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <iostream>
+#include <cstring>
 #include "reception/Reception.hpp"
 #include "reception/Error.hpp"
 #include "Fork.hpp"
@@ -77,8 +78,9 @@ void Reception::launch() throw()
 
 void Reception::sendStatus()
 {
-    MsgQueue::Message msg = {MsgQueue::SEND, "TYPE=shell\nINSTRUCTION=status"};
+    MsgQueue::Message msg;
 
+    std::strcpy(msg.msg, "TYPE=shell\nINSTRUCTION=status");
     for (unsigned int i = 0; i < _kitchens.size(); i++) {
         _kitchens[i].msgq.setMsgToSend(msg);
         _kitchens[i].msgq.sendMessage();
@@ -91,17 +93,18 @@ void Reception::createKitchen()
     msgq.generateKey();
     msgq.createQueue();
 
-    Kitchen::Kitchen newKitchen();
-    ReceptionArea::KitchenManager kman{
-        kitchen: newKitchen,
-        msgq: msgq};
-    _kitchens.push_back(newKitchen);
+    OneKitchen kt(_multiplier, _nbCook, _replaceTime, msgq);
+
+    ReceptionArea::KitchenManager kmn{kitchen: kt, msgq: msgq};
+
+    _kitchens.push_back(kmn);
 }
 
 void Reception::sendCommands(const std::vector<Pizza::Command> commands)
 {
-    MsgQueue::Message msg = {msg: "TYPE=shell\nINSTRUCTION=available"};
+    MsgQueue::Message msg;
 
+    std::strcpy(msg.msg, "TYPE=shell\nINSTRUCTION=available");
     for (unsigned int i = 0; i < commands.size(); i++) {
         bool gave = false;
         if (_kitchens.size() == 0) {

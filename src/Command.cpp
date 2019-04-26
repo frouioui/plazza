@@ -8,7 +8,6 @@
 #include <string>
 #include "Command.hpp"
 
-
 Pizza::Type Pizza::getTypeFromString(const std::string &str)
 {
     if (str.compare("regina") == 0)
@@ -92,7 +91,7 @@ std::string Pizza::getStringFromSize(const Pizza::Size &size)
     }
 }
 
-MsgQueue::Message &Pizza::operator<<(MsgQueue::Message &msg, Pizza::Command &cmd)
+MsgQueue::Message &Pizza::operator<<(MsgQueue::Message &msg, const Pizza::Command &cmd)
 {
     std::string pizzamsg = "TYPE=pizza\nNAME=";
     pizzamsg.append(Pizza::getStringFromType(cmd._name));

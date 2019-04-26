@@ -7,6 +7,7 @@
 
 #include <sys/msg.h>
 #include <queue>
+#include <cstring>
 #include "MessageQueue.hpp"
 #include "MessageQueueError.hpp"
 
@@ -110,6 +111,7 @@ ssize_t MessageQueue::receiveMessage(Message &msg, const int id) const
 
 ssize_t MessageQueue::receiveMessage()
 {
+    std::memset(_msgReceive.msg, 0, BUFSIZ);
     return receiveMessage(_msgReceive, _idQueue);
 }
 
@@ -239,6 +241,8 @@ MessageQueue &MsgQueue::operator>>(MessageQueue &msgQueue, BodyMsg &body)
 
     msgQueue.receiveMessage();
     revcMsg = msgQueue.getLastReceived();
+    if (revcMsg.msg[0] == 0)
+        return msgQueue;
     parseMessage(revcMsg.msg, msgParse);
     getType(msgParse.front(), body);
     msgParse.pop();

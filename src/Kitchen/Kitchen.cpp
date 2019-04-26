@@ -54,11 +54,14 @@ void Kitchen::Kitchen::startCooking() noexcept
 
     // while (CheckAfkForTooLong()) {
     while (true) {
+        request.descrpt.clear();
         _msgQueue >> request;
-        if (request.type == MsgQueue::SHELL && request.descrpt == "available") {
+        if (!request.descrpt.empty() && request.type == MsgQueue::SHELL &&
+        request.descrpt == "available") {
             getFreeSlot(response);
             _msgQueue << response;
-        } else {
+        }
+        else if (!request.descrpt.empty()) {
             executeRequest(request);
         }
         sendReadyOrder();

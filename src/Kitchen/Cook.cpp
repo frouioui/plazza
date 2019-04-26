@@ -40,10 +40,15 @@ Pizza::Command Kitchen::Cook::cookPizza(void)
             break;
         }
     }
-    if (command != _toDo->end()) {
-        std::this_thread::sleep_for(std::chrono::seconds(Singleton<Kitchen::CookBook>::get().getCookingTime(**command)));
-    }
+    auto end = _toDo->end();
     _toDo.unlock();
+    if (command != end) {
+        std::this_thread::sleep_for(std::chrono::seconds(Singleton<Kitchen::CookBook>::get().getCookingTime(**command)));
+        _finished.lock();
+        _finished->push_back(_current);
+        _current = nullptr;
+        _finished.unlock();
+    }
     return Pizza::Command{};
 }
 

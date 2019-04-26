@@ -11,6 +11,7 @@
 #include "reception/Shell.hpp"
 #include "Kitchen/Kitchen.hpp"
 #include "MessageQueue.hpp"
+#include "Logger.hpp"
 
 namespace ReceptionArea
 {
@@ -33,6 +34,7 @@ namespace ReceptionArea
         void setValues(const int argc, const char *argv[]);
         void launch();
 
+
     private:
         float           _multiplier;
         unsigned int    _nbCook;
@@ -41,10 +43,14 @@ namespace ReceptionArea
 
         KitchenArray    _kitchens;
 
+        Log::Logger _logger;
+
+
         void sendEmptyMsg();
         void sendStatus();
         void sendCommands(const std::vector<Pizza::Command> commands);
         void createKitchen();
+        void checkKitchens();
     };
 
 } // ReceptionArea

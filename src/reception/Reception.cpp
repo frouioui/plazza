@@ -11,6 +11,7 @@
 #include <cstring>
 #include "reception/Reception.hpp"
 #include "reception/Error.hpp"
+#include "Logger.hpp"
 #include "Fork.hpp"
 #include "StringParser.hpp"
 
@@ -56,12 +57,25 @@ void Reception::setValues(const int argc, const char *argv[]) throw()
     _replaceTime = std::atol(timestr.c_str());
 }
 
+void Reception::checkKitchens()
+{
+    for (unsigned int i = 0; i < _kitchens.size(); i++) {
+        MsgQueue::BodyMsg body;
+
+        _kitchens[i].msgq >> body;
+        if (body.type == MsgQueue::DELY) {
+            _logger.info("Pizza done, pizza: " + body.descrpt + " size: " + body.value);
+        }
+    }
+}
+
 void Reception::launch() throw()
 {
     ReceptionArea::Shell::InputType inputType;
 
     while (_shell.isDone() == false) {
         inputType = _shell.readLine();
+        checkKitchens();
         if (inputType == ReceptionArea::Shell::OTHER) {
             std::vector<Pizza::Command> parsePizza;
             try {

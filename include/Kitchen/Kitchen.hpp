@@ -37,27 +37,6 @@ namespace Kitchen {
             Kitchen(const Kitchen &old);
             ~Kitchen();
 
-            /**
-             * \brief Display the kitchen status
-             *
-             * Display current occupancy of the cooks and
-             * theirs stocks of ingredient.
-             * This methods is called using the 'status' user command.
-             */
-            void displayStatus() const noexcept;
-
-            /**
-             * \brief send ready order to the reception
-             */
-            void sendReadyOrder() noexcept;
-
-            /**
-             * \brief Add order to a list of pizza to cook
-             *
-             * \param pizza Pizza to cook
-             */
-            void addOrder(const MsgQueue::BodyMsg &msg) noexcept;
-
             float getMultiplier() const;
             size_t getNbCooks() const;
             long getTimeReplace() const;
@@ -99,7 +78,31 @@ namespace Kitchen {
              * Join Cook threads and quit Kitchen
              */
             void stopCooking() noexcept;
+            /**
+             * \brief Display the kitchen status
+             *
+             * Display current occupancy of the cooks and
+             * theirs stocks of ingredient.
+             * This methods is called using the 'status' user command.
+             */
+            void displayStatus() const noexcept;
 
+            /**
+             * \brief Send ready order to the reception
+             */
+            void sendReadyOrder() noexcept;
+
+            /**
+             * \brief Send empty message in message queue
+             */
+            void sendEmptyMsg();
+
+            /**
+             * \brief Add order to a list of pizza to cook
+             *
+             * \param pizza Pizza to cook
+             */
+            void addOrder(const MsgQueue::BodyMsg &msg) noexcept;
             void getFreeSlot(MsgQueue::Message &response);
             void executeRequest(const MsgQueue::BodyMsg &request) noexcept;
             /**

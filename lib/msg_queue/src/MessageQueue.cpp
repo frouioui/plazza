@@ -100,9 +100,9 @@ int MessageQueue::sendMessage()
 
 ssize_t MessageQueue::receiveMessage(Message &msg, const int id) const
 {
-    ssize_t bytes = msgrcv(id, &msg, sizeof(msg.msg), _msgType, 0);
+    ssize_t bytes = msgrcv(id, &msg, sizeof(msg.msg), _msgType, IPC_NOWAIT);
 
-    if (bytes == -1 || bytes != sizeof(msg.msg)) {
+    if ((bytes == -1 || bytes != sizeof(msg.msg)) && errno != ENOMSG) {
         throw Error::DiversError{"Error with msgrcv", "receiveMessage"};
     }
     return bytes;
@@ -156,8 +156,6 @@ static void getType(const std::string &msgType, BodyMsg &body)
         body.type = RESP;
     if (getValue(msgType, '=') == "delivery")
         body.type = DELY;
-    if (getValue(msgType, '=') == "empty")
-        body.type = EMPTY;
 }
 
 static std::queue<std::string> &parseMessage(const std::string &msg, std::queue<std::string> &msgParse)

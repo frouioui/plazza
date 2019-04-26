@@ -54,7 +54,6 @@ void Kitchen::Kitchen::startCooking() noexcept
 
     // while (CheckAfkForTooLong()) {
     while (true) {
-        std::cout << "true" << std::endl;
         _msgQueue >> request;
         if (request.type == MsgQueue::SHELL && request.descrpt == "available") {
             getFreeSlot(response);
@@ -112,7 +111,6 @@ void Kitchen::Kitchen::executeRequest(const MsgQueue::BodyMsg &request) noexcept
 void Kitchen::Kitchen::sendReadyOrder() noexcept
 {
     MsgQueue::Message msg;
-    std::string emptyMsg = "TYPE=empty\nMSG=empty";
 
     while (!_finished->empty()) {
         Pizza::Command *pizza = _finished->front();
@@ -120,11 +118,6 @@ void Kitchen::Kitchen::sendReadyOrder() noexcept
         convPizzaToMsg(msg, *pizza);
         _msgQueue << msg;
     }
-    msg.type = MsgQueue::UNDEFINED;
-    std::memset(msg.msg, 0, BUFSIZ);
-    for (size_t i = 0; i < emptyMsg.size(); i += 1)
-        msg.msg[i] = emptyMsg[i];
-    _msgQueue << msg;
 }
 
 void Kitchen::Kitchen::displayStatus() const noexcept

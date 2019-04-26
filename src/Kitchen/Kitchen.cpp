@@ -41,6 +41,9 @@ void Kitchen::Kitchen::stopCooking() noexcept
 {
     for (auto &thread : _cooks)
         thread.Stop();
+    MsgQueue::Message response;
+    sendImDying(response);
+    _msgQueue << response;
     std::exit(0);
 }
 
@@ -52,8 +55,7 @@ void Kitchen::Kitchen::startCooking() noexcept
     for (size_t i = 0; i < _nbCooks; i += 1)
         _cooks.emplace_back(_toDo, _finished);
 
-    while (CheckAfkForTooLong()) {
-    // while (true) {
+    while (!CheckAfkForTooLong()) {
         request.descrpt.clear();
         _msgQueue >> request;
         if (!request.descrpt.empty() && request.type == MsgQueue::SHELL &&
@@ -67,6 +69,15 @@ void Kitchen::Kitchen::startCooking() noexcept
         sendReadyOrder();
     }
     stopCooking();
+}
+
+void Kitchen::Kitchen::sendImDying(MsgQueue::Message &response)
+{
+    std::string resp = "TYPE=DIE\n";
+
+    for (size_t i = 0; i < resp.size(); i++) {
+        response.msg[i] = resp[i];
+    }
 }
 
 static void convPizzaToMsg(MsgQueue::Message &msg, const Pizza::Command &pizza)
@@ -127,14 +138,15 @@ void Kitchen::Kitchen::displayStatus() const noexcept
 {
     size_t i = 0;
 
-    std::cout << std::endl << "********** KITCHEN" << "**********" << std::endl;
+    std::string str = "\n********** KITCHEN**********\n";
 
-    std::cout << "---------- Cooks status ----------" << std::endl;
+    str += "---------- Cooks status ----------\n";
     for (const auto &it : _cooks) {
-        std::cout << "\tCook n° " << i << " -> " << it.isBusy() << std::endl;
+        auto tmp = (it.isBusy()) ? "COOKING" : "WAITING";
+        str += "\tCook n° " + std::to_string(i) + " -> " + tmp + "\n" ;
         i += 1;
     }
-
+    std::cout << str;
     Singleton<Stock>::get().displayStock();
 }
 
@@ -157,7 +169,7 @@ bool Kitchen::Kitchen::CheckAfkForTooLong(void)
     if (!_toDo->size() && !_finished->size() && !this->CookisCooking()) {
         auto now = std::chrono::system_clock::now();
         auto elapsedTime = now - _time;
-        if (elapsedTime < std::chrono::seconds(5))
+        if (elapsedTime > std::chrono::seconds(5))
             res = true;
     } else
         _time = std::chrono::system_clock::now();
@@ -194,13 +206,6 @@ size_t Kitchen::Kitchen::calculSaturation() noexcept
     } else
         _saturated = true;
     return freeSlot;
-}
-
-std::ostream &operator<<(std::ostream &out, bool isBusy)
-{
-    if (isBusy)
-        return out << "COOKING";
-    return out << "WAITING";
 }
 
 float Kitchen::Kitchen::getMultiplier() const

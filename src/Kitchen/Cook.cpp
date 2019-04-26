@@ -25,6 +25,7 @@ void Kitchen::Cook::Start(void)
 {
     while (!_stop) {
         cookPizza();
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 }
 

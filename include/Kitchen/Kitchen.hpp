@@ -87,6 +87,7 @@ namespace Kitchen {
              */
             void displayStatus() const noexcept;
 
+
             /**
              * \brief Send ready order to the reception
              */
@@ -103,6 +104,7 @@ namespace Kitchen {
              * \param pizza Pizza to cook
              */
             void addOrder(const MsgQueue::BodyMsg &msg) noexcept;
+            void sendImDying(MsgQueue::Message &response);
             void getFreeSlot(MsgQueue::Message &response);
             void executeRequest(const MsgQueue::BodyMsg &request) noexcept;
             /**

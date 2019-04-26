@@ -81,7 +81,7 @@ void Reception::launch()
             try {
                 parsePizza = _shell.parsePizza();
             } catch (Error::InvalidCommand &e) {
-                std::cout << "Invalid command: " << e.what() << std::endl;
+                _logger.important("Invalid command: " + std::string(e.what()));
             }
             sendCommands(parsePizza);
         } else if (inputType == ReceptionArea::Shell::HELPER) {
@@ -114,7 +114,7 @@ void Reception::sendStatus()
 
     std::strcpy(msg.msg, "TYPE=shell\nINSTRUCTION=status");
     if (_kitchens.size() == 0) {
-        std::cout << "No kitchen yet." << std::endl;
+        _logger.info("No kitchen yet");
         return;
     }
     for (unsigned int i = 0; i < _kitchens.size(); i++) {
@@ -133,8 +133,9 @@ void Reception::createKitchen()
     pid_t pid = fk.forkProcess();
 
     if (pid == 0) {
-        std::cout << "Start kitchen" << std::endl;
+        _logger.info("Starting a new kitchen");
         OneKitchen kt(_multiplier, _nbCook, _replaceTime, msgq);
+        _logger.info("One kitchen finished");
         exit(0);
     } else {
         ReceptionArea::KitchenManager kmn{msgq: msgq};
@@ -151,7 +152,6 @@ void Reception::sendCommands(const std::vector<Pizza::Command> commands)
         bool gave = false;
         if (_kitchens.size() == 0) {
             createKitchen();
-            std::cout << "Kitchen was created" << std::endl;
         }
         for (unsigned int j = 0; j < _kitchens.size() && gave == false; j++) {
             MsgQueue::BodyMsg body;

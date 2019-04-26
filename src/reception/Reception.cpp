@@ -100,7 +100,7 @@ void Reception::createKitchen()
 
 void Reception::sendCommands(const std::vector<Pizza::Command> commands)
 {
-    MsgQueue::Message msg = {MsgQueue::SEND, "TYPE=shell\nINSTRUCTION=available"};
+    MsgQueue::Message msg = {msg: "TYPE=shell\nINSTRUCTION=available"};
 
     for (unsigned int i = 0; i < commands.size(); i++) {
         bool gave = false;
@@ -109,9 +109,12 @@ void Reception::sendCommands(const std::vector<Pizza::Command> commands)
         }
         for (unsigned int j = 0; j < _kitchens.size() && gave == false; j++) {
             MsgQueue::BodyMsg body;
-            while (body.type != MsgQueue::RESP) {
-                _kitchens[j].msgq >> body;
-            }
+
+            // Ask if available
+            _kitchens[j].msgq << msg;
+            _kitchens[j].msgq >> body;
+
+            // If available
             if (body.descrpt.compare("true") == 0 && body.value.compare("0") != 0) {
                 MsgQueue::Message pizzaMsg;
                 pizzaMsg << commands[i];

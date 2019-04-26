@@ -265,7 +265,7 @@ MessageQueue &MsgQueue::operator>>(MessageQueue &msgQueue, BodyMsg &body)
 MessageQueue &MsgQueue::operator<<(MessageQueue &msgQueue, Message &msg)
 {
     msg.type = msgQueue.getMsgTypeToSend();
-    if (msg.type ==KITCHEN)
+    if (msg.type == KITCHEN)
         std::cout << "KITCHEN" << std::endl;
     else
         std::cout << "RECEPTION" << std::endl;

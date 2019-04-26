@@ -69,7 +69,7 @@ void Reception::checkKitchens()
     }
 }
 
-void Reception::launch() throw()
+void Reception::launch()
 {
     ReceptionArea::Shell::InputType inputType;
 

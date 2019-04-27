@@ -145,6 +145,7 @@ void Reception::sendCommands(const std::vector<Pizza::Command> commands)
             _kitchens[j].msgq << msg;
 
             sleep(2);
+
             // Get response
             _kitchens[j].msgq >> body;
 

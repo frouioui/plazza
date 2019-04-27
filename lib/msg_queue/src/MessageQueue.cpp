@@ -29,10 +29,10 @@ MessageQueue::MessageQueue(const MessageQueue &msgq)
     _id = msgq._id;
     _path = msgq._path;
     _msgType = msgq._msgType;
-    _key = msgq._key;
-    _idQueue = msgq._idQueue;
     _msgReceive = msgq._msgReceive;
     _msgSend = msgq._msgSend;
+    generateKey();
+    createQueue();
 }
 
 MessageQueue::~MessageQueue()

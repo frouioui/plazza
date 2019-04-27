@@ -105,29 +105,26 @@ void Reception::sendStatus()
     for (unsigned int i = 0; i < _kitchens.size(); i++) {
         _kitchens[i].msgq.setMsgToSend(msg);
         _kitchens[i].msgq << msg;
-        // _kitchens[i].msgq.sendMessage();
     }
 }
 
 void Reception::createKitchen()
 {
     Fork::Forker fk;
-    _logger.info("Je creer une queue ici, createKitchen");
     MsgQueue::MessageQueue msgq(rand(), "queue");
     msgq.generateKey();
     msgq.createQueue();
-    _logger.info("On va fork ici");
     pid_t pid = fk.forkProcess();
 
-    printf("PID AFTER FORK = [%d]\n", pid);
+    printf("PID = [%d]\n", pid);
     if (pid == 0) {
         _logger.info("Starting a new kitchen");
         OneKitchen kt(_multiplier, _nbCook, _replaceTime, msgq);
-        _logger.info("One kitchen finished");
         exit(0);
     } else {
+        _logger.info("wait");
         sleep(1);
-        _logger.info("Addition du kitchen au tableau");
+        _logger.info("continue");
         ReceptionArea::KitchenManager kmn{msgq: msgq};
         _kitchens.push_back(kmn);
     }
@@ -147,26 +144,28 @@ void Reception::sendCommands(const std::vector<Pizza::Command> commands)
             MsgQueue::BodyMsg body;
 
             // Ask if available
-            _logger.info("On demande si la kitchen est dispo");
             _kitchens[j].msgq << msg;
-            _logger.info("La kitchen repond");
+
+            // We have to wait
+            sleep(0.1);
+
+            // Get response
             _kitchens[j].msgq >> body;
 
             // If available
             if (body.descrpt.compare("true") == 0 && body.value.compare("0") != 0) {
-                _logger.info("La kitchen est dispo, on envoi la commande");
+                _logger.info("Sending order to kitchen " + j);
                 MsgQueue::Message pizzaMsg;
                 pizzaMsg << commands[i];
                 _kitchens[j].msgq << pizzaMsg;
                 gave = true;
-                _logger.info("La commande est bien envoyee");
+                _logger.important("done sending order");
             }
         }
         if (gave == false) {
-            _logger.info("Aucune kitchen a etait trouve ...");
+            _logger.info("No kitchen available");
             createKitchen();
             MsgQueue::Message pizzaMsg;
-            _logger.info("On envoie la commande a la nouvelle kitchen");
             pizzaMsg << commands[i];
             _kitchens[_kitchens.size() - 1].msgq << pizzaMsg;
         }

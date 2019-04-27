@@ -20,12 +20,12 @@ MessageQueue::MessageQueue()
 MessageQueue::MessageQueue(const int id, const std::string &path) :
     _path(path), _id(id), _msgType(RECEPTION)
 {
-    std::cout << "id msg queue = " << id << std::endl;
+    std::cout << id << std::endl;
 }
 
 MessageQueue::MessageQueue(const MessageQueue &msgq)
 {
-    std::cout << "by copy - id msg queue = " << msgq._id << std::endl;
+    std::cout << msgq._id << std::endl;
     _id = msgq._id;
     _path = msgq._path;
     _msgType = msgq._msgType;
@@ -97,9 +97,9 @@ int MessageQueue::createQueue()
 int MessageQueue::sendMessage(const Message &msg, const int id) const
 {
     Message *tosend = new Message(msg);
-    int i = msgsnd(id, tosend, sizeof(msg.msg), 0);
+    int i = msgsnd(id, tosend, sizeof(msg.msg), IPC_NOWAIT);
 
-    if (i == -1) {
+    if (i == -1 && errno != ENOMSG) {
         throw Error::DiversError{"Error with msgsnd", "sendMessage"};
     }
     return 0;
@@ -284,8 +284,6 @@ MessageQueue &MsgQueue::operator<<(MessageQueue &msgQueue, Message &msg)
 {
     msg.type = msgQueue.getMsgTypeToSend();
     msgQueue.setMsgToSend(msg);
-    std::cout << "*********** sendMsgQueue: " << msg.type << " - " << msg.msg << std::endl;
     msgQueue.sendMessage();
-    std::cout << "*********** sendMsgQueue - DONE" << std::endl;
     return msgQueue;
 }

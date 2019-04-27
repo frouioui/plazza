@@ -122,7 +122,6 @@ void Reception::createKitchen()
         OneKitchen kt(_multiplier, _nbCook, _replaceTime, msgq);
         exit(0);
     } else {
-        sleep(1);
         ReceptionArea::KitchenManager kmn{msgq: msgq};
         _kitchens.push_back(kmn);
     }
@@ -144,10 +143,8 @@ void Reception::sendCommands(const std::vector<Pizza::Command> commands)
             // Ask if available
             _kitchens[j].msgq << msg;
 
-            sleep(2);
-
-            // Get response
-            _kitchens[j].msgq >> body;
+            while (body.type != MsgQueue::RESP)
+                _kitchens[j].msgq >> body;
 
             // If available
             if (body.descrpt.compare("true") == 0 && body.value.compare("0") != 0) {

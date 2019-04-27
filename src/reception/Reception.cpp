@@ -6,10 +6,11 @@
 */
 
 #include <vector>
+#include <cstring>
 #include <cstdlib>
+#include <string>
 #include <unistd.h>
 #include <iostream>
-#include <cstring>
 #include "reception/Reception.hpp"
 #include "reception/Error.hpp"
 #include "Logger.hpp"
@@ -144,13 +145,13 @@ void Reception::sendCommands(const std::vector<Pizza::Command> commands)
             _kitchens[j].msgq << msg;
             while (body.type != MsgQueue::RESP)
                 _kitchens[j].msgq >> body;
-            if (body.descrpt.compare("true") == 0 && body.value.compare("0") != 0) {
+            int slots = std::atoi(body.value.c_str());
+            if (body.descrpt.compare("true") == 0 && slots > 0) {
                 _logger.info("Sending order to kitchen " + j);
                 MsgQueue::Message pizzaMsg;
                 pizzaMsg << commands[i];
                 _kitchens[j].msgq << pizzaMsg;
                 gave = true;
-                _logger.info("done sending order");
             }
         }
         if (gave == false) {

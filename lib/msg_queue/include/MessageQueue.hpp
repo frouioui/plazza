@@ -31,7 +31,8 @@ namespace MsgQueue
         ERROR,
         SHELL,
         RESP,
-        DELY
+        DELY,
+        DIE
     };
 
     struct BodyMsg {

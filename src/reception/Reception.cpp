@@ -119,7 +119,6 @@ void Reception::createKitchen()
     msgq.createQueue();
     pid_t pid = fk.forkProcess();
 
-    printf("PID = [%d]\n", pid);
     if (pid == 0) {
         _logger.info("Starting a new kitchen");
         OneKitchen kt(_multiplier, _nbCook, _replaceTime, msgq);
@@ -151,7 +150,7 @@ void Reception::sendCommands(const std::vector<Pizza::Command> commands)
                 pizzaMsg << commands[i];
                 _kitchens[j].msgq << pizzaMsg;
                 gave = true;
-                _logger.important("done sending order");
+                _logger.info("done sending order");
             }
         }
         if (gave == false) {

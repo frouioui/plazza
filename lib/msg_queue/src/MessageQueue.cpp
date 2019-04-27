@@ -20,12 +20,10 @@ MessageQueue::MessageQueue()
 MessageQueue::MessageQueue(const int id, const std::string &path) :
     _path(path), _id(id), _msgType(RECEPTION)
 {
-    std::cout << id << std::endl;
 }
 
 MessageQueue::MessageQueue(const MessageQueue &msgq)
 {
-    std::cout << msgq._id << std::endl;
     _id = msgq._id;
     _path = msgq._path;
     _msgType = msgq._msgType;

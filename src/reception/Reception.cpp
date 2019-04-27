@@ -139,14 +139,9 @@ void Reception::sendCommands(const std::vector<Pizza::Command> commands)
         }
         for (unsigned int j = 0; j < _kitchens.size() && gave == false; j++) {
             MsgQueue::BodyMsg body;
-
-            // Ask if available
             _kitchens[j].msgq << msg;
-
             while (body.type != MsgQueue::RESP)
                 _kitchens[j].msgq >> body;
-
-            // If available
             if (body.descrpt.compare("true") == 0 && body.value.compare("0") != 0) {
                 _logger.info("Sending order to kitchen " + j);
                 MsgQueue::Message pizzaMsg;

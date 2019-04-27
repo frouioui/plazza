@@ -75,6 +75,7 @@ void Kitchen::Kitchen::sendImDying(MsgQueue::Message &response)
 {
     std::string resp = "TYPE=DIE\n";
 
+    response.type = MsgQueue::RECEPTION;
     for (size_t i = 0; i < resp.size(); i++) {
         response.msg[i] = resp[i];
     }
@@ -126,12 +127,14 @@ void Kitchen::Kitchen::sendReadyOrder() noexcept
 {
     MsgQueue::Message msg;
 
+    _finished.lock();
     while (!_finished->empty()) {
         Pizza::Command *pizza = _finished->front();
         _finished->pop_front();
         convPizzaToMsg(msg, *pizza);
         _msgQueue << msg;
     }
+    _finished.unlock();
 }
 
 void Kitchen::Kitchen::displayStatus() const noexcept
@@ -146,8 +149,8 @@ void Kitchen::Kitchen::displayStatus() const noexcept
         str += "\tCook n° " + std::to_string(i) + " -> " + tmp + "\n" ;
         i += 1;
     }
+    str += Singleton<Stock>::get().displayStock();
     std::cout << str;
-    Singleton<Stock>::get().displayStock();
 }
 
 bool Kitchen::Kitchen::CookisCooking(void) noexcept
@@ -166,15 +169,17 @@ bool Kitchen::Kitchen::CheckAfkForTooLong(void)
     bool res = false;
     _toDo.lock();
     _finished.lock();
-    if (!_toDo->size() && !_finished->size() && !this->CookisCooking()) {
+    auto toDoSize = _toDo->size();
+    auto finishSize = _finished->size();
+    _toDo.unlock();
+    _finished.unlock();
+    if (!toDoSize && !finishSize && !this->CookisCooking()) {
         auto now = std::chrono::system_clock::now();
         auto elapsedTime = now - _time;
         if (elapsedTime > std::chrono::seconds(5))
             res = true;
     } else
         _time = std::chrono::system_clock::now();
-    _toDo.unlock();
-    _finished.unlock();
     return res;
 }
 
@@ -200,8 +205,11 @@ size_t Kitchen::Kitchen::calculSaturation() noexcept
 {
     size_t freeSlot = 0;
 
-    if (_toDo->size() < _maxPizza) {
-        freeSlot = _maxPizza - _toDo->size();
+    _toDo.lock();
+    auto size = _toDo->size();
+    _toDo.unlock();
+    if (size < _maxPizza) {
+        freeSlot = _maxPizza - size;
         _saturated = false;
     } else
         _saturated = true;

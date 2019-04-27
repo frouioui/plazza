@@ -44,14 +44,14 @@ void Kitchen::Stock::setMultiplier(const long multiplier)
     _multiplier = multiplier;
 }
 
-void Kitchen::Stock::displayStock(void)
+std::string Kitchen::Stock::displayStock(void)
 {
     std::string infoStock =  "------ Stock of ingredients ------\n";
     _safe_stock.lock();
     for (auto ingrediant : _stock)
         infoStock += "\t" + ingrediant.first + ": " + std::to_string(ingrediant.second) + '\n';
     _safe_stock.unlock();
-    std::cout << infoStock;
+    return infoStock;
 }
 
 int Kitchen::Stock::timeToRefill(void)
@@ -75,6 +75,8 @@ void Kitchen::Stock::tryRefillStock(void)
         _safe_stock.lock();
         for (auto &ingrediant : _stock) {
             ingrediant.second += toadd;
+            if (ingrediant.second > 5)
+                ingrediant.second = 5;
         }
         _safe_stock.unlock();
     }

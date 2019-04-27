@@ -46,8 +46,9 @@
 
                 /**
                  * \brief display the Current Quantity of Ingrediant
+                 * \return info of The Stock
                  */
-                void displayStock(void);
+                std::string displayStock(void);
 
             protected:
             private:

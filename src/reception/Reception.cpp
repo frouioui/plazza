@@ -66,6 +66,9 @@ void Reception::checkKitchens()
         _kitchens[i].msgq >> body;
         if (body.type == MsgQueue::DELY) {
             _logger.info("Pizza done, pizza: " + body.descrpt + " size: " + body.value);
+        } else if (body.type == MsgQueue::DIE) {
+            _logger.info("Kitchen is now closed id = " + i);
+            _kitchens.erase(_kitchens.begin() + i - 1);
         }
     }
 }

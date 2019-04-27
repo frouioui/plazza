@@ -170,6 +170,8 @@ static void getType(const std::string &msgType, BodyMsg &body)
         body.type = RESP;
     if (getValue(msgType, '=') == "delivery")
         body.type = DELY;
+    if (getValue(msgType, '=') == "die")
+        body.type = DIE;
 }
 
 static std::queue<std::string> &parseMessage(const std::string &msg, std::queue<std::string> &msgParse)

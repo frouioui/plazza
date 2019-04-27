@@ -45,6 +45,7 @@ namespace MsgQueue
     public:
         MessageQueue();
         MessageQueue(const int id, const std::string &path = "./msg_queue"); //TODO: set default path
+        MessageQueue(const MessageQueue &msgq);
         ~MessageQueue();
 
         // Direct call to C library function

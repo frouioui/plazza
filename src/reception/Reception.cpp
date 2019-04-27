@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <cstdlib>
+#include <unistd.h>
 #include <iostream>
 #include <cstring>
 #include "reception/Reception.hpp"
@@ -111,17 +112,22 @@ void Reception::sendStatus()
 void Reception::createKitchen()
 {
     Fork::Forker fk;
+    _logger.info("Je creer une queue ici, createKitchen");
     MsgQueue::MessageQueue msgq(rand(), "queue");
     msgq.generateKey();
     msgq.createQueue();
+    _logger.info("On va fork ici");
     pid_t pid = fk.forkProcess();
 
+    printf("PID AFTER FORK = [%d]\n", pid);
     if (pid == 0) {
         _logger.info("Starting a new kitchen");
         OneKitchen kt(_multiplier, _nbCook, _replaceTime, msgq);
         _logger.info("One kitchen finished");
         exit(0);
     } else {
+        sleep(1);
+        _logger.info("Addition du kitchen au tableau");
         ReceptionArea::KitchenManager kmn{msgq: msgq};
         _kitchens.push_back(kmn);
     }
@@ -141,20 +147,26 @@ void Reception::sendCommands(const std::vector<Pizza::Command> commands)
             MsgQueue::BodyMsg body;
 
             // Ask if available
+            _logger.info("On demande si la kitchen est dispo");
             _kitchens[j].msgq << msg;
+            _logger.info("La kitchen repond");
             _kitchens[j].msgq >> body;
 
             // If available
             if (body.descrpt.compare("true") == 0 && body.value.compare("0") != 0) {
+                _logger.info("La kitchen est dispo, on envoi la commande");
                 MsgQueue::Message pizzaMsg;
                 pizzaMsg << commands[i];
                 _kitchens[j].msgq << pizzaMsg;
                 gave = true;
+                _logger.info("La commande est bien envoyee");
             }
         }
         if (gave == false) {
+            _logger.info("Aucune kitchen a etait trouve ...");
             createKitchen();
             MsgQueue::Message pizzaMsg;
+            _logger.info("On envoie la commande a la nouvelle kitchen");
             pizzaMsg << commands[i];
             _kitchens[_kitchens.size() - 1].msgq << pizzaMsg;
         }

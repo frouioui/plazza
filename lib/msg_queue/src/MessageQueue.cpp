@@ -23,6 +23,14 @@ MessageQueue::MessageQueue(const int id, const std::string &path) :
     std::cout << "id msg queue = " << id << std::endl;
 }
 
+MessageQueue::MessageQueue(const MessageQueue &msgq)
+{
+    std::cout << "by copy - id msg queue = " << msgq._id << std::endl;
+    _id = msgq._id;
+    _path = msgq._path;
+    _msgType = msgq._msgType;
+}
+
 MessageQueue::~MessageQueue()
 {
 }
@@ -274,5 +282,6 @@ MessageQueue &MsgQueue::operator<<(MessageQueue &msgQueue, Message &msg)
     msgQueue.setMsgToSend(msg);
     std::cout << "*********** sendMsgQueue: " << msg.type << " - " << msg.msg << std::endl;
     msgQueue.sendMessage();
+    std::cout << "*********** sendMsgQueue - DONE" << std::endl;
     return msgQueue;
 }

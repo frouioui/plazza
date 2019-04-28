@@ -10,7 +10,7 @@
     </testcase>
     <testcase name="multiple_line" assertions="3" status="PASSED" time="0.000">
     </testcase>
-    <testcase name="key_with_no_value" assertions="2" status="PASSED" time="0.000">
+    <testcase name="key_with_no_value" assertions="2" status="PASSED" time="0.001">
     </testcase>
     <testcase name="invalid_file_format" assertions="0" status="PASSED" time="0.000">
     </testcase>

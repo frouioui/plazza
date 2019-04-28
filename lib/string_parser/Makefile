@@ -38,7 +38,7 @@ tests_compile:
 	$(CXX) $(SRC) $(TEST_SRC) -o $(TEST_NAME) $(CRITERION) -I$(INCLUDE_DIRECTORY)
 
 tests_run: tests_compile
-	./$(TEST_NAME) -j1 --full-stats --verbose --xml=../../report/string_parser.xml
+	./$(TEST_NAME) -j1 --full-stats --verbose --xml=../../report/string_parser.xml --always-succeed
 
 clean:
 	rm -f $(OBJS) $(TEST_OBJS)

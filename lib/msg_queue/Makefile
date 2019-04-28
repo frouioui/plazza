@@ -41,7 +41,7 @@ tests_compile:
 	$(CXX) $(SRC) $(TEST_SRC) -o $(TEST_NAME) $(CRITERION) -I$(INCLUDE_DIRECTORY)
 
 tests_run: tests_compile
-	./$(TEST_NAME) -j1 --full-stats --verbose --xml=../../report/message_queue.xml
+	./$(TEST_NAME) -j1 --full-stats --verbose --xml=../../report/message_queue.xml --always-succeed
 
 clean:
 	rm -f $(OBJS) $(TEST_OBJS)

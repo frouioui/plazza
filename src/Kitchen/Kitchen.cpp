@@ -236,7 +236,7 @@ size_t Kitchen::Kitchen::calculSaturation() noexcept
     auto size = _maxPizza - _toDo->size();
     _toDo.unlock();
     size -= this->CookisFree();
-    if (size < _maxPizza) {
+    if (size < _maxPizza && !Singleton<Stock>::get().AnEmptyStock()) {
         freeSlot = _maxPizza - size;
         _saturated = false;
     } else

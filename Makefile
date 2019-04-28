@@ -129,7 +129,7 @@ clean:
 	rm -rf $(BUILD_DIR)
 
 fclean:	clean $(LIB_FCLEAN)
-	rm -rf $(plazza.name) $(debug.name) $(unit_tests.name) $(DOCS_DIR)
+	rm -rf $(plazza.name) $(debug.name) $(unit_tests.name) $(DOCS_DIR) Kitchen*.log
 
 re: fclean all
 

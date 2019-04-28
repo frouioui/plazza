@@ -103,6 +103,7 @@ MsgQueue::Message &Pizza::operator<<(MsgQueue::Message &msg, const Pizza::Comman
     msg.type = MsgQueue::UNDEFINED;
     for (unsigned int i = 0; i < pizzamsg.size(); i++) {
         msg.msg[i] = pizzamsg[i];
+        msg.msg[i + 1] = 0;
     }
     return msg;
 }

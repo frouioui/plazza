@@ -134,6 +134,7 @@ void Reception::sendCommands(const std::vector<Pizza::Command> commands)
 {
     MsgQueue::Message msg;
 
+    memset(msg.msg, 0, BUFSIZ);
     std::strcpy(msg.msg, "TYPE=shell\nINSTRUCTION=available");
     for (unsigned int i = 0; i < commands.size(); i++) {
         bool gave = false;

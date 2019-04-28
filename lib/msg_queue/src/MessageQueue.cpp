@@ -6,6 +6,8 @@
 */
 
 #include <sys/msg.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
 #include <queue>
 #include <cstring>
 #include "MessageQueue.hpp"
@@ -92,22 +94,18 @@ int MessageQueue::createQueue()
     return _idQueue;
 }
 
-int MessageQueue::sendMessage(const Message &msg, const int id) const
+int MessageQueue::sendMessage(const Message &msg, const int id)
 {
     Message *tosend = new Message(msg);
-    memset(tosend->msg, 0, BUFSIZ);
+    memset(tosend->msg, 0, 128);
     strcpy(tosend->msg, msg.msg);
-    char buff[20];
-    struct tm *sTm;
 
-    time_t now = time (0);
-    sTm = gmtime (&now);
+    int i = msgsnd(id, tosend, 128, IPC_NOWAIT);
 
-    strftime(buff, sizeof(buff), "%Y-%m-%d %H:%M:%S", sTm);
-    std::cout << "SENDING MESSAGE AT : " << buff << std::endl;
-    std::cout << "Its id = " << tosend->type << std::endl;
-    int i = msgsnd(id, tosend, BUFSIZ, IPC_NOWAIT);
-
+    while (errno == EAGAIN) {
+        resizeQueue(256);
+        i = msgsnd(id, tosend, 128, IPC_NOWAIT);
+    }
     if (i == -1 && errno != ENOMSG) {
         perror("msgsnd");
         throw Error::DiversError{"Error with msgsnd", "sendMessage"};
@@ -126,6 +124,7 @@ ssize_t MessageQueue::receiveMessage(Message &msg, const int id) const
     ssize_t bytes = msgrcv(id, &msg, sizeof(msg.msg), _msgType, IPC_NOWAIT);
 
     if ((bytes == -1 || bytes != sizeof(msg.msg)) && errno != ENOMSG) {
+        perror("RCV");
         throw Error::DiversError{"Error with msgrcv", "receiveMessage"};
     }
     return bytes;
@@ -133,7 +132,7 @@ ssize_t MessageQueue::receiveMessage(Message &msg, const int id) const
 
 ssize_t MessageQueue::receiveMessage()
 {
-    std::memset(_msgReceive.msg, 0, BUFSIZ);
+    std::memset(_msgReceive.msg, 0, 128);
     return receiveMessage(_msgReceive, _idQueue);
 }
 
@@ -303,4 +302,18 @@ MessageQueue &MsgQueue::operator<<(MessageQueue &msgQueue, Message &msg)
     msgQueue.setMsgToSend(msg);
     msgQueue.sendMessage();
     return msgQueue;
+}
+
+void MessageQueue::resizeQueue(int sizeToAdd)
+{
+    struct msqid_ds buf;
+
+    if (msgctl(_idQueue, IPC_STAT, &buf) == -1) {
+        return;
+    }
+    buf.msg_qbytes = buf.msg_qbytes + sizeToAdd; // The new size for the message queue
+    if (msgctl(_idQueue, IPC_SET, &buf) == -1) {
+        return;
+    }
+    return;
 }

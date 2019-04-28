@@ -35,7 +35,6 @@ _time(std::chrono::system_clock::now()), _log("Kitchen" + std::to_string(old.get
 
 Kitchen::Kitchen::~Kitchen()
 {
-    std::cout << "MANGES UN CHIBRE" << std::endl;
     stopCooking();
 }
 

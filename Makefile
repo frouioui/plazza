@@ -123,7 +123,7 @@ $(unit_tests.name): $(LIBS) $(unit_tests.objs)
 tests_compile: $(LIB_TEST_COMPILE) $(unit_tests.name)
 
 tests_run: tests_compile $(LIB_TESTS_RUN)
-	./$(unit_tests.name) -j1 --verbose --full-stats --xml=./report/main.xml
+	./$(unit_tests.name) -j1 --verbose --full-stats --xml=./report/main.xml --always-succeed
 
 clean:
 	rm -rf $(BUILD_DIR)

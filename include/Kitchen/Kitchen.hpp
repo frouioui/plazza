@@ -71,6 +71,7 @@ namespace Kitchen {
             void startCooking() noexcept;
 
             bool CookisCooking(void) noexcept;
+            size_t CookisFree(void) noexcept;
 
             /**
              * \brief Stop Cook thread

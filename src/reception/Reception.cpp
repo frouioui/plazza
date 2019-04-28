@@ -80,6 +80,8 @@ void Reception::launch()
 
     while (_shell.isDone() == false) {
         inputType = _shell.readLine();
+        if (_shell.isDone())
+            break;
         checkKitchens();
         if (inputType == ReceptionArea::Shell::OTHER) {
             std::vector<Pizza::Command> parsePizza;

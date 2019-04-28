@@ -34,8 +34,8 @@ void Shell::Shell::writeUser(const std::string &msg) const noexcept
 
 Shell::InputType Shell::Shell::readLine() noexcept
 {
-    getline(std::cin, _lastLine);
-    if (_lastLine.length() == 0 || _lastLine.compare("quit") == 0) {
+    ;
+    if (!getline(std::cin, _lastLine) || _lastLine.compare("quit") == 0) {
         _done = true;
         return QUIT;
     } else if (_lastLine.compare("help") == 0) {

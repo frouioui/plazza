@@ -97,6 +97,15 @@ int MessageQueue::sendMessage(const Message &msg, const int id) const
     Message *tosend = new Message(msg);
     memset(tosend->msg, 0, BUFSIZ);
     strcpy(tosend->msg, msg.msg);
+    char buff[20];
+    struct tm *sTm;
+
+    time_t now = time (0);
+    sTm = gmtime (&now);
+
+    strftime(buff, sizeof(buff), "%Y-%m-%d %H:%M:%S", sTm);
+    std::cout << "SENDING MESSAGE AT : " << buff << std::endl;
+    std::cout << "Its id = " << tosend->type << std::endl;
     int i = msgsnd(id, tosend, BUFSIZ, IPC_NOWAIT);
 
     if (i == -1 && errno != ENOMSG) {
@@ -276,6 +285,8 @@ MessageQueue &MsgQueue::operator>>(MessageQueue &msgQueue, BodyMsg &body)
             break;
         case RESP:
             getStatus(msgParse, body);
+            break;
+        case DIE:
             break;
         default:
             body.type = NONE;

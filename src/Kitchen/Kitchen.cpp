@@ -79,6 +79,7 @@ void Kitchen::Kitchen::sendImDying(MsgQueue::Message &response)
     response.type = MsgQueue::RECEPTION;
     for (size_t i = 0; i < resp.size(); i++) {
         response.msg[i] = resp[i];
+        response.msg[i + 1] = 0;
     }
 }
 

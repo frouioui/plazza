@@ -69,13 +69,14 @@ void Reception::checkKitchens()
         while (body.type == MsgQueue::DELY || body.type == MsgQueue::DIE || wait == false) {
             wait = true;
             _kitchens[i].msgq >> body;
+            std::cout << body.type << std::endl;
             if (body.type == MsgQueue::DELY) {
                 _logger.info("Pizza done, pizza: " + body.descrpt + " size: " + body.value);
             } else if (body.type == MsgQueue::DIE) {
                 _logger.info("Kitchen is now closed id = " + i);
                 _kitchens.erase(_kitchens.begin() + i - 1);
+                body.type = MsgQueue::NONE;
             }
-            body.type = MsgQueue::NONE;
         }
     }
 }
@@ -96,8 +97,10 @@ void Reception::launch()
                 parsePizza = _shell.parsePizza();
             } catch (Error::InvalidCommand &e) {
                 _logger.important("Invalid command: " + std::string(e.what()));
+                continue;
             }
-            sendCommands(parsePizza);
+            if (parsePizza.size() > 0)
+                sendCommands(parsePizza);
         } else if (inputType == ReceptionArea::Shell::HELPER) {
             // TODO: Display helper in the shell
         } else if (inputType == ReceptionArea::Shell::STATUS) {

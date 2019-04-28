@@ -34,7 +34,7 @@ void Shell::Shell::writeUser(const std::string &msg) const noexcept
 
 Shell::InputType Shell::Shell::readLine() noexcept
 {
-    ;
+
     if (!getline(std::cin, _lastLine) || _lastLine.compare("quit") == 0) {
         _done = true;
         return QUIT;
@@ -52,6 +52,9 @@ std::vector<Pizza::Command> Shell::Shell::parsePizza()
     StringParse::StringParser strp(_lastLine);
     std::vector<std::string> pizzaStrs;
 
+    if (_lastLine.length() == 0) {
+        return pizzas;
+    }
     strp.removeSpaceAndTabs();
     pizzaStrs = strp.splitStr(';');
     for (unsigned int i = 0; i < pizzaStrs.size() && pizzaStrs[i][0] != 0; i++) {

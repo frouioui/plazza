@@ -125,7 +125,7 @@ void Reception::sendStatus()
     std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 
-void Reception::createKitchen()
+int Reception::createKitchen()
 {
     Fork::Forker fk;
     MsgQueue::MessageQueue msgq(rand(), "queue");
@@ -137,10 +137,14 @@ void Reception::createKitchen()
         _logger.info("Starting a new kitchen");
         OneKitchen kt(_multiplier, _nbCook, _replaceTime, msgq);
         exit(0);
-    } else {
+    } else if (pid > 0) {
         ReceptionArea::KitchenManager kmn{msgq: msgq};
         _kitchens.push_back(kmn);
+    } else {
+        _logger.important("Order was canceled. You hardware is about to die ... Try again in a few seconds.");
+        return 1;
     }
+    return 0;
 }
 
 void Reception::sendCommands(const std::vector<Pizza::Command> commands)
@@ -152,7 +156,8 @@ void Reception::sendCommands(const std::vector<Pizza::Command> commands)
     for (unsigned int i = 0; i < commands.size(); i++) {
         bool gave = false;
         if (_kitchens.size() == 0) {
-            createKitchen();
+            if (createKitchen())
+                return;
         }
         for (unsigned int j = 0; j < _kitchens.size() && gave == false; j++) {
             MsgQueue::BodyMsg body = {MsgQueue::NONE, "", ""};

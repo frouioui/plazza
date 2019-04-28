@@ -49,7 +49,7 @@ namespace ReceptionArea
         void sendEmptyMsg();
         void sendStatus();
         void sendCommands(const std::vector<Pizza::Command> commands);
-        void createKitchen();
+        int createKitchen();
         void checkKitchens();
     };
 

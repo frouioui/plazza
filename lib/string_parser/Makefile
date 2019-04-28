@@ -5,7 +5,7 @@
 ##
 
 # Compilation
-CXX			=	g++
+CXX			=	g++ -g3
 CXXFLAGS	=	-W -Werror -Wextra -Wall -I$(INCLUDE_DIRECTORY) -std=c++14
 
 LIBRARY_NAME	=	libstring_parser.a

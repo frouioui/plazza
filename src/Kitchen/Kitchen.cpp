@@ -41,7 +41,7 @@ void Kitchen::Kitchen::stopCooking() noexcept
 {
     for (auto &thread : _cooks)
         thread.Stop();
-    MsgQueue::Message response;
+    MsgQueue::Message response = {MsgQueue::UNDEFINED, 0};
     sendImDying(response);
     _msgQueue << response;
     std::exit(0);

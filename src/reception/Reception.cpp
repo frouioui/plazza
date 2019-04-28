@@ -63,13 +63,19 @@ void Reception::checkKitchens()
 {
     for (unsigned int i = 0; i < _kitchens.size(); i++) {
         MsgQueue::BodyMsg body;
+        bool wait = false;
 
-        _kitchens[i].msgq >> body;
-        if (body.type == MsgQueue::DELY) {
-            _logger.info("Pizza done, pizza: " + body.descrpt + " size: " + body.value);
-        } else if (body.type == MsgQueue::DIE) {
-            _logger.info("Kitchen is now closed id = " + i);
-            _kitchens.erase(_kitchens.begin() + i - 1);
+        body.type = MsgQueue::NONE;
+        while (body.type == MsgQueue::DELY || body.type == MsgQueue::DIE || wait == false) {
+            wait = true;
+            _kitchens[i].msgq >> body;
+            if (body.type == MsgQueue::DELY) {
+                _logger.info("Pizza done, pizza: " + body.descrpt + " size: " + body.value);
+            } else if (body.type == MsgQueue::DIE) {
+                _logger.info("Kitchen is now closed id = " + i);
+                _kitchens.erase(_kitchens.begin() + i - 1);
+            }
+            body.type = MsgQueue::NONE;
         }
     }
 }
@@ -79,6 +85,7 @@ void Reception::launch()
     ReceptionArea::Shell::InputType inputType;
 
     while (_shell.isDone() == false) {
+        std::cout << "$> ";
         inputType = _shell.readLine();
         checkKitchens();
         if (inputType == ReceptionArea::Shell::OTHER) {
@@ -101,6 +108,7 @@ void Reception::sendStatus()
 {
     MsgQueue::Message msg;
 
+    memset(msg.msg, 0, BUFSIZ);
     std::strcpy(msg.msg, "TYPE=shell\nINSTRUCTION=status");
     if (_kitchens.size() == 0) {
         _logger.info("No kitchen yet");
@@ -110,6 +118,7 @@ void Reception::sendStatus()
         _kitchens[i].msgq.setMsgToSend(msg);
         _kitchens[i].msgq << msg;
     }
+    std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 
 void Reception::createKitchen()
@@ -148,7 +157,7 @@ void Reception::sendCommands(const std::vector<Pizza::Command> commands)
                 _kitchens[j].msgq >> body;
             int slots = std::atoi(body.value.c_str());
             if (body.descrpt.compare("true") == 0 && slots > 0) {
-                _logger.info("Sending order to kitchen " + j);
+                _logger.info("Sending order to kitchen");
                 MsgQueue::Message pizzaMsg;
                 pizzaMsg << commands[i];
                 _kitchens[j].msgq << pizzaMsg;
@@ -159,6 +168,7 @@ void Reception::sendCommands(const std::vector<Pizza::Command> commands)
             _logger.info("No kitchen available");
             createKitchen();
             MsgQueue::Message pizzaMsg;
+            _logger.info("Sending order to the new kitchen");
             pizzaMsg << commands[i];
             _kitchens[_kitchens.size() - 1].msgq << pizzaMsg;
         }

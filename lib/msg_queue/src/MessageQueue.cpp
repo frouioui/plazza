@@ -100,6 +100,7 @@ int MessageQueue::sendMessage(const Message &msg, const int id) const
     int i = msgsnd(id, tosend, BUFSIZ, IPC_NOWAIT);
 
     if (i == -1 && errno != ENOMSG) {
+        perror("msgsnd");
         throw Error::DiversError{"Error with msgsnd", "sendMessage"};
     }
     return 0;

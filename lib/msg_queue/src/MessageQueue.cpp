@@ -265,8 +265,10 @@ MessageQueue &MsgQueue::operator>>(MessageQueue &msgQueue, BodyMsg &body)
 
     msgQueue.receiveMessage();
     revcMsg = msgQueue.getLastReceived();
-    if (revcMsg.msg[0] == 0)
+    if (revcMsg.msg[0] == 0) {
+        body.type = NONE;
         return msgQueue;
+    }
     parseMessage(revcMsg.msg, msgParse);
     getType(msgParse.front(), body);
     msgParse.pop();

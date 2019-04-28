@@ -153,6 +153,10 @@ void Reception::sendCommands(const std::vector<Pizza::Command> commands)
 
     memset(msg.msg, 0, 128);
     std::strcpy(msg.msg, "TYPE=shell\nINSTRUCTION=available");
+    if (commands.size() > 100) {
+        _logger.important("One client can't order as many pizza ... You are too greedy.");
+        return;
+    }
     for (unsigned int i = 0; i < commands.size(); i++) {
         bool gave = false;
         if (_kitchens.size() == 0) {

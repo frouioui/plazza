@@ -65,7 +65,7 @@ std::string Pizza::getStringFromType(const Pizza::Type &type)
     case Type::Margarita:
         return "margarita";
     case Type::Americana:
-        return "AMERICANA";
+        return "americana";
     default:
         throw Error("No Type for this Value");
         break;

@@ -10,13 +10,13 @@
       <failure type="assert" message="1 assertion(s) failed.">./tests/LoggerTests.cpp:48: The file contents of stdout does not match the string "[INFO] - Test&#10;        ".&#10;</failure>
     </testcase>
     <testcase name="info_log_file" assertions="1" status="FAILED" time="0.000">
-      <failure type="assert" message="1 assertion(s) failed.">./tests/LoggerTests.cpp:71: The expression (as strings) (line.c_str()) == ("[INFO] - Test") is false: actual=`Sat Apr 27 17:22:12 2019` expected=`[INFO] - Test`.&#10;</failure>
+      <failure type="assert" message="1 assertion(s) failed.">./tests/LoggerTests.cpp:71: The expression (as strings) (line.c_str()) == ("[INFO] - Test") is false: actual=`Sat Apr 27 18:43:42 2019` expected=`[INFO] - Test`.&#10;</failure>
     </testcase>
     <testcase name="important_log_stdout" assertions="1" status="FAILED" time="0.000">
       <failure type="assert" message="1 assertion(s) failed.">./tests/LoggerTests.cpp:39: The file contents of stdout does not match the string "[IMPORTANT] - Test&#10;        ".&#10;</failure>
     </testcase>
     <testcase name="important_log_file" assertions="1" status="FAILED" time="0.000">
-      <failure type="assert" message="1 assertion(s) failed.">./tests/LoggerTests.cpp:59: The expression (as strings) (line.c_str()) == ("[IMPORTANT] - Test") is false: actual=`Sat Apr 27 17:22:12 2019` expected=`[IMPORTANT] - Test`.&#10;</failure>
+      <failure type="assert" message="1 assertion(s) failed.">./tests/LoggerTests.cpp:59: The expression (as strings) (line.c_str()) == ("[IMPORTANT] - Test") is false: actual=`Sat Apr 27 18:43:42 2019` expected=`[IMPORTANT] - Test`.&#10;</failure>
     </testcase>
   </testsuite>
   <testsuite name="logger_constructor" tests="2" failures="0" errors="0" disabled="0" skipped="0" time="0.000">

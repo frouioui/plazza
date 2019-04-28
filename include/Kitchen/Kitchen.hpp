@@ -14,6 +14,7 @@
 #include "Cook.hpp"
 #include "SafeThread.hpp"
 #include "MessageQueue.hpp"
+#include "Logger.hpp"
 
 /**
  * \namespace Kitchen
@@ -62,6 +63,8 @@ namespace Kitchen {
             bool _saturated; /*!< True if kitchen is saturated, otherwise false */
 
             std::chrono::time_point<std::chrono::system_clock> _time; /*!< Kitchen must close after 5 sec of inactivity*/
+
+            Log::Logger _log;
 
             /**
              * \brief Launch Cook thread

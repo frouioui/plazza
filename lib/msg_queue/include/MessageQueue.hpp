@@ -69,6 +69,7 @@ namespace MsgQueue
         void setMsgToSend(const Message &msg) noexcept;
         void setMsgType(MsgType type) noexcept;
         MsgType getMsgTypeToSend() const noexcept;
+        int getId() const noexcept {    return _id; };
 
     private:
         std::string _path;

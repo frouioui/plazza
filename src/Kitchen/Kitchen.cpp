@@ -7,13 +7,14 @@
 
 #include <iostream>
 #include <cstring>
+#include <sstream>
 #include "Kitchen/Kitchen.hpp"
 #include "Kitchen/Stock.hpp"
 
 Kitchen::Kitchen::Kitchen(float multiplier, size_t nbCooks, long timeReplace, MsgQueue::MessageQueue &msgQueue) :
 _multiplier(multiplier), _nbCooks(nbCooks), _timeReplace(timeReplace),
 _msgQueue(msgQueue), _maxPizza(2 * nbCooks), _saturated(false),
-_time(std::chrono::system_clock::now())
+_time(std::chrono::system_clock::now()), _log("Kitchen" + std::to_string(msgQueue.getId()) + ".log")
 {
     Singleton<CookBook>::get().setMultiplier(multiplier);
     Singleton<Stock>::get().setMultiplier(timeReplace);
@@ -24,7 +25,7 @@ _time(std::chrono::system_clock::now())
 Kitchen::Kitchen::Kitchen(const Kitchen &old) :
 _multiplier(old.getMultiplier()), _nbCooks(old.getNbCooks()), _timeReplace(old.getTimeReplace()),
 _msgQueue(old.getMsgQueue()), _maxPizza(2 * old.getNbCooks()), _saturated(false),
-_time(std::chrono::system_clock::now())
+_time(std::chrono::system_clock::now()), _log("Kitchen" + std::to_string(old.getMsgQueue().getId()) + ".log")
 {
     Singleton<CookBook>::get().setMultiplier(old.getMultiplier());
     Singleton<Stock>::get().setMultiplier(old.getTimeReplace());
@@ -45,6 +46,7 @@ void Kitchen::Kitchen::stopCooking() noexcept
     MsgQueue::Message response = {MsgQueue::UNDEFINED, 0};
     sendImDying(response);
     _msgQueue << response;
+    _log.important("I'm Stoping for beiing inactive");
     std::exit(0);
 }
 
@@ -56,12 +58,16 @@ void Kitchen::Kitchen::startCooking() noexcept
     for (size_t i = 0; i < _nbCooks; i += 1)
         _cooks.emplace_back(_toDo, _finished);
 
+    _log.important("Create a kitchen with " + std::to_string(_nbCooks) + " Cooks");
     while (!CheckAfkForTooLong()) {
         request.descrpt.clear();
         _msgQueue >> request;
         if (!request.descrpt.empty() && request.type == MsgQueue::SHELL &&
         request.descrpt == "available") {
+            _log.info("Recpetion is asking if i can get more command");
             getFreeSlot(response);
+            std::string logmsg = response.msg;
+            _log.info("Sending : '" + logmsg + "'");
             _msgQueue << response;
         }
         else if (!request.descrpt.empty()) {
@@ -85,7 +91,6 @@ void Kitchen::Kitchen::sendImDying(MsgQueue::Message &response)
 
 static void convPizzaToMsg(MsgQueue::Message &msg, const Pizza::Command &pizza)
 {
-    std::cout << "convPizzaToMsg " << pizza._name << std::endl;
     std::string resp = "TYPE=delivery\nNAME=" + Pizza::getStringFromType(pizza._name);
     std::string size = "\nSIZE=" + Pizza::getStringFromSize(pizza._size);
 
@@ -118,9 +123,11 @@ void Kitchen::Kitchen::executeRequest(const MsgQueue::BodyMsg &request) noexcept
 {
     switch (request.type) {
         case MsgQueue::CMD:
+            _log.info("Receiving Commands");
             addOrder(request);
             break;
         case MsgQueue::SHELL:
+            _log.info("Status");
             displayStatus();
             break;
         default:
@@ -137,6 +144,9 @@ void Kitchen::Kitchen::sendReadyOrder() noexcept
         Pizza::Command *pizza = _finished->front();
         _finished->pop_front();
         convPizzaToMsg(msg, *pizza);
+        _log.info("Sending Finished Pizza");
+        std::string logmsg = msg.msg;
+        _log.info("Sending : '" + logmsg + "'");
         _msgQueue << msg;
     }
     _finished.unlock();
@@ -232,6 +242,7 @@ size_t Kitchen::Kitchen::calculSaturation() noexcept
         _saturated = false;
     } else
         _saturated = true;
+    _log.info("Check if im Satured");
     return freeSlot;
 }
 

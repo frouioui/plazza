@@ -9,10 +9,14 @@
 
 plazza.name			=	plazza
 
-plazza.srcs			=	src/reception/Error.cpp			\
+plazza.srcs			=	src/Kitchen/Kitchen.cpp			\
+						src/reception/Error.cpp			\
 						src/reception/Reception.cpp		\
 						src/reception/Shell.cpp			\
-
+						src/Kitchen/Cook.cpp			\
+						src/Kitchen/Stock.cpp			\
+						src/Kitchen/CookBook.cpp		\
+						src/Command.cpp					\
 
 plazza.main 		=	src/main.cpp
 
@@ -27,6 +31,9 @@ plazza.ldflags		=
 
 LIBS				=	lib/logger/liblogger.a							\
 						lib/configuration_reader/libconfig_reader.a		\
+						lib/string_parser/libstring_parser.a			\
+						lib/msg_queue/libmsg_queue.a					\
+						lib/fork/libfork.a								\
 
 # DOCS
 
@@ -38,14 +45,21 @@ DOXYFILE			=	Plazza
 
 unit_tests.name		=	unit_tests_$(plazza.name)
 
-unit_tests.srcs		=	$(plazza.srcs)	\
+unit_tests.srcs		=	$(plazza.srcs)							\
 
-unit_tests.main 	=	tests/criterion_main.cpp
+unit_tests.main 	=	tests/criterion_main.cpp				\
+						tests/test_Kitchen_CookBook.cpp			\
+						tests/test_Singletons.cpp				\
+						tests/test_Stock_Kitchen.cpp			\
+						tests/test_SafeThread.cpp				\
+						tests/test_Kitchen_Cook.cpp				\
+						tests/reception/SetValuesTest.cpp		\
+						tests/command/test_command_operator.cpp	\
 
 unit_tests.objs		=	$(addprefix $(dir $(BUILD_DIR)$(unit_tests.name)/), $(unit_tests.srcs:.cpp=.o))	\
 						$(addprefix $(dir $(BUILD_DIR)$(unit_tests.name)/), $(unit_tests.main:.cpp=.o))
 
-unit_tests.cxxflags	=	-fprofile-arcs -ftest-coverage
+unit_tests.cxxflags	=	-fprofile-arcs -ftest-coverage -g3
 
 unit_tests.ldflags	=	-lcriterion -lgcov
 
@@ -72,7 +86,7 @@ HEADERS				=	-I ./include
 
 CXXFLAGS			=	-Wall -Wextra -std=c++14 $(HEADERS)
 
-LDFLAGS				=
+LDFLAGS				=	-lpthread
 
 all: $(plazza.name)
 
@@ -81,6 +95,8 @@ all: $(plazza.name)
 define LIB_RULES =
 $(1):
 	make -C $$(dir $$@)
+HEADERS += -I $$(dir $(1))include
+LDFLAGS += -L $$(dir $(1)) -l $$(subst lib,,$$(notdir $$(basename $(1))))
 
 $(1)_fclean:
 	make fclean -C $$(dir $$@)
@@ -107,13 +123,13 @@ $(unit_tests.name): $(LIBS) $(unit_tests.objs)
 tests_compile: $(LIB_TEST_COMPILE) $(unit_tests.name)
 
 tests_run: tests_compile $(LIB_TESTS_RUN)
-	./$(unit_tests.name) -j1 --verbose --full-stats
+	./$(unit_tests.name) -j1 --verbose --full-stats --xml=./report/main.xml --always-succeed
 
 clean:
 	rm -rf $(BUILD_DIR)
 
 fclean:	clean $(LIB_FCLEAN)
-	rm -rf $(plazza.name) $(debug.name) $(unit_tests.name) $(DOCS_DIR)
+	rm -rf $(plazza.name) $(debug.name) $(unit_tests.name) $(DOCS_DIR) Kitchen*.log
 
 re: fclean all
 

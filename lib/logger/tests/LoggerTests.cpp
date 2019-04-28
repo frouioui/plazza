@@ -12,25 +12,25 @@
 
 using namespace Log;
 
-Test(constructor, default_ctor)
+Test(logger_constructor, default_ctor)
 {
     Logger log;
 }
 
-Test(constructor, param_ctor)
+Test(logger_constructor, param_ctor)
 {
     std::ofstream("test");
     Logger log("test");
     remove("test");
 }
 
-Test(setpath, unknown_file_ctor)
+Test(logger_setpath, unknown_file_ctor)
 {
     cr_assert_throw(Logger log("toto"), Error::FileError);
     remove("toto");
 }
 
-Test(getConfig, important_log_stdout)
+Test(logger_getConfig, important_log_stdout)
 {
     Logger log;
 
@@ -39,7 +39,7 @@ Test(getConfig, important_log_stdout)
     cr_assert_stdout_eq_str("[IMPORTANT] - Test\n");
 }
 
-Test(getConfig, info_log_stdout)
+Test(logger_getConfig, info_log_stdout)
 {
     Logger log;
 
@@ -48,7 +48,7 @@ Test(getConfig, info_log_stdout)
     cr_assert_stdout_eq_str("[INFO] - Test\n");
 }
 
-Test(getConfig, important_log_file)
+Test(logger_getConfig, important_log_file)
 {
     Logger log("test");
 
@@ -60,7 +60,7 @@ Test(getConfig, important_log_file)
     remove("test");
 }
 
-Test(getConfig, info_log_file)
+Test(logger_getConfig, info_log_file)
 {
     Logger log("test");
 

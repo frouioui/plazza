@@ -9,9 +9,21 @@
 #define _RECEPTION_HPP
 
 #include "reception/Shell.hpp"
+#include "Kitchen/Kitchen.hpp"
+#include "MessageQueue.hpp"
+#include "Logger.hpp"
 
 namespace ReceptionArea
 {
+
+    using OneKitchen = Kitchen::Kitchen;
+
+    // Refers to a proccess
+    struct KitchenManager {
+        MsgQueue::MessageQueue msgq;
+    };
+
+    using KitchenArray = std::vector<KitchenManager>;
 
     class Reception
     {
@@ -19,14 +31,26 @@ namespace ReceptionArea
         Reception();
         ~Reception();
 
-        void setValues(const int argc, const char *argv[]) throw();
-        void launch() throw();
+        void setValues(const int argc, const char *argv[]);
+        void launch();
+
 
     private:
         float           _multiplier;
         unsigned int    _nbCook;
         long            _replaceTime;
         Shell::Shell    _shell;
+
+        KitchenArray    _kitchens;
+
+        Log::Logger _logger;
+
+
+        void sendEmptyMsg();
+        void sendStatus();
+        void sendCommands(const std::vector<Pizza::Command> commands);
+        int createKitchen();
+        void checkKitchens();
     };
 
 } // ReceptionArea

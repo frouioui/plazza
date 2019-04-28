@@ -95,7 +95,9 @@ int MessageQueue::createQueue()
 int MessageQueue::sendMessage(const Message &msg, const int id) const
 {
     Message *tosend = new Message(msg);
-    int i = msgsnd(id, tosend, sizeof(msg.msg), IPC_NOWAIT);
+    memset(tosend->msg, 0, BUFSIZ);
+    strcpy(tosend->msg, msg.msg);
+    int i = msgsnd(id, tosend, BUFSIZ, IPC_NOWAIT);
 
     if (i == -1 && errno != ENOMSG) {
         throw Error::DiversError{"Error with msgsnd", "sendMessage"};

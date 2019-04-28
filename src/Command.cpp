@@ -6,6 +6,7 @@
 */
 
 #include <string>
+#include <iostream>
 #include "Command.hpp"
 
 Pizza::Type Pizza::getTypeFromString(const std::string &str)
@@ -57,6 +58,7 @@ Pizza::Size Pizza::getSizeFromString(const std::string &str)
 
 std::string Pizza::getStringFromType(const Pizza::Type &type)
 {
+    std::cout << type << std::endl;
     switch (type) {
     case Type::Regina:
         return "regina";
@@ -93,6 +95,7 @@ std::string Pizza::getStringFromSize(const Pizza::Size &size)
 
 MsgQueue::Message &Pizza::operator<<(MsgQueue::Message &msg, const Pizza::Command &cmd)
 {
+    std::cout << "operator << " << cmd._name << std::endl;
     std::string pizzamsg = "TYPE=pizza\nNAME=";
     pizzamsg.append(Pizza::getStringFromType(cmd._name));
     pizzamsg.append("\nSIZE=");

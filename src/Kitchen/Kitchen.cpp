@@ -83,6 +83,7 @@ void Kitchen::Kitchen::sendImDying(MsgQueue::Message &response)
 
 static void convPizzaToMsg(MsgQueue::Message &msg, const Pizza::Command &pizza)
 {
+    std::cout << "convPizzaToMsg " << pizza._name << std::endl;
     std::string resp = "TYPE=delivery\nNAME=" + Pizza::getStringFromType(pizza._name);
     std::string size = "\nSIZE=" + Pizza::getStringFromSize(pizza._size);
 

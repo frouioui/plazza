@@ -32,7 +32,8 @@ namespace MsgQueue
         SHELL,
         RESP,
         DELY,
-        DIE
+        DIE,
+        NONE
     };
 
     struct BodyMsg {

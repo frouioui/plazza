@@ -49,6 +49,7 @@ Kitchen::CookBook::CookingTime Kitchen::CookBook::getCookingTime(Pizza::Command 
 {
     std::string pizza_name = "Invalid";
     try {
+        std::cout << "getCookingTime " << command._name << std::endl;
         pizza_name = Pizza::getStringFromType(command._name);
     }
     catch(const Pizza::Error& e) {
@@ -65,6 +66,7 @@ Kitchen::CookBook::Recipe &Kitchen::CookBook::getRecipe(Pizza::Command &command)
 {
     std::string pizza_name = "Invalid";
     try {
+        std::cout << "getRecipe " << command._name << std::endl;
         pizza_name = Pizza::getStringFromType(command._name);
     }
     catch(const Pizza::Error& e) {

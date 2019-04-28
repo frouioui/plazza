@@ -141,7 +141,7 @@ void Reception::sendCommands(const std::vector<Pizza::Command> commands)
             createKitchen();
         }
         for (unsigned int j = 0; j < _kitchens.size() && gave == false; j++) {
-            MsgQueue::BodyMsg body;
+            MsgQueue::BodyMsg body = {MsgQueue::NONE, "", ""};
             _kitchens[j].msgq << msg;
             while (body.type != MsgQueue::RESP)
                 _kitchens[j].msgq >> body;

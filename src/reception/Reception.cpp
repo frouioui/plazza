@@ -102,7 +102,7 @@ void Reception::launch()
             if (parsePizza.size() > 0)
                 sendCommands(parsePizza);
         } else if (inputType == ReceptionArea::Shell::HELPER) {
-            // TODO: Display helper in the shell
+            std::cout << "Helpler" << std::endl;
         } else if (inputType == ReceptionArea::Shell::STATUS) {
             sendStatus();
         }

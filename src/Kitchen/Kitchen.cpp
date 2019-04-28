@@ -73,7 +73,7 @@ void Kitchen::Kitchen::startCooking() noexcept
 
 void Kitchen::Kitchen::sendImDying(MsgQueue::Message &response)
 {
-    std::string resp = "TYPE=DIE\n";
+    std::string resp = "TYPE=die\n";
 
     response.type = MsgQueue::RECEPTION;
     for (size_t i = 0; i < resp.size(); i++) {
@@ -164,6 +164,19 @@ bool Kitchen::Kitchen::CookisCooking(void) noexcept
     return false;
 }
 
+size_t Kitchen::Kitchen::CookisFree(void) noexcept
+{
+    size_t nb = 0;
+
+    for (auto it = _cooks.begin();
+    it != _cooks.end();
+    it++) {
+        if (!it->isBusy())
+            nb += 1;
+    }
+    return nb;
+}
+
 bool Kitchen::Kitchen::CheckAfkForTooLong(void)
 {
     bool res = false;
@@ -195,9 +208,9 @@ static Pizza::Command convMsgToPizza(const MsgQueue::BodyMsg &msg)
 void Kitchen::Kitchen::addOrder(const MsgQueue::BodyMsg &msg) noexcept
 {
     Pizza::Command pizza = convMsgToPizza(msg);
-
+    Pizza::Command *newPizza = new Pizza::Command(pizza);
     _toDo.lock();
-    _toDo->push_back(&pizza);
+    _toDo->push_back(newPizza);
     _toDo.unlock();
 }
 
@@ -206,8 +219,9 @@ size_t Kitchen::Kitchen::calculSaturation() noexcept
     size_t freeSlot = 0;
 
     _toDo.lock();
-    auto size = _toDo->size();
+    auto size = _maxPizza - _toDo->size();
     _toDo.unlock();
+    size -= this->CookisFree();
     if (size < _maxPizza) {
         freeSlot = _maxPizza - size;
         _saturated = false;

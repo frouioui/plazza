@@ -91,6 +91,7 @@ static void convPizzaToMsg(MsgQueue::Message &msg, const Pizza::Command &pizza)
     resp += size;
     for (size_t i = 0; i < resp.size(); i++) {
         msg.msg[i] = resp[i];
+        msg.msg[i + 1] = 0;
     }
 }
 
@@ -107,6 +108,7 @@ void Kitchen::Kitchen::getFreeSlot(MsgQueue::Message &response)
     resp += slot;
     for (size_t i = 0; i < resp.size(); i++) {
         response.msg[i] = resp[i];
+        response.msg[i + 1] = 0;
     }
 }
 

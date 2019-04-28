@@ -277,6 +277,7 @@ MessageQueue &MsgQueue::operator>>(MessageQueue &msgQueue, BodyMsg &body)
             getStatus(msgParse, body);
             break;
         default:
+            body.type = NONE;
             break;
     }
     return msgQueue;

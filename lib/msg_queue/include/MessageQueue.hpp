@@ -23,7 +23,7 @@ namespace MsgQueue
 
     struct Message {
         MsgType type;
-        char msg[BUFSIZ];
+        char msg[128];
     };
 
     enum BodyType {
@@ -53,7 +53,7 @@ namespace MsgQueue
         // Direct call to C library function
         key_t generateKey(const std::string &path, const int id) const;
         int createQueue(const key_t &key) const;
-        int sendMessage(const Message &msg, const int id) const;
+        int sendMessage(const Message &msg, const int id);
         ssize_t receiveMessage(Message &msg, const int id) const;
         void destroyQueue(const int id) const;
 
@@ -69,6 +69,8 @@ namespace MsgQueue
         void setMsgToSend(const Message &msg) noexcept;
         void setMsgType(MsgType type) noexcept;
         MsgType getMsgTypeToSend() const noexcept;
+
+        void resizeQueue(int sizeToAdd);
 
     private:
         std::string _path;

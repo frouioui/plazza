@@ -69,7 +69,6 @@ void Reception::checkKitchens()
         while (body.type == MsgQueue::DELY || body.type == MsgQueue::DIE || wait == false) {
             wait = true;
             _kitchens[i].msgq >> body;
-            std::cout << body.type << std::endl;
             if (body.type == MsgQueue::DELY) {
                 _logger.info("Pizza done, pizza: " + body.descrpt + " size: " + body.value);
             } else if (body.type == MsgQueue::DIE) {
@@ -113,7 +112,7 @@ void Reception::sendStatus()
 {
     MsgQueue::Message msg;
 
-    memset(msg.msg, 0, BUFSIZ);
+    memset(msg.msg, 0, 128);
     std::strcpy(msg.msg, "TYPE=shell\nINSTRUCTION=status");
     if (_kitchens.size() == 0) {
         _logger.info("No kitchen yet");
@@ -148,7 +147,7 @@ void Reception::sendCommands(const std::vector<Pizza::Command> commands)
 {
     MsgQueue::Message msg;
 
-    memset(msg.msg, 0, BUFSIZ);
+    memset(msg.msg, 0, 128);
     std::strcpy(msg.msg, "TYPE=shell\nINSTRUCTION=available");
     for (unsigned int i = 0; i < commands.size(); i++) {
         bool gave = false;

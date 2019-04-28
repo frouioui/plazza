@@ -34,7 +34,6 @@ _time(std::chrono::system_clock::now())
 
 Kitchen::Kitchen::~Kitchen()
 {
-    std::cout << "MANGES UN CHIBRE" << std::endl;
     stopCooking();
 }
 
@@ -85,7 +84,6 @@ void Kitchen::Kitchen::sendImDying(MsgQueue::Message &response)
 
 static void convPizzaToMsg(MsgQueue::Message &msg, const Pizza::Command &pizza)
 {
-    std::cout << "PIZZA DONE" << std::endl;
     std::string resp = "TYPE=delivery\nNAME=" + Pizza::getStringFromType(pizza._name);
     std::string size = "\nSIZE=" + Pizza::getStringFromSize(pizza._size);
 

@@ -54,6 +54,19 @@ std::string Kitchen::Stock::displayStock(void)
     return infoStock;
 }
 
+bool Kitchen::Stock::AnEmptyStock()
+{
+    bool res = false;
+    _safe_stock.lock();
+    for (auto &elem : _stock)
+            if (!elem.second) {
+                res = true;
+                break;
+            }
+    _safe_stock.unlock();
+    return res;
+}
+
 int Kitchen::Stock::timeToRefill(void)
 {
     _safe_time.lock();

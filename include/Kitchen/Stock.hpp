@@ -44,6 +44,8 @@
                  */
                 bool getRecipe(CookBook::Recipe &pizza);
 
+                bool AnEmptyStock();
+
                 /**
                  * \brief display the Current Quantity of Ingrediant
                  * \return info of The Stock

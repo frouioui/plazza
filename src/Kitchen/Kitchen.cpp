@@ -34,6 +34,7 @@ _time(std::chrono::system_clock::now())
 
 Kitchen::Kitchen::~Kitchen()
 {
+    std::cout << "MANGES UN CHIBRE" << std::endl;
     stopCooking();
 }
 

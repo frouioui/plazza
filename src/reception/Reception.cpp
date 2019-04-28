@@ -155,8 +155,9 @@ void Reception::sendCommands(const std::vector<Pizza::Command> commands)
         for (unsigned int j = 0; j < _kitchens.size() && gave == false; j++) {
             MsgQueue::BodyMsg body = {MsgQueue::NONE, "", ""};
             _kitchens[j].msgq << msg;
-            while (body.type != MsgQueue::RESP)
+            while (body.type != MsgQueue::RESP) {
                 _kitchens[j].msgq >> body;
+            }
             int slots = std::atoi(body.value.c_str());
             if (body.descrpt.compare("true") == 0 && slots > 0) {
                 _logger.info("Sending order to kitchen");

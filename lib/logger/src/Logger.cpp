@@ -37,24 +37,32 @@ Logger::~Logger()
 
 void Logger::important(const std::string &msg) noexcept
 {
-    auto end = std::chrono::system_clock::now();
-    std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+    char buff[20];
+    struct tm *sTm;
 
+    time_t now = time (0);
+    sTm = gmtime (&now);
+
+    strftime(buff, sizeof(buff), "%Y-%m-%d %H:%M:%S", sTm);
     if (_stdout) {
-        std::cout << std::ctime(&end_time) << " [IMPORTANT] - " << msg << std::endl;
+        std::cout << buff << " [IMPORTANT] - " << msg << std::endl;
     } else {
-        _outfile << std::ctime(&end_time) << " [IMPORTANT] - " << msg << std::endl;
+        _outfile << buff << " [IMPORTANT] - " << msg << std::endl;
     }
 }
 
 void Logger::info(const std::string &msg) noexcept
 {
-    auto end = std::chrono::system_clock::now();
-    std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+    char buff[20];
+    struct tm *sTm;
 
+    time_t now = time (0);
+    sTm = gmtime (&now);
+
+    strftime(buff, sizeof(buff), "%Y-%m-%d %H:%M:%S", sTm);
     if (_stdout) {
-        std::cout << std::ctime(&end_time) << " [INFO] - " << msg << std::endl;
+        std::cout << buff << " [INFO] - " << msg << std::endl;
     } else {
-        _outfile << std::ctime(&end_time) << " [INFO] - " << msg << std::endl;
+        _outfile << buff << " [INFO] - " << msg << std::endl;
     }
 }

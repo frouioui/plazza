@@ -23,7 +23,6 @@ static std::vector<Ingrediant> split(std::string s, char c)
    return tokens;
 }
 
-
 Kitchen::CookBook::CookBook() : _mult(1)
 {
     ConfigurationReader::config_t config = ConfigurationReader::ConfigReader(_configPath).getConfig();
